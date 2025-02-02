@@ -20,8 +20,8 @@ export default function SplashScreen() {
           className="w-64 h-64" 
         />
         <View className="ml-1 mt-10">
-          <Text className="text-5xl text-[#147e93] font-semibold">Service</Text>
-          <Text className="text-5xl text-[#147e93] font-semibold">Sphere</Text>
+          <Text className="text-5xl text-[#147e93] font-Roboto-SemiBold">Service</Text>
+          <Text className="text-5xl text-[#147e93] font-Roboto-SemiBold">Sphere</Text>
         </View>
       </View>
 
