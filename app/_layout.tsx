@@ -19,7 +19,15 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    "Roboto-Bold": require('../assets/fonts/Roboto-Bold.ttf'),
+    "Roboto-Medium": require('../assets/fonts/Roboto-Medium.ttf'),
+    "Roboto-Regular": require('../assets/fonts/Roboto-Regular.ttf'),
+    "Roboto-Light": require('../assets/fonts/Roboto-Light.ttf'),
+    "Roboto-Thin": require('../assets/fonts/Roboto-Thin.ttf'),
+    "Roboto-SemiBold": require('../assets/fonts/Roboto-SemiBold.ttf'),
+    "Roboto-ExtraBold": require('../assets/fonts/Roboto-ExtraBold.ttf'),
+    "Roboto-ExtraLight": require('../assets/fonts/Roboto-ExtraLight.ttf'),
+    "Pacifico-Regular": require('../assets/fonts/Pacifico-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -34,8 +42,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
