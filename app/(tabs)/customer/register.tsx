@@ -4,6 +4,7 @@ import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
 import ThirdParty from '@/components/login/ThirdParty';
 import Inputs from '@/components/login/Inputs';
+import { Link } from 'expo-router';
 
 const register = () => {
   return (
@@ -34,7 +35,7 @@ const register = () => {
         <View className="flex-row items-center mt-5">
           <View className="flex-1 h-[1px] bg-[#EDEDED]" />
           <Text className="font-Roboto-Light text-center mx-2 text-base text-black/70">
-            Log in with
+            Sign up with
           </Text>
           <View className="flex-1 h-[1px] bg-[#EDEDED]" />
         </View>
@@ -46,9 +47,12 @@ const register = () => {
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Already have an account?{' '}
-            <Text className="text-[#147E93] underline font-Roboto-Medium">
-              Log in
-            </Text>
+            <Link
+              href="/(tabs)/customer/login"
+              className="text-[#147E93] underline font-Roboto-Medium"
+            >
+              Login
+            </Link>
           </Text>
         </View>
       </View>
