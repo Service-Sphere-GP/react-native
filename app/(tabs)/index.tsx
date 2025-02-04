@@ -55,14 +55,14 @@ const App = () => {
         {/* Buttons */}
         <Animated.View entering={FadeInDown.delay(700)} className="w-full" style={{ marginTop: 34 }}>
           <CustomButton
-            onPress={() => router.push("/customer")}
+            onPress={() => router.push("/customer/register")}
             title="Customer"
             containerStyles="w-[358px] h-[46px] bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-white font-Roboto-SemiBold"
             
           />
           <CustomButton
-            onPress={() => router.push("/serviceProvider")}
+            onPress={() => router.push("/provider/register")}
             title="Service Provider"
             containerStyles="w-[358px] h-[46px] bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
