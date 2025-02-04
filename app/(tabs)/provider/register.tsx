@@ -5,8 +5,11 @@ import Header from '@/components/login/Header';
 import ThirdParty from '@/components/login/ThirdParty';
 import Inputs from '@/components/login/Inputs';
 import { Link } from 'expo-router';
+import { useState } from 'react';
 
-const register = () => {
+const Register = () => {
+  const [checked, setChecked] = useState(false);
+
   return (
     <ScrollView className="bg-white h-full">
       <Header />
@@ -15,8 +18,9 @@ const register = () => {
         <Inputs />
         <View className="flex-row items-center">
           <CheckBox
-            checked={false}
+            checked={checked}
             containerStyle={{ marginLeft: 0, marginRight: 0 }}
+            onPress={() => setChecked(!checked)}
           />
           <Text className="font-Roboto-Light text-black/70 text-base">
             I agree to the{' '}
@@ -60,4 +64,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;
