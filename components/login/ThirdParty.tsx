@@ -12,7 +12,9 @@ const ThirdParty = ({ icon }: { icon: string }) => {
 
   return (
     <View className="p-3 mt-5 border border-black/20 rounded-full">
-      <Image source={iconSource}  resizeMode="cover" 
+      <Image
+        source={iconSource}
+        resizeMode="cover"
         style={{ width: 30, height: 30 }}
       />
     </View>

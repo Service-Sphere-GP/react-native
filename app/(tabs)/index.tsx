@@ -1,14 +1,14 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
-import CustomButton from "@/components/CustomButton";
-import { useRouter } from "expo-router";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import { View, Text, Image } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import CustomButton from '@/components/CustomButton';
+import { useRouter } from 'expo-router';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const App = () => {
   const router = useRouter();
-  const landingImage = require("@/assets/images/LandingImage.png");
+  const landingImage = require('@/assets/images/LandingImage.png');
 
   return (
     <View className="flex-1 bg-[#fdfdfd] px-5 pt-10">
@@ -27,21 +27,28 @@ const App = () => {
             {/* Subtitle */}
             <Animated.View entering={FadeInDown.delay(400)} className="w-full">
               <Text className="text-[#030B19] text-[28px] font-Roboto-SemiBold text-left leading-tight">
-                Connecting you to {"\n"}the people you need
+                Connecting you to {'\n'}the people you need
               </Text>
             </Animated.View>
 
             {/* Description */}
-            <Animated.View entering={FadeInDown.delay(500)} className="w-full" style={{ marginTop: 32 }}>
+            <Animated.View
+              entering={FadeInDown.delay(500)}
+              className="w-full"
+              style={{ marginTop: 32 }}
+            >
               <Text className="text-[#030B19] text-[18px] font-Roboto text-left">
-                Welcome! Are you looking for a service{"\n"}
-                or offering one? Let us know below.{"\n"}
+                Welcome! Are you looking for a service{'\n'}
+                or offering one? Let us know below.{'\n'}
                 Choose how you'd like to get started.
               </Text>
             </Animated.View>
 
             {/* Landing Image */}
-            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-9 items-center">
+            <Animated.View
+              entering={FadeInDown.delay(600)}
+              className="w-full mt-9 items-center"
+            >
               <Image
                 source={landingImage}
                 className="w-[290px] h-[255px]"
@@ -51,18 +58,20 @@ const App = () => {
           </View>
         </View>
 
-
         {/* Buttons */}
-        <Animated.View entering={FadeInDown.delay(700)} className="w-full" style={{ marginTop: 34 }}>
+        <Animated.View
+          entering={FadeInDown.delay(700)}
+          className="w-full"
+          style={{ marginTop: 34 }}
+        >
           <CustomButton
-            onPress={() => router.push("/customer/register")}
+            onPress={() => router.push('/customer/register')}
             title="Customer"
             containerStyles="w-[358px] h-[46px] bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-white font-Roboto-SemiBold"
-            
           />
           <CustomButton
-            onPress={() => router.push("/provider/register")}
+            onPress={() => router.push('/provider/register')}
             title="Service Provider"
             containerStyles="w-[358px] h-[46px] bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
