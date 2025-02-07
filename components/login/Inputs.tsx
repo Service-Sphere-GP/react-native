@@ -5,7 +5,7 @@ import SmallInput from './SmallInput';
 const Inputs = () => {
   return (
     <View className="flex flex-col items-center">
-      <View className="block sm:flex sm:flex-row justify-center items-center gap-2 mt-5 w-full">
+      <View className="block sm:flex sm:flex-row justify-between items-center gap-2 mt-5 w-full">
         <SmallInput label="First Name" placeholder="Enter your first name" />
         <SmallInput label="Last Name" placeholder="Enter your last name" />
       </View>
