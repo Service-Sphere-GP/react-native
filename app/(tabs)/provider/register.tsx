@@ -4,7 +4,7 @@ import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
 import ThirdParty from '@/components/login/ThirdParty';
 import Inputs from '@/components/login/Inputs';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useState } from 'react';
 
 const Register = () => {
@@ -33,7 +33,7 @@ const Register = () => {
           title="Sign Up"
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"
           textStyles="font-medium text-[21px]"
-          onPress={() => console.log('Sign Up')}
+          onPress={() => router.push('/(tabs)/provider/details')}
         />
 
         <View className="flex-row items-center mt-5">
