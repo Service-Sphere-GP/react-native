@@ -8,6 +8,7 @@ interface CustomButtonProps {
   containerStyles?: string;
   style?: ViewStyle | ViewStyle[];
   textStyle?: TextStyle | TextStyle[];
+  disabled?: boolean;
 }
 
 const CustomButton = ({
@@ -17,6 +18,7 @@ const CustomButton = ({
   containerStyles = '',
   style = {},
   textStyle = {},
+  disabled,
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity
@@ -24,6 +26,7 @@ const CustomButton = ({
       className={`rounded-xl min-h-[62px] justify-center items-center ${containerStyles}`}
       onPress={onPress}
       style={style}
+      disabled={disabled}
     >
       <Text className={`font-semibold ${textStyles}`} style={textStyle}>
         {title}

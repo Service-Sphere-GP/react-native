@@ -1,13 +1,27 @@
+import { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
 import ThirdParty from '@/components/login/ThirdParty';
 import Input from '@/components/login/Input';
-
-import React from 'react';
 import { Link } from 'expo-router';
+import useLogin from '@/hooks/useLogin';
 
-const login = () => {
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login, loading, error, data, clearError } = useLogin();
+
+  const handleLogin = () => {
+    login(email, password);
+  };
+
+  const handleInputFocus = () => {
+    if (error) {
+      clearError();
+    }
+  }
+
   return (
     <ScrollView className="bg-white h-full">
       <Header />
@@ -23,11 +37,19 @@ const login = () => {
           label="Email"
           placeholder="Enter your email"
           isPassword={false}
+          value={email}
+          onChangeText={setEmail}
+          error={Boolean(error)}
+          onFocus={handleInputFocus}
         />
         <Input
           label="Password"
           placeholder="Enter your password"
           isPassword={true}
+          value={password}
+          onChangeText={setPassword}
+          error={Boolean(error)}
+          onFocus={handleInputFocus}
         />
         <Text className="font-Roboto-Light text-black/70 text-base mt-2">
           Forget your password?{' '}
@@ -35,11 +57,19 @@ const login = () => {
             Reset it
           </Text>
         </Text>
+
+        {error && (
+          <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
+            {error}
+          </Text>
+        )}
+
         <CustomButton
           title="Login"
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"
           textStyles="font-medium text-[21px]"
-          onPress={() => console.log('Sign Up')}
+          onPress={handleLogin}
+          disabled={loading}
         />
 
         <View className="flex-row items-center mt-5">
@@ -63,11 +93,14 @@ const login = () => {
             >
               Sign up
             </Link>
+            
           </Text>
+          
         </View>
+        {data && <Text className='text-center text-2xl text-green-500'>Login Successful!</Text>}
       </View>
     </ScrollView>
   );
 };
 
-export default login;
+export default Login;
