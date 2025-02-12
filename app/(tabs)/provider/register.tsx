@@ -2,7 +2,6 @@ import { View, Text, ScrollView } from 'react-native';
 import { CheckBox } from '@rneui/themed';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
-import ThirdParty from '@/components/login/ThirdParty';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
@@ -167,18 +166,6 @@ const Register = () => {
           </Text>
         )}
 
-        <View className="flex-row items-center mt-5">
-          <View className="flex-1 h-[1px] bg-[#EDEDED]" />
-          <Text className="font-Roboto-Light text-center mx-2 text-base text-black/70">
-            Sign up with
-          </Text>
-          <View className="flex-1 h-[1px] bg-[#EDEDED]" />
-        </View>
-        <View className="flex-row justify-center items-center gap-4">
-          <ThirdParty icon="google" />
-          <ThirdParty icon="facebook" />
-          <ThirdParty icon="apple" />
-        </View>
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Already have an account?{' '}
