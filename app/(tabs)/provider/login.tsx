@@ -60,7 +60,7 @@ const Login = () => {
 
         {error && (
           <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
-            {error}
+            {error[0]}
           </Text>
         )}
 
