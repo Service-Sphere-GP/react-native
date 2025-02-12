@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
-import ThirdParty from '@/components/login/ThirdParty';
 import Input from '@/components/login/Input';
 import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
@@ -20,7 +19,7 @@ const Login = () => {
     if (error) {
       clearError();
     }
-  }
+  };
 
   return (
     <ScrollView className="bg-white h-full">
@@ -60,7 +59,7 @@ const Login = () => {
 
         {error && (
           <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
-            {error}
+            {error[0]}
           </Text>
         )}
 
@@ -72,18 +71,6 @@ const Login = () => {
           disabled={loading}
         />
 
-        <View className="flex-row items-center mt-5">
-          <View className="flex-1 h-[1px] bg-[#EDEDED]" />
-          <Text className="font-Roboto-Light text-center mx-2 text-base text-black/70">
-            Log in with
-          </Text>
-          <View className="flex-1 h-[1px] bg-[#EDEDED]" />
-        </View>
-        <View className="flex-row justify-center items-center gap-4">
-          <ThirdParty icon="google" />
-          <ThirdParty icon="facebook" />
-          <ThirdParty icon="apple" />
-        </View>
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Don't have an account?{' '}
@@ -93,11 +80,13 @@ const Login = () => {
             >
               Sign up
             </Link>
-            
           </Text>
-          
         </View>
-        {data && <Text className='text-center text-2xl text-green-500'>Login Successful!</Text>}
+        {data && (
+          <Text className="text-center text-2xl text-green-500">
+            Login Successful!
+          </Text>
+        )}
       </View>
     </ScrollView>
   );
