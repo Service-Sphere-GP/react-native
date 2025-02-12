@@ -6,6 +6,7 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
+import { Provider } from '@/types/Provider';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
@@ -34,16 +35,7 @@ const Register = () => {
 
   const { error, data, loading, providerRegister } = useRegister();
 
-  const validateForm = (provider: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    confirmPassword: string;
-    businessName: string;
-    businessAddress: string;
-    taxId: string;
-  }) => {
+  const validateForm = (provider: Provider) => {
     const errors = {
       email: '',
       password: '',
