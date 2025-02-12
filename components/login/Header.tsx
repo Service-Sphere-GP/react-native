@@ -45,12 +45,12 @@ const Header = () => {
       <Image
         source={require('@/assets/images/icon.png')}
         style={{
-          width: 67,
-          height: 67,
+          width: 100,
+          height: 100,
           borderColor: 'white',
           borderWidth: 3,
           borderRadius: 8,
-          marginTop: -33,
+          marginTop: -40,
           marginLeft: 20,
         }}
         resizeMode="cover"

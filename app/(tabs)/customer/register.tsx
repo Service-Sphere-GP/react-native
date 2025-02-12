@@ -6,7 +6,6 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
-import SmallInput from '@/components/login/SmallInput';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
@@ -42,29 +41,29 @@ const Register = () => {
       <Header />
       <View className="px-3">
         <Text className="text-3xl font-Roboto-Medium mt-3">Sign Up</Text>
-        <View className="flex flex-col items-center">
-          <View className="block sm:flex sm:flex-row justify-between items-center gap-2 mt-5 w-full">
-            <SmallInput
-              label="First Name"
-              placeholder="Enter your first name"
-              value={customer.firstName}
-              onChangeText={(text) =>
-                setCustomer({ ...customer, firstName: text })
-              }
-              error={Boolean(error)}
-              onFocus={handleInputFocus}
-            />
-            <SmallInput
-              label="Last Name"
-              placeholder="Enter your last name"
-              value={customer.lastName}
-              onChangeText={(text) =>
-                setCustomer({ ...customer, lastName: text })
-              }
-              error={Boolean(error)}
-              onFocus={handleInputFocus}
-            />
-          </View>
+        <View className="flex flex-col items-center mt-5">
+          <Input
+            label="First Name"
+            placeholder="Enter your first name"
+            isPassword={false}
+            value={customer.firstName}
+            onChangeText={(text) =>
+              setCustomer({ ...customer, firstName: text })
+            }
+            error={Boolean(error)}
+            onFocus={handleInputFocus}
+          />
+          <Input
+            label="Last Name"
+            placeholder="Enter your last name"
+            isPassword={false}
+            value={customer.lastName}
+            onChangeText={(text) =>
+              setCustomer({ ...customer, lastName: text })
+            }
+            error={Boolean(error)}
+            onFocus={handleInputFocus}
+          />
           <Input
             label="Email"
             placeholder="Enter your email"
