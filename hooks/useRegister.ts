@@ -74,17 +74,12 @@ const useRegister = () => {
     }
   };
 
-  const clearError = () => {
-    setError(null);
-  };
-
   return {
     customerRegister,
     providerRegister,
     loading,
     error,
     data,
-    clearError,
   };
 };
 

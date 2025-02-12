@@ -28,11 +28,7 @@ const useLogin = () => {
     }
   };
 
-  const clearError = () => {
-    setError(null);
-  };
-
-  return { login, loading, error, data, clearError };
+  return { login, loading, error, data };
 };
 
 export default useLogin;
