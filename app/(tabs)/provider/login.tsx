@@ -9,16 +9,41 @@ import useLogin from '@/hooks/useLogin';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading, error, data, clearError } = useLogin();
 
-  const handleLogin = () => {
-    login(email, password);
+  const [errorMessages, setErrorMessages] = useState({
+    email: '',
+    password: '',
+  });
+
+  const { login, loading, error, data } = useLogin();
+
+  const validateForm = (user: { email: string; password: string }) => {
+    const errors = {
+      email: '',
+      password: '',
+    };
+
+    if (!user.email) {
+      errors.email = 'Email is required';
+    }
+
+    if (!user.password) {
+      errors.password = 'Password is required';
+    }
+
+    return errors;
   };
 
-  const handleInputFocus = () => {
-    if (error) {
-      clearError();
+  const handleLogin = () => {
+    const errors = validateForm({ email, password });
+    setErrorMessages(errors);
+
+    const hasErrors = Object.values(errors).some((error) => error.length > 0);
+    if (hasErrors) {
+      return;
     }
+
+    login(email, password);
   };
 
   return (
@@ -38,8 +63,8 @@ const Login = () => {
           isPassword={false}
           value={email}
           onChangeText={setEmail}
-          error={Boolean(error)}
-          onFocus={handleInputFocus}
+          error={errorMessages.email ? true : false}
+          errorMessage={errorMessages.email ? errorMessages.email : ''}
         />
         <Input
           label="Password"
@@ -47,8 +72,8 @@ const Login = () => {
           isPassword={true}
           value={password}
           onChangeText={setPassword}
-          error={Boolean(error)}
-          onFocus={handleInputFocus}
+          error={errorMessages.password ? true : false}
+          errorMessage={errorMessages.password ? errorMessages.password : ''}
         />
         <Text className="font-Roboto-Light text-black/70 text-base mt-2">
           Forget your password?{' '}
@@ -59,7 +84,7 @@ const Login = () => {
 
         {error && (
           <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
-            {error[0]}
+            {error}
           </Text>
         )}
 
@@ -75,7 +100,7 @@ const Login = () => {
           <Text className="font-Roboto-Light text-black/70 text-base">
             Don't have an account?{' '}
             <Link
-              href="/(tabs)/provider/register"
+              href="/(tabs)/customer/register"
               className="text-[#147E93] underline font-Roboto-Medium"
             >
               Sign up

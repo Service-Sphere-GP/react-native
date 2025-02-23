@@ -6,7 +6,7 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
-import SmallInput from '@/components/login/SmallInput';
+import { Provider } from '@/types/Provider';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
@@ -22,15 +22,77 @@ const Register = () => {
     taxId: '',
   });
 
-  const { error, data, loading, clearError, providerRegister } = useRegister();
+  const [errorMessages, setErrorMessages] = useState({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    confirmPassword: '',
+    businessName: '',
+    businessAddress: '',
+    taxId: '',
+  });
 
-  const handleInputFocus = () => {
-    if (error) {
-      clearError();
+  const { error, data, loading, providerRegister } = useRegister();
+
+  const validateForm = (provider: Provider) => {
+    const errors = {
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      confirmPassword: '',
+      businessName: '',
+      businessAddress: '',
+      taxId: '',
+    };
+
+    if (!provider.email) {
+      errors.email = 'Email is required';
     }
+
+    if (!provider.password || provider.password.length < 8) {
+      errors.password = 'Password must be at least 8 characters';
+    }
+
+    if (!provider.confirmPassword) {
+      errors.confirmPassword = 'Confirm Password is required';
+    } else if (provider.password !== provider.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+
+    if (!provider.firstName) {
+      errors.firstName = 'First Name is required';
+    }
+
+    if (!provider.lastName) {
+      errors.lastName = 'Last Name is required';
+    }
+
+    if (!provider.businessName) {
+      errors.businessName = 'Business Name is required';
+    }
+
+    if (!provider.businessAddress) {
+      errors.businessAddress = 'Business Address is required';
+    }
+
+    if (!provider.taxId) {
+      errors.taxId = 'Tax ID is required';
+    }
+
+    return errors;
   };
 
   const handleRegister = () => {
+    const errors = validateForm(provider);
+    setErrorMessages(errors);
+
+    const hasErrors = Object.values(errors).some((error) => error.length > 0);
+    if (hasErrors) {
+      return;
+    }
+
     providerRegister(
       provider.email,
       provider.password,
@@ -48,37 +110,39 @@ const Register = () => {
       <Header />
       <View className="px-3">
         <Text className="text-3xl font-Roboto-Medium mt-3">Sign Up</Text>
-        <View className="flex flex-col items-center">
-          <View className="block sm:flex sm:flex-row justify-between items-center gap-2 mt-5 w-full">
-            <SmallInput
-              label="First Name"
-              placeholder="Enter your first name"
-              value={provider.firstName}
-              onChangeText={(text) =>
-                setProvider({ ...provider, firstName: text })
-              }
-              error={Boolean(error)}
-              onFocus={handleInputFocus}
-            />
-            <SmallInput
-              label="Last Name"
-              placeholder="Enter your last name"
-              value={provider.lastName}
-              onChangeText={(text) =>
-                setProvider({ ...provider, lastName: text })
-              }
-              error={Boolean(error)}
-              onFocus={handleInputFocus}
-            />
-          </View>
+        <View className="flex flex-col items-center mt-5">
+          <Input
+            label="First Name"
+            placeholder="Enter your first name"
+            isPassword={false}
+            value={provider.firstName}
+            onChangeText={(text) =>
+              setProvider({ ...provider, firstName: text })
+            }
+            error={errorMessages.firstName ? true : false}
+            errorMessage={
+              errorMessages.firstName ? errorMessages.firstName : ''
+            }
+          />
+          <Input
+            label="Last Name"
+            placeholder="Enter your last name"
+            isPassword={false}
+            value={provider.lastName}
+            onChangeText={(text) =>
+              setProvider({ ...provider, lastName: text })
+            }
+            error={errorMessages.lastName ? true : false}
+            errorMessage={errorMessages.lastName ? errorMessages.lastName : ''}
+          />
           <Input
             label="Email"
             placeholder="Enter your email"
             isPassword={false}
             value={provider.email}
             onChangeText={(text) => setProvider({ ...provider, email: text })}
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.email ? true : false}
+            errorMessage={errorMessages.email ? errorMessages.email : ''}
           />
           <Input
             label="Password"
@@ -88,8 +152,8 @@ const Register = () => {
             onChangeText={(text) =>
               setProvider({ ...provider, password: text })
             }
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.password ? true : false}
+            errorMessage={errorMessages.password ? errorMessages.password : ''}
           />
           <Input
             label="Confirm Password"
@@ -99,8 +163,10 @@ const Register = () => {
             onChangeText={(text) =>
               setProvider({ ...provider, confirmPassword: text })
             }
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.confirmPassword ? true : false}
+            errorMessage={
+              errorMessages.confirmPassword ? errorMessages.confirmPassword : ''
+            }
           />
           <Input
             label="Business Name"
@@ -110,8 +176,10 @@ const Register = () => {
             onChangeText={(text) =>
               setProvider({ ...provider, businessName: text })
             }
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.businessName ? true : false}
+            errorMessage={
+              errorMessages.businessName ? errorMessages.businessName : ''
+            }
           />
           <Input
             label="Business Address"
@@ -121,8 +189,10 @@ const Register = () => {
             onChangeText={(text) =>
               setProvider({ ...provider, businessAddress: text })
             }
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.businessAddress ? true : false}
+            errorMessage={
+              errorMessages.businessAddress ? errorMessages.businessAddress : ''
+            }
           />
           <Input
             label="Tax ID"
@@ -130,8 +200,8 @@ const Register = () => {
             isPassword={false}
             value={provider.taxId}
             onChangeText={(text) => setProvider({ ...provider, taxId: text })}
-            error={Boolean(error)}
-            onFocus={handleInputFocus}
+            error={errorMessages.taxId ? true : false}
+            errorMessage={errorMessages.taxId ? errorMessages.taxId : ''}
           />
         </View>
         <View className="flex-row items-center">
@@ -149,7 +219,7 @@ const Register = () => {
         </View>
         {error && (
           <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
-            {error[0]}
+            {error}
           </Text>
         )}
         <CustomButton
