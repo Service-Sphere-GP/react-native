@@ -25,7 +25,7 @@ const CustomButton = ({
             onPress={onPress}
             style={style}
         >
-            <Text className={`font-semibold text-lg ${textStyles}`} style={textStyle}>
+            <Text className={`font-semibold  ${textStyles}`} style={textStyle}>
                 {title}
             </Text>
         </TouchableOpacity>

@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import CustomButton from "@/components/CustomButton";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 const App = () => {
@@ -11,9 +11,9 @@ const App = () => {
   const landingImage = require("@/assets/images/LandingImage.png");
 
   return (
-    <View className="flex-1 bg-[#fdfdfd] px-5 pt-10">
-      <SafeAreaView className="flex flex-1 items-start">
-        <View style={{ marginTop: 19 }}>
+    <View className="flex-1 bg-[#fdfdfd] px-5 ">
+      <SafeAreaView className="flex flex-1 items-center justify-center">
+        <View style={{ marginTop: 19, width: '100%' }}>
           {/* Logo Text */}
           <Animated.View entering={FadeInDown.delay(300)} className="w-full">
             <Text className="text-[50px] font-Roboto-SemiBold text-left">
@@ -41,7 +41,7 @@ const App = () => {
             </Animated.View>
 
             {/* Landing Image */}
-            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-9 items-center">
+            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-9 items-center justify-center">
               <Image
                 source={landingImage}
                 className="w-[290px] h-[255px]"
@@ -51,18 +51,16 @@ const App = () => {
           </View>
         </View>
 
-
         {/* Buttons */}
         <Animated.View entering={FadeInDown.delay(700)} className="w-full" style={{ marginTop: 34 }}>
           <CustomButton
-            onPress={() => router.push("/customer")}
+            onPress={() => router.push("./(otp)/VerificationOptions")}
             title="Customer"
             containerStyles="w-[358px] h-[46px] bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-white font-Roboto-SemiBold"
-            
           />
           <CustomButton
-            onPress={() => router.push("/serviceProvider")}
+            onPress={() => router.push("./(otp)/VerificationOptions")}
             title="Service Provider"
             containerStyles="w-[358px] h-[46px] bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
@@ -72,7 +70,9 @@ const App = () => {
 
         <StatusBar style="dark" />
       </SafeAreaView>
+      <Stack/>
     </View>
+    
   );
 };
 
