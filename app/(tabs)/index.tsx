@@ -1,3 +1,5 @@
+import { Stack, useRouter } from "expo-router";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import {
   View,
   Text,
@@ -9,8 +11,6 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from '@/components/CustomButton';
-import { useRouter } from 'expo-router';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const App = () => {
   const router = useRouter();
@@ -20,8 +20,8 @@ const App = () => {
   const responsiveHeight = height * 0.5;
 
   return (
-    <ScrollView className="bg-[#fdfdfd] px-5 py-10">
-      <SafeAreaView className="items-start">
+    <View className="flex-1 bg-[#fdfdfd] px-5 ">
+      <SafeAreaView className="flex flex-1 items-center justify-center">
         <View className="mt-5 w-full">
           {/* Logo Text */}
           <Animated.View entering={FadeInDown.delay(300)} className="w-full">
@@ -53,7 +53,7 @@ const App = () => {
             </Animated.View>
 
             {/* Landing Image */}
-            <Animated.View entering={FadeInDown.delay(600)}>
+            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-9 items-center justify-center">
               <Image
                 source={landingImage}
                 resizeMode="contain"
@@ -72,13 +72,13 @@ const App = () => {
           style={{ marginTop: 34, width: '100%', gap: 20 }}
         >
           <CustomButton
-            onPress={() => router.push('/customer/register')}
+            onPress={() => router.push("./(otp)/VerificationOptions")}
             title="Customer"
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
-            onPress={() => router.push('/provider/register')}
+            onPress={() => router.push("./(otp)/VerificationOptions")}
             title="Service Provider"
             containerStyles="bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
@@ -87,7 +87,8 @@ const App = () => {
 
         <StatusBar style="dark" />
       </SafeAreaView>
-    </ScrollView>
+      <Stack/>
+    </View>
   );
 };
 

@@ -19,6 +19,7 @@ const CustomButton = ({
   textStyle = {},
   disabled,
 }: CustomButtonProps) => {
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
