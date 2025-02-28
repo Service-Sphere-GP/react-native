@@ -17,6 +17,8 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
+package-lock.json
+
 # Metro
 .metro-health-check*
 
