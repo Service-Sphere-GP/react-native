@@ -7,6 +7,7 @@ import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
 import { Provider } from '@/types/Provider';
+import { useRouter } from 'expo-router';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
@@ -34,6 +35,7 @@ const Register = () => {
   });
 
   const { error, data, loading, providerRegister } = useRegister();
+  const router = useRouter();
 
   const validateForm = (provider: Provider) => {
     const errors = {
@@ -102,7 +104,10 @@ const Register = () => {
       provider.businessName,
       provider.businessAddress,
       provider.taxId,
-    );
+    ).then(() => {
+      // Redirect to OTP verification after successful registration
+      router.push('/(otp)/VerificationOptions');
+    });
   };
 
   return (

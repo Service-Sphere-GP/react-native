@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { CheckBox } from '@rneui/themed';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
@@ -64,21 +64,23 @@ const Register = () => {
   };
 
   const handleRegister = () => {
-    const errors = validateForm(customer);
-    setErrorMessages(errors);
+    // const errors = validateForm(customer);
+    // setErrorMessages(errors);
 
-    const hasErrors = Object.values(errors).some((error) => error.length > 0);
-    if (hasErrors) {
-      return;
-    }
+    // const hasErrors = Object.values(errors).some((error) => error.length > 0);
+    // if (hasErrors) {
+    //   return;
+    // }
 
-    customerRegister(
-      customer.email,
-      customer.password,
-      customer.firstName,
-      customer.lastName,
-      customer.confirmPassword,
-    );
+    // customerRegister(
+    //   customer.email,
+    //   customer.password,
+    //   customer.firstName,
+    //   customer.lastName,
+    //   customer.confirmPassword,
+    // ).then(() => {
+      router.push('/(otp)/VerificationOptions');
+    // });
   };
 
   return (

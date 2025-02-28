@@ -20,7 +20,7 @@ const App = () => {
   const responsiveHeight = height * 0.5;
 
   return (
-    <View className="flex-1 bg-[#fdfdfd] px-5 ">
+    <ScrollView className="flex-1 bg-[#fdfdfd] px-5">
       <SafeAreaView className="flex flex-1 items-center justify-center">
         <View className="mt-5 w-full">
           {/* Logo Text */}
@@ -72,15 +72,15 @@ const App = () => {
           style={{ marginTop: 34, width: '100%', gap: 20 }}
         >
           <CustomButton
-            onPress={() => router.push("./(otp)/VerificationOptions")}
+            onPress={() => router.push("/customer/register")}
             title="Customer"
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[22px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
-            onPress={() => router.push("./(otp)/VerificationOptions")}
+            onPress={() => router.push("/provider/register")}
             title="Service Provider"
-            containerStyles="bg-white rounded-[10px] shadow-md p-2"
+            containerStyles="bg-white rounded-[10px] shadow-md p-2 mb-5"
             textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
           />
         </Animated.View>
@@ -88,7 +88,7 @@ const App = () => {
         <StatusBar style="dark" />
       </SafeAreaView>
       <Stack/>
-    </View>
+    </ScrollView>
   );
 };
 

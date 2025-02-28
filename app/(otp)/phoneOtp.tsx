@@ -1,9 +1,10 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import CustomButton from "@/components/CustomButton";
 
 const PhoneOtp = () => {
+  const { width, height } = useWindowDimensions();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [isValidPhone, setIsValidPhone] = useState(false);
@@ -51,49 +52,50 @@ const PhoneOtp = () => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View className="flex-1 bg-white">
-        {/* Previous code remains the same until Enter Mobile number text */}
         <TouchableOpacity 
-          className="mt-16 ml-[22px]" 
+          className="mt-12 ml-6" 
           onPress={() => router.replace("/(otp)/VerificationOptions")}
         >
           <Image 
             source={require('../../assets/images/back-Icon.png')}
-            className="w-[13px] h-[26px]"
+            style={{ width: width * 0.035, height: height * 0.03 }}
+            resizeMode="contain"
           />
         </TouchableOpacity>
 
-        <View className="items-center mt-[10px]">
+        <View className="items-center mt-3">
           <Image 
             source={require('../../assets/images/OTP.png')}
-            className="w-[232.87px] h-[243.31px]"
+            style={{ width: width * 0.6, height: height * 0.25 }}
+            resizeMode="contain"
           />
         </View>
 
-        <Text className="text-center mt-[51px] text-[28px] font-Roboto-SemiBold text-[#030B19]"> 
+        <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]"> 
           Phone Number
         </Text>
 
-        <View className="mt-[29px] px-6">
-          <Text className="text-center text-[18px] font-Roboto text-[#363E4C]">
+        <View className="mt-6 px-6">
+          <Text className="text-center text-base font-Roboto text-[#363E4C]">
             Please enter your phone number to{'\n'}
             receive 4-digit verification code for{'\n'}
             authentication
           </Text>
         </View>
-        <Text className="text-center mt-[35px] text-[18px] font-Roboto text-[#676B73]">
+        <Text className="text-center mt-8 text-base font-Roboto text-[#676B73]">
           Enter Mobile number
         </Text>
 
-        <View className="items-center mt-[3px]">
+        <View className="items-center mt-1">
           <TextInput
             value={phoneNumber}
             onChangeText={handlePhoneChange}
-            className="text-[22px] font-Roboto-SemiBold text-center w-[185px] text-[#363E4C]"
+            className="text-xl font-Roboto-SemiBold text-center w-1/2 text-[#363E4C]"
             keyboardType="phone-pad"
           />
-          <View className={`h-[1px] w-[185px] ${isValidPhone ? 'bg-[#147E93]' : 'bg-[#363E4C]'}`} />
+          <View className={`h-px w-1/2 ${isValidPhone ? 'bg-[#147E93]' : 'bg-[#363E4C]'}`} />
           {error ? (
-            <Text className="text-red-500 text-[14px] font-Roboto mt-1">
+            <Text className="text-red-500 text-sm font-Roboto mt-1">
               {error}
             </Text>
           ) : null}
@@ -102,8 +104,8 @@ const PhoneOtp = () => {
         <CustomButton
           onPress={handleGetCode}
           title="Get code"
-          containerStyles="mx-auto mt-[18px] w-[345px] h-[56px] rounded-[10px] bg-[#FDBC10] justify-center items-center mb-6"
-          textStyles="text-[21px] text-[#030B19] font-Roboto-SemiBold"
+          containerStyles="mx-auto mt-5 w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center mb-6"
+          textStyles="text-xl text-[#030B19] font-Roboto-SemiBold"
           style={{
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },

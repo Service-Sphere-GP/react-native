@@ -19,11 +19,9 @@ const VerificationScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white px-4 relative">
+    <SafeAreaView className="flex-1 bg-white !p-6 relative">
       {/* Header */}
-      <View 
-        className="w-[338px] h-[33px] flex-row items-center justify-center mt-[57px] ml-[14px] relative"
-      >
+      <View className="flex-row items-center justify-center relative">
         {/* Left Icon */}
         <Pressable 
           onPress={() => router.replace("/(tabs)")} 
@@ -31,40 +29,41 @@ const VerificationScreen = () => {
         >
           <Image 
             source={require("@/assets/images/back-Icon.png")} 
-            className="w-[13px] h-[26px]" 
+            className="w-3 h-6" 
             resizeMode="contain"
           />
         </Pressable>
 
         {/* Title */}
-        <Text className="text-[28px] font-Roboto-SemiBold text-[#030B19]">
+        <Text className="text-2xl font-Roboto-SemiBold text-[#030B19]">
           Verification Options
         </Text>
       </View>
 
       {/* Subtitle */}
-      <View className="w-[340px] h-[40px] mt-[43px] ml-[9px]">
-        <Text className="text-[15px] font-Roboto text-[#363E4C] text-left">
+      <View className="mt-8">
+        <Text className="text-sm font-Roboto text-[#363E4C] text-left">
           Choose your preferred method to receive the verification code
         </Text>
       </View>
 
       {/* Options */}
-      <View className="mt-[34px]">
+      <View className="mt-8 space-y-2">
         {/* Email Option */}
         <Pressable 
           onPress={() => setSelectedOption("email")}
-          className={`w-[358px] h-[80px] border rounded-[10px] flex-row items-center px-4 ${
+          className={`w-full border rounded-lg flex-row items-center p-4 overflow-auto ${
             selectedOption === "email" ? "border-[#147E93] border-2"  : "border-[#676B73]"
           }`}
-          style={{ marginBottom: 9 }}
         >
-          <EmailIcon color={selectedOption === "email" ? "#147E93" : "#676B73"} />
-          <View style={{ marginLeft: 16 }}>
-            <Text className="text-[22px] font-Roboto-SemiBold text-black">
+          <View className="w-[20%] flex justify-center">
+            <EmailIcon color={selectedOption === "email" ? "#147E93" : "#676B73"} />
+          </View>
+          <View className="w-full">
+            <Text className="text-xl font-Roboto-SemiBold text-black">
               Email
             </Text>
-            <Text className="text-[14px] font-Roboto text-[#676B73]" style={{ marginTop: 6 }}>
+            <Text className="text-sm font-Roboto text-[#676B73] mt-1">
               Receive Verification code via email
             </Text>
           </View>
@@ -73,16 +72,18 @@ const VerificationScreen = () => {
         {/* Phone Option */}
         <Pressable 
           onPress={() => setSelectedOption("phone")}
-          className={`w-[358px] h-[80px] border rounded-[10px] flex-row items-center px-4 ${
+          className={`w-full border rounded-lg flex-row items-center p-4 overflow-auto ${
             selectedOption === "phone" ? "border-[#147E93] border-2" : "border-[#676B73]"
           }`}
         >
-          <PhoneIcon color={selectedOption === "phone" ? "#147E93" : "#676B73"} style={{ marginLeft: 8 }} />
-          <View style={{ marginLeft: 20 }}>
-            <Text className="text-[22px] font-Roboto-SemiBold text-black ">
+          <View className="w-[20%] flex justify-center">
+            <PhoneIcon color={selectedOption === "phone" ? "#147E93" : "#676B73"} />
+          </View>
+          <View className="w-[80%]">
+            <Text className="text-xl font-Roboto-SemiBold text-black">
               Phone
             </Text>
-            <Text className="text-[14px] font-Roboto text-[#676B73] " style={{ marginTop: 6 }}>
+            <Text className="text-sm font-Roboto text-[#676B73] mt-1">
               Receive Verification code via phone
             </Text>
           </View>
@@ -93,22 +94,21 @@ const VerificationScreen = () => {
       <CustomButton
         onPress={handleConfirm}
         title="Confirm"
-        containerStyles="w-[357px] h-[56px] bg-[#FDBC10] rounded-[10px] flex items-center justify-center mt-[25px] shadow-md shadow-black"
-        textStyles="text-[21px] text-[#030B19] font-Roboto-SemiBold"
-        style={{ padding: 16, paddingRight: 20, paddingLeft: 16, gap: 10 }}
+        containerStyles="w-full bg-[#FDBC10] rounded-lg flex items-center justify-center mt-6 shadow-md shadow-black"
+        textStyles="text-xl text-[#030B19] font-Roboto-SemiBold"
+        style={{ padding: 4 }}
       />
 
       {/* Decorative Images */}
       <Image 
         source={require("../../assets/images/leftDecore.png")} 
-        className="absolute bottom-0 left-[-1]  " 
-        resizeMode="cover"
-
+        className="absolute bottom-0 left-0 w-[160px] h-[160px]"
+        resizeMode="contain"
       />
       <Image 
         source={require("../../assets/images/rightDecore.png")} 
-        className="absolute bottom-0 right-0 " 
-        resizeMode="cover"
+        className="absolute bottom-0 right-0 w-[160px] h-[160px]"
+        resizeMode="contain"
       />
     </SafeAreaView>
   );

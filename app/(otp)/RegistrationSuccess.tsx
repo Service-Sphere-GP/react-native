@@ -1,54 +1,57 @@
-import { View, Image } from 'react-native';
+import { View, Image, useWindowDimensions, Text } from 'react-native';
 import { router } from 'expo-router';
 import CustomButton from "@/components/CustomButton";
-import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 
 const RegistrationSuccess = () => {
+  const { width, height } = useWindowDimensions();
+  
   const handleGetStarted = () => {
     router.push("/(otp)/home");
   };
 
   return (
     <View className="flex-1 bg-white">
-      <View className="mt-[190px] items-center">
-        <Animated.View 
-          className="relative w-[130px] h-[130px] items-center justify-center"
-          entering={ZoomIn.duration(800)}
+      <View className="flex-1 items-center justify-center">
+        <View 
+          className="relative items-center justify-center"
+          style={{ width: width * 0.35, height: width * 0.35 }}
         >
           <Image
             source={require('../../assets/images/circle.png')}
-            className="w-[130px] h-[130px]"
+            style={{ width: width * 0.35, height: width * 0.35 }}
+            resizeMode="contain"
           />
           <Image
             source={require('../../assets/images/check.png')}
-            className="w-[78px] h-[56px] absolute"
+            style={{ width: width * 0.2, height: width * 0.15, position: 'absolute' }}
+            resizeMode="contain"
           />
-        </Animated.View>
+        </View>
 
-        <Animated.Text 
-          className="mt-[33px] text-[26px] font-Roboto-Bold text-[#030B19] text-center"
-          entering={FadeInDown.delay(300)}
+        <Text 
+          className="mt-8 text-[#030B19] text-center"
+          style={{ fontSize: width * 0.06, fontFamily: 'Roboto-Bold' }}
         >
           Registration Completed
-        </Animated.Text>
+        </Text>
 
-        <Animated.Text 
-          className="mt-[23px] text-[15px] font-Roboto text-[#363E4C] text-center px-8"
-          entering={FadeInDown.delay(600)}
+        <Text 
+          className="mt-6 font-Roboto text-[#363E4C] text-center px-8"
+          style={{ fontSize: width * 0.04, fontFamily: "Roboto-Regular" }}
         >
           Congratulations! Your registration is complete{'\n'}
           You're all set to start exploring.Click the button{'\n'}
           below to go to the homepage.{'\n'}
-        </Animated.Text>
+        </Text>
 
-        <Animated.View
-          entering={FadeInDown.delay(900)}
+        <View
+          className="w-full px-6 mt-12"
         >
           <CustomButton
             onPress={handleGetStarted}
             title="Get Started"
-            containerStyles="mx-auto mt-[86px] w-[358px] h-[46px] rounded-[10px] bg-[#FDBC10] justify-center items-center"
-            textStyles="text-[22px] text-[#030B19] font-Roboto-SemiBold"
+            containerStyles={`mx-auto w-full py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
+            textStyles={`text-[${width * 0.055}px] text-[#030B19] font-Roboto-SemiBold`}
             style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
@@ -57,7 +60,7 @@ const RegistrationSuccess = () => {
               elevation: 6,
             }}
           />
-        </Animated.View>
+        </View>
       </View>
     </View>
   );
