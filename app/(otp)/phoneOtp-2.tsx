@@ -99,7 +99,7 @@ const PhoneOtp2 = () => {
         <CustomButton
           onPress={handleConfirmCode}
           title="Confirm Code"
-          containerStyles={`mx-auto mt-6 w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
+          containerStyles={`mx-auto mt-6 !w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
           textStyles="text-xl text-[#030B19] font-Roboto-SemiBold"
           style={{
             shadowColor: '#000',

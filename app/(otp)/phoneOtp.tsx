@@ -104,7 +104,7 @@ const PhoneOtp = () => {
         <CustomButton
           onPress={handleGetCode}
           title="Get code"
-          containerStyles="mx-auto mt-5 w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center mb-6"
+          containerStyles="mx-auto mt-5 !w-[80%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center mb-6"
           textStyles="text-xl text-[#030B19] font-Roboto-SemiBold"
           style={{
             shadowColor: '#000',

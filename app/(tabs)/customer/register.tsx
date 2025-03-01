@@ -64,23 +64,23 @@ const Register = () => {
   };
 
   const handleRegister = () => {
-    // const errors = validateForm(customer);
-    // setErrorMessages(errors);
+    const errors = validateForm(customer);
+    setErrorMessages(errors);
 
-    // const hasErrors = Object.values(errors).some((error) => error.length > 0);
-    // if (hasErrors) {
-    //   return;
-    // }
+    const hasErrors = Object.values(errors).some((error) => error.length > 0);
+    if (hasErrors) {
+      return;
+    }
 
-    // customerRegister(
-    //   customer.email,
-    //   customer.password,
-    //   customer.firstName,
-    //   customer.lastName,
-    //   customer.confirmPassword,
-    // ).then(() => {
+    customerRegister(
+      customer.email,
+      customer.password,
+      customer.firstName,
+      customer.lastName,
+      customer.confirmPassword,
+    ).then(() => {
       router.push('/(otp)/VerificationOptions');
-    // });
+    });
   };
 
   return (

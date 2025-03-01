@@ -99,8 +99,8 @@ const EmailOtp2 = () => {
         <CustomButton
           onPress={handleConfirmCode}
           title="Confirm Code"
-          containerStyles={`mx-auto mt-6 w-[85%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
-          textStyles={`text-[${width * 0.055}px] text-[#030B19] font-Roboto-SemiBold`}
+          containerStyles={`mx-auto mt-6 !w-[85%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
+          textStyles={`text-xl text-[#030B19] font-Roboto-SemiBold`}
           style={{
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },

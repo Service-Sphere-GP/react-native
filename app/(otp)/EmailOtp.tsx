@@ -111,9 +111,9 @@ const EmailOtp = () => {
 
           <CustomButton
             onPress={handleGetCode}
-            title="Get code"
-            containerStyles={`mx-auto mt-6 w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center mb-6`}
-            textStyles={`text-[${width * 0.055}px] text-[#030B19] font-Roboto-SemiBold`}
+            title="Get Code"
+            containerStyles={`mx-auto mt-6 !w-[90%] py-3 rounded-lg bg-[#FDBC10] justify-center items-center mb-6`}
+            textStyles={`text-xl text-[#030B19] font-Roboto-SemiBold`}
             style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },

@@ -51,7 +51,7 @@ const RegistrationSuccess = () => {
             onPress={handleGetStarted}
             title="Get Started"
             containerStyles={`mx-auto w-full py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
-            textStyles={`text-[${width * 0.055}px] text-[#030B19] font-Roboto-SemiBold`}
+            textStyles={`text-xl text-[#030B19] font-Roboto-SemiBold`}
             style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
