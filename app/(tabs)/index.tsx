@@ -17,26 +17,25 @@ const App = () => {
   const landingImage = require('@/assets/images/LandingImage.png');
 
   const { height } = useWindowDimensions();
-  const responsiveHeight = height * 0.5;
+  const responsiveHeight = height * 0.5; 
 
   return (
-    <ScrollView className="flex-1 bg-[#fdfdfd] px-5">
-      <SafeAreaView className="flex flex-1 items-center justify-center">
-        <View className="mt-5 w-full">
+    <ScrollView className="flex-1 bg-[#fdfdfd] px-4 py-6" contentContainerStyle={{ flexGrow: 1 }}>
+      <SafeAreaView className="flex flex-1 items-center justify-between px-5">
+        <View className="w-full">
           {/* Logo Text */}
-          <Animated.View entering={FadeInDown.delay(300)} className="w-full">
-            <Text className="text-[50px] font-Roboto-SemiBold text-left">
+          <Animated.View entering={FadeInDown.delay(300)} className="w-full mt-2">
+            <Text className="text-[40px] font-Roboto-SemiBold text-left">
               <Text className="text-[#FFCE4C]">Service </Text>
               <Text className="text-[#147E93]">Sphere</Text>
             </Text>
           </Animated.View>
 
           {/* Content Section */}
-          <View className="w-full" style={{ marginTop: 31 }}>
+          <View className="w-full" style={{ marginTop: 15 }}>
             {/* Subtitle */}
-
             <Animated.View entering={FadeInDown.delay(400)}>
-              <Text className="text-[#030B19] text-[28px] font-Roboto-SemiBold text-left leading-tight">
+              <Text className="text-[#030B19] text-[22px] font-Roboto-SemiBold text-left leading-tight">
                 Connecting you to the people you need
               </Text>
             </Animated.View>
@@ -44,16 +43,16 @@ const App = () => {
             {/* Description */}
             <Animated.View
               entering={FadeInDown.delay(500)}
-              style={{ marginTop: 32 }}
+              style={{ marginTop: 15 }}
             >
-              <Text className="text-[#030B19] text-[18px] font-Roboto text-left">
+              <Text className="text-[#030B19] text-[16px] font-Roboto text-left">
                 Welcome! Are you looking for a service or offering one? Let us
                 know below. Choose how you'd like to get started.
               </Text>
             </Animated.View>
 
             {/* Landing Image */}
-            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-9 items-center justify-center">
+            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-4 items-center justify-center">
               <Image
                 source={landingImage}
                 resizeMode="contain"
@@ -69,19 +68,19 @@ const App = () => {
         {/* Buttons */}
         <Animated.View
           entering={FadeInDown.delay(700)}
-          style={{ marginTop: 34, width: '100%', gap: 20 }}
+          style={{ width: '100%', gap: 12, marginBottom: 20 }}
         >
           <CustomButton
             onPress={() => router.push("/customer/register")}
             title="Customer"
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
-            textStyles="text-[22px] text-white font-Roboto-SemiBold"
+            textStyles="text-[20px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
             onPress={() => router.push("/provider/register")}
             title="Service Provider"
-            containerStyles="bg-white rounded-[10px] shadow-md p-2 mb-5"
-            textStyles="text-[22px] text-[#147E93] font-Roboto-SemiBold"
+            containerStyles="bg-white rounded-[10px] shadow-md p-2"
+            textStyles="text-[20px] text-[#147E93] font-Roboto-SemiBold"
           />
         </Animated.View>
 
