@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import axios from 'axios';
+import ApiService from '../constants/ApiService';
+
+// Define types for the response data and error
+type LoginData = any; // Replace with your actual login response type
+type LoginError = string | null;
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [error, setError] = useState<LoginError>(null);
+  const [data, setData] = useState<LoginData | null>(null);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -12,17 +16,16 @@ const useLogin = () => {
     setData(null);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/auth/login',
-        {
-          email,
-          password,
+      // Using the ApiService which already has the correct base URL configured
+      const response = await ApiService.post('/auth/login', {
+        email,
+        password,
         },
       );
 
       setData(response.data); // Assuming the response contains user data or tokens
     } catch (err: any) {
-      setError(err.response.data.data.message);
+      setError(err.response?.data?.data?.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
