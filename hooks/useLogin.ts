@@ -10,7 +10,6 @@ type LoginError = string | null;
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<LoginError>(null);
-  const [data, setData] = useState<LoginData | null>(null);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -23,7 +22,6 @@ const useLogin = () => {
         email,
         password,
       });
-      setData(response.data);
 
       await AsyncStorage.multiSet([
         ['user', JSON.stringify(response.data.data.user)],
@@ -39,7 +37,7 @@ const useLogin = () => {
     }
   };
 
-  return { login, loading, error, data };
+  return { login, loading, error };
 };
 
 export default useLogin;

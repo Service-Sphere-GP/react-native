@@ -17,7 +17,7 @@ const Login = () => {
     password: '',
   });
 
-  const { login, loading, error, data } = useLogin();
+  const { login, loading, error } = useLogin();
 
   const validateForm = (user: { email: string; password: string }) => {
     const errors = {
@@ -115,11 +115,6 @@ const Login = () => {
             </Link>
           </Text>
         </View>
-        {data && (
-          <Text className="text-center text-2xl text-green-500">
-            Login Successful!
-          </Text>
-        )}
       </View>
     </ScrollView>
   );
