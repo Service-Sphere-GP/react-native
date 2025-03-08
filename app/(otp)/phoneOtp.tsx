@@ -1,7 +1,15 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import CustomButton from "@/components/CustomButton";
+import CustomButton from '@/components/CustomButton';
 
 const PhoneOtp = () => {
   const { width, height } = useWindowDimensions();
@@ -40,23 +48,23 @@ const PhoneOtp = () => {
       return;
     }
     router.replace({
-      pathname: "/(otp)/phoneOtp-2",
-      params: { phoneNumber: phoneNumber }
+      pathname: '/(otp)/phoneOtp-2',
+      params: { phoneNumber: phoneNumber },
     });
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       className="flex-1 bg-white"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View className="flex-1 bg-white">
-        <TouchableOpacity 
-          className="mt-12 ml-6" 
-          onPress={() => router.replace("/(otp)/VerificationOptions")}
+        <TouchableOpacity
+          className="mt-12 ml-6"
+          onPress={() => router.replace('/(otp)/VerificationOptions')}
         >
-          <Image 
+          <Image
             source={require('../../assets/images/back-Icon.png')}
             style={{ width: width * 0.035, height: height * 0.03 }}
             resizeMode="contain"
@@ -64,14 +72,14 @@ const PhoneOtp = () => {
         </TouchableOpacity>
 
         <View className="items-center mt-3">
-          <Image 
+          <Image
             source={require('../../assets/images/OTP.png')}
             style={{ width: width * 0.6, height: height * 0.25 }}
             resizeMode="contain"
           />
         </View>
 
-        <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]"> 
+        <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]">
           Phone Number
         </Text>
 
@@ -93,7 +101,9 @@ const PhoneOtp = () => {
             className="text-xl font-Roboto-SemiBold text-center w-1/2 text-[#363E4C]"
             keyboardType="phone-pad"
           />
-          <View className={`h-px w-1/2 ${isValidPhone ? 'bg-[#147E93]' : 'bg-[#363E4C]'}`} />
+          <View
+            className={`h-px w-1/2 ${isValidPhone ? 'bg-[#147E93]' : 'bg-[#363E4C]'}`}
+          />
           {error ? (
             <Text className="text-red-500 text-sm font-Roboto mt-1">
               {error}

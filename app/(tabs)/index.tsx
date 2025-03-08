@@ -1,5 +1,5 @@
-import { Stack, useRouter } from "expo-router";
-import Animated, { FadeInDown } from "react-native-reanimated";
+import { Stack, useRouter } from 'expo-router';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import {
   View,
   Text,
@@ -17,14 +17,20 @@ const App = () => {
   const landingImage = require('@/assets/images/LandingImage.png');
 
   const { height } = useWindowDimensions();
-  const responsiveHeight = height * 0.5; 
+  const responsiveHeight = height * 0.5;
 
   return (
-    <ScrollView className="flex-1 bg-[#fdfdfd] px-4 py-6" contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      className="flex-1 bg-[#fdfdfd] px-4 py-6"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <SafeAreaView className="flex flex-1 items-center justify-between px-5">
         <View className="w-full">
           {/* Logo Text */}
-          <Animated.View entering={FadeInDown.delay(300)} className="w-full mt-2">
+          <Animated.View
+            entering={FadeInDown.delay(300)}
+            className="w-full mt-2"
+          >
             <Text className="text-[40px] font-Roboto-SemiBold text-left">
               <Text className="text-[#FFCE4C]">Service </Text>
               <Text className="text-[#147E93]">Sphere</Text>
@@ -52,7 +58,10 @@ const App = () => {
             </Animated.View>
 
             {/* Landing Image */}
-            <Animated.View entering={FadeInDown.delay(600)} className="w-full mt-4 items-center justify-center">
+            <Animated.View
+              entering={FadeInDown.delay(600)}
+              className="w-full mt-4 items-center justify-center"
+            >
               <Image
                 source={landingImage}
                 resizeMode="contain"
@@ -71,13 +80,13 @@ const App = () => {
           style={{ width: '100%', gap: 12, marginBottom: 20 }}
         >
           <CustomButton
-            onPress={() => router.push("/customer/register")}
+            onPress={() => router.push('/customer/register')}
             title="Customer"
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
-            onPress={() => router.push("/provider/register")}
+            onPress={() => router.push('/provider/register')}
             title="Service Provider"
             containerStyles="bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-[#147E93] font-Roboto-SemiBold"
@@ -86,7 +95,7 @@ const App = () => {
 
         <StatusBar style="dark" />
       </SafeAreaView>
-      <Stack/>
+      <Stack />
     </ScrollView>
   );
 };

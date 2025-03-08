@@ -1,20 +1,22 @@
-import { View, Text, Pressable, Image } from "react-native";
-import React, { useState } from "react";
-import { useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CustomButton from "@/components/CustomButton";
-import PhoneIcon from "@/assets/icons/PhoneIcon";
-import EmailIcon from "@/assets/icons/EmailIcon";
+import { View, Text, Pressable, Image } from 'react-native';
+import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomButton from '@/components/CustomButton';
+import PhoneIcon from '@/assets/icons/PhoneIcon';
+import EmailIcon from '@/assets/icons/EmailIcon';
 
 const VerificationScreen = () => {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState<"email" | "phone" | null>(null);
+  const [selectedOption, setSelectedOption] = useState<
+    'email' | 'phone' | null
+  >(null);
 
   const handleConfirm = () => {
-    if (selectedOption === "email") {
-      router.push("/(otp)/EmailOtp");
-    } else if (selectedOption === "phone") {
-      router.push("/(otp)/phoneOtp");
+    if (selectedOption === 'email') {
+      router.push('/(otp)/EmailOtp');
+    } else if (selectedOption === 'phone') {
+      router.push('/(otp)/phoneOtp');
     }
   };
 
@@ -23,13 +25,13 @@ const VerificationScreen = () => {
       {/* Header */}
       <View className="flex-row items-center justify-center relative">
         {/* Left Icon */}
-        <Pressable 
-          onPress={() => router.replace("/(tabs)")} 
+        <Pressable
+          onPress={() => router.replace('/(tabs)')}
           className="absolute left-0"
         >
-          <Image 
-            source={require("@/assets/images/back-Icon.png")} 
-            className="w-3 h-6" 
+          <Image
+            source={require('@/assets/images/back-Icon.png')}
+            className="w-3 h-6"
             resizeMode="contain"
           />
         </Pressable>
@@ -50,14 +52,18 @@ const VerificationScreen = () => {
       {/* Options */}
       <View className="mt-8 space-y-2">
         {/* Email Option */}
-        <Pressable 
-          onPress={() => setSelectedOption("email")}
+        <Pressable
+          onPress={() => setSelectedOption('email')}
           className={`w-full border rounded-lg flex-row items-center p-4 overflow-auto ${
-            selectedOption === "email" ? "border-[#147E93] border-2"  : "border-[#676B73]"
+            selectedOption === 'email'
+              ? 'border-[#147E93] border-2'
+              : 'border-[#676B73]'
           }`}
         >
           <View className="w-[20%] flex justify-center">
-            <EmailIcon color={selectedOption === "email" ? "#147E93" : "#676B73"} />
+            <EmailIcon
+              color={selectedOption === 'email' ? '#147E93' : '#676B73'}
+            />
           </View>
           <View className="w-full">
             <Text className="text-xl font-Roboto-SemiBold text-black">
@@ -70,14 +76,18 @@ const VerificationScreen = () => {
         </Pressable>
 
         {/* Phone Option */}
-        <Pressable 
-          onPress={() => setSelectedOption("phone")}
+        <Pressable
+          onPress={() => setSelectedOption('phone')}
           className={`w-full border rounded-lg flex-row items-center p-4 overflow-auto ${
-            selectedOption === "phone" ? "border-[#147E93] border-2" : "border-[#676B73]"
+            selectedOption === 'phone'
+              ? 'border-[#147E93] border-2'
+              : 'border-[#676B73]'
           }`}
         >
           <View className="w-[20%] flex justify-center">
-            <PhoneIcon color={selectedOption === "phone" ? "#147E93" : "#676B73"} />
+            <PhoneIcon
+              color={selectedOption === 'phone' ? '#147E93' : '#676B73'}
+            />
           </View>
           <View className="w-[80%]">
             <Text className="text-xl font-Roboto-SemiBold text-black">
@@ -100,13 +110,13 @@ const VerificationScreen = () => {
       />
 
       {/* Decorative Images */}
-      <Image 
-        source={require("../../assets/images/leftDecore.png")} 
+      <Image
+        source={require('../../assets/images/leftDecore.png')}
         className="absolute bottom-0 left-0 w-[160px] h-[160px]"
         resizeMode="contain"
       />
-      <Image 
-        source={require("../../assets/images/rightDecore.png")} 
+      <Image
+        source={require('../../assets/images/rightDecore.png')}
         className="absolute bottom-0 right-0 w-[160px] h-[160px]"
         resizeMode="contain"
       />

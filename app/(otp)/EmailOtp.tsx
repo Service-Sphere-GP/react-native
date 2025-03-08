@@ -1,7 +1,17 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, useWindowDimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import CustomButton from "@/components/CustomButton";
+import CustomButton from '@/components/CustomButton';
 
 const EmailOtp = () => {
   const { width, height } = useWindowDimensions();
@@ -40,28 +50,27 @@ const EmailOtp = () => {
       return;
     }
     router.replace({
-      pathname: "/(otp)/EmailOtp-2",
-      params: { email: email }
+      pathname: '/(otp)/EmailOtp-2',
+      params: { email: email },
     });
   };
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1"
     >
-      <ScrollView 
+      <ScrollView
         className="flex-1 bg-white"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View className="flex-1 bg-white">
-
-          <TouchableOpacity 
-            className="mt-12 ml-6" 
-            onPress={() => router.replace("/(otp)/VerificationOptions")}
+          <TouchableOpacity
+            className="mt-12 ml-6"
+            onPress={() => router.replace('/(otp)/VerificationOptions')}
           >
-            <Image 
+            <Image
               source={require('../../assets/images/back-Icon.png')}
               style={{ width: width * 0.035, height: height * 0.03 }}
               resizeMode="contain"
@@ -69,20 +78,21 @@ const EmailOtp = () => {
           </TouchableOpacity>
 
           <View className="items-center mt-3">
-            <Image 
+            <Image
               source={require('../../assets/images/OTP.png')}
               style={{ width: width * 0.6, height: height * 0.25 }}
               resizeMode="contain"
             />
           </View>
 
-          <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]"> 
+          <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]">
             Email
           </Text>
 
           <View className="mt-6 px-6">
             <Text className="text-center text-base font-Roboto text-[#363E4C]">
-              Please enter your email to receive 4-digit{'\n'}verification code for authentication
+              Please enter your email to receive 4-digit{'\n'}verification code
+              for authentication
             </Text>
           </View>
 
@@ -98,7 +108,7 @@ const EmailOtp = () => {
               keyboardType="email-address"
               autoCapitalize="none"
             />
-            <View 
+            <View
               className={`h-[1px] ${isValidEmail ? 'bg-[#147E93]' : 'bg-[#363E4C]'}`}
               style={{ width: width * 0.5 }}
             />
