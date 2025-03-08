@@ -3,8 +3,6 @@ import ApiService from '../constants/ApiService';
 import { API_ENDPOINTS } from '../constants/ApiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Define types for the response data and error
-type LoginData = any; // Replace with your actual login response type
 type LoginError = string | null;
 
 const useLogin = () => {
@@ -14,7 +12,6 @@ const useLogin = () => {
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
-    setData(null);
 
     try {
       // Using the endpoint path from ApiConfig with ApiService
