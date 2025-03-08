@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import axios from 'axios';
+import ApiService from '../constants/ApiService';
+import { API_ENDPOINTS } from '../constants/ApiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Define types for the response data and error
+type LoginData = any; // Replace with your actual login response type
+type LoginError = string | null;
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [error, setError] = useState<LoginError>(null);
+  const [data, setData] = useState<LoginData | null>(null);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -13,17 +18,13 @@ const useLogin = () => {
     setData(null);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/auth/login',
-        {
-          email,
-          password,
-        },
-      );
-
+      // Using the endpoint path from ApiConfig with ApiService
+      const response: any = await ApiService.post(API_ENDPOINTS.LOGIN, {
+        email,
+        password,
+      });
       setData(response.data);
 
-      // Store user data and token using AsyncStorage
       await AsyncStorage.multiSet([
         ['user', JSON.stringify(response.data.data.user)],
         ['authToken', response.data.data.token],
