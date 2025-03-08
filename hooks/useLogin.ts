@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -20,9 +21,18 @@ const useLogin = () => {
         },
       );
 
-      setData(response.data); // Assuming the response contains user data or tokens
+      setData(response.data);
+
+      // Store user data and token using AsyncStorage
+      await AsyncStorage.multiSet([
+        ['user', JSON.stringify(response.data.data.user)],
+        ['authToken', response.data.data.token],
+      ]);
+
+      return true;
     } catch (err: any) {
-      setError(err.response.data.data.message);
+      setError(err.response?.data?.data?.message || 'An error occurred');
+      return false;
     } finally {
       setLoading(false);
     }

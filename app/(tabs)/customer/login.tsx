@@ -5,10 +5,12 @@ import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
 import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
+import { useRouter } from 'expo-router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const [errorMessages, setErrorMessages] = useState({
     email: '',
@@ -34,16 +36,22 @@ const Login = () => {
     return errors;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const errors = validateForm({ email, password });
     setErrorMessages(errors);
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
-    if (hasErrors) {
-      return;
-    }
+    if (hasErrors) return;
 
-    login(email, password);
+    try {
+      const success = await login(email, password);
+
+      if (success) {
+        router.push('/profile/me');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (
