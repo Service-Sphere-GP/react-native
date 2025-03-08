@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ApiService from '../constants/ApiService';
+import { API_ENDPOINTS } from '../constants/ApiConfig';
 
 // Define types for the response data and error
 type LoginData = any; // Replace with your actual login response type
@@ -16,14 +17,13 @@ const useLogin = () => {
     setData(null);
 
     try {
-      // Using the ApiService which already has the correct base URL configured
-      const response = await ApiService.post('/auth/login', {
+      // Using the endpoint path from ApiConfig with ApiService
+      const response = await ApiService.post(API_ENDPOINTS.LOGIN, {
         email,
         password,
-        },
-      );
+      });
 
-      setData(response.data); // Assuming the response contains user data or tokens
+      setData(response.data);
     } catch (err: any) {
       setError(err.response?.data?.data?.message || 'An error occurred');
     } finally {

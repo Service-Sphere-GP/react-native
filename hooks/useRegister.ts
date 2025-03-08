@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import axios from 'axios';
+import ApiService from '../constants/ApiService';
+import { API_ENDPOINTS } from '../constants/ApiConfig';
+
+// Define types for the response data and error
+type RegisterData = any; // Replace with your actual register response type
+type RegisterError = string | null;
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [error, setError] = useState<RegisterError>(null);
+  const [data, setData] = useState<RegisterData | null>(null);
 
   const customerRegister = async (
     email: string,
@@ -18,8 +23,8 @@ const useRegister = () => {
     setData(null);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/auth/register/customer',
+      const response = await ApiService.post(
+        API_ENDPOINTS.REGISTER + '/customer',
         {
           email,
           password,
@@ -31,7 +36,7 @@ const useRegister = () => {
 
       setData(response.data);
     } catch (err: any) {
-      setError(err.response.data.data.message);
+      setError(err.response?.data?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -52,8 +57,8 @@ const useRegister = () => {
     setData(null);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/v1/auth/register/service-provider',
+      const response = await ApiService.post(
+        API_ENDPOINTS.REGISTER + '/service-provider',
         {
           email,
           password,
@@ -68,7 +73,7 @@ const useRegister = () => {
 
       setData(response.data);
     } catch (err: any) {
-      setError(err.response.data.data.message);
+      setError(err.response?.data?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
