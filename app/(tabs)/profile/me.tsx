@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,7 +11,7 @@ const ProfileComponent = () => {
   interface User {
     first_name: string;
     last_name: string;
-    // Add other user properties if needed
+    role: string;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -41,9 +41,9 @@ const ProfileComponent = () => {
   }, [router]);
 
   return (
-    <View>
+    <ScrollView>
       {user ? (
-        <View className="p-4 mt-12 gap-4">
+        <View className="px-1 py-4 xs:px-4 mt-12 gap-4">
           <View className="flex-row justify-between mr-2">
             <Text className="font-Roboto-Medium text-xl flex-1 text-center">
               Profile
@@ -63,6 +63,20 @@ const ProfileComponent = () => {
                 description="Manage your personal details"
                 image={require('@/assets/images/personalData.png')}
               />
+              {user.role === 'Provider' && (
+                <>
+                  <ProfileDetail
+                    title="Services"
+                    description="Manage your services"
+                    image={require('@/assets/images/services.png')}
+                  />
+                  <ProfileDetail
+                    title="Time Slots"
+                    description="Available time slots"
+                    image={require('@/assets/images/timeSlots.png')}
+                  />
+                </>
+              )}
               <ProfileDetail
                 title="Reviews"
                 description="What people are saying about you"
@@ -93,7 +107,7 @@ const ProfileComponent = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

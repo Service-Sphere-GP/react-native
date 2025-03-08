@@ -2,15 +2,13 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 
-const ProfileDetail = ({
-  title,
-  description,
-  image,
-}: {
+interface ProfileDetailProps {
   title: string;
   description: null | string;
   image: any;
-}) => {
+}
+
+const ProfileDetail = ({ title, description, image }: ProfileDetailProps) => {
   const { width } = useWindowDimensions();
 
   return (
