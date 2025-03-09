@@ -5,17 +5,19 @@ import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
 import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
+import { useRouter } from 'expo-router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const [errorMessages, setErrorMessages] = useState({
     email: '',
     password: '',
   });
 
-  const { login, loading, error, data } = useLogin();
+  const { login, loading, error } = useLogin();
 
   const validateForm = (user: { email: string; password: string }) => {
     const errors = {
@@ -34,16 +36,22 @@ const Login = () => {
     return errors;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const errors = validateForm({ email, password });
     setErrorMessages(errors);
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
-    if (hasErrors) {
-      return;
-    }
+    if (hasErrors) return;
 
-    login(email, password);
+    try {
+      const success = await login(email, password);
+
+      if (success) {
+        router.push('/profile/me');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -107,11 +115,6 @@ const Login = () => {
             </Link>
           </Text>
         </View>
-        {data && (
-          <Text className="text-center text-2xl text-green-500">
-            Login Successful!
-          </Text>
-        )}
       </View>
     </ScrollView>
   );

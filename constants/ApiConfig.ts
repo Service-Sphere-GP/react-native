@@ -10,6 +10,8 @@ const API_BASE_URL =
 const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
+  Get_USER: '/users/:id', 
+
   // Add more endpoints as needed
 };
 

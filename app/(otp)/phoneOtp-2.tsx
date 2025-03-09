@@ -1,8 +1,15 @@
-import { View, Text, Image, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import CustomButton from "@/components/CustomButton";
-import OtpInput from "@/components/OtpInput";
+import CustomButton from '@/components/CustomButton';
+import OtpInput from '@/components/OtpInput';
 
 const PhoneOtp2 = () => {
   const { width, height } = useWindowDimensions();
@@ -17,7 +24,7 @@ const PhoneOtp2 = () => {
 
   const handleConfirmCode = () => {
     if (otp.length === 4) {
-      router.replace("/(otp)/RegistrationSuccess");
+      router.replace('/(otp)/RegistrationSuccess');
     } else {
       setShowError(true);
     }
@@ -29,17 +36,17 @@ const PhoneOtp2 = () => {
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       className="flex-1 bg-white"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View className="flex-1 bg-white">
-        <TouchableOpacity 
-          className="mt-12 ml-6" 
-          onPress={() => router.replace("/(otp)/phoneOtp")}
+        <TouchableOpacity
+          className="mt-12 ml-6"
+          onPress={() => router.replace('/(otp)/phoneOtp')}
         >
-          <Image 
+          <Image
             source={require('../../assets/images/back-Icon.png')}
             style={{ width: width * 0.035, height: height * 0.03 }}
             resizeMode="contain"
@@ -47,14 +54,14 @@ const PhoneOtp2 = () => {
         </TouchableOpacity>
 
         <View className="items-center mt-3">
-          <Image 
+          <Image
             source={require('../../assets/images/OTP.png')}
             style={{ width: width * 0.6, height: height * 0.25 }}
             resizeMode="contain"
           />
         </View>
 
-        <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]"> 
+        <Text className="text-center mt-8 text-2xl font-Roboto-SemiBold text-[#030B19]">
           Phone Number
         </Text>
 
@@ -73,24 +80,24 @@ const PhoneOtp2 = () => {
 
         {showError && (
           <View className="flex-row items-center mx-6 mt-4">
-            <Image 
+            <Image
               source={require('../../assets/images/xicon.png')}
               style={{ width: width * 0.04, height: width * 0.04 }}
               className="mr-2"
             />
             <Text className="text-red-500 text-sm font-Roboto">
-              The code you entered is incorrect{'\n'}Please try again or resend code
+              The code you entered is incorrect{'\n'}Please try again or resend
+              code
             </Text>
           </View>
         )}
 
         <View className="mt-4">
           <Text className="text-center text-sm font-Roboto">
-            <Text className="text-[#3A3A3A]">Didn't you receive the Number? </Text>
-            <Text 
-              className="text-[#147E93] underline"
-              onPress={handleResend}
-            >
+            <Text className="text-[#3A3A3A]">
+              Didn't you receive the Number?{' '}
+            </Text>
+            <Text className="text-[#147E93] underline" onPress={handleResend}>
               Resend Number
             </Text>
           </Text>

@@ -19,7 +19,7 @@ const OtpInput: React.FC<OtpInputProps> = ({ length = 4, onComplete }) => {
       inputRefs.current[index + 1]?.focus();
     }
 
-    if (newOtp.every(digit => digit) && onComplete) {
+    if (newOtp.every((digit) => digit) && onComplete) {
       onComplete(newOtp.join(''));
     }
   };
@@ -31,26 +31,33 @@ const OtpInput: React.FC<OtpInputProps> = ({ length = 4, onComplete }) => {
   };
 
   return (
-    <View  className="flex-row justify-center items-center gap-2.5 ">
-      {Array(length).fill(0).map((_, index) => (
-        <View key={index} className="items-center">
-          <TextInput
-            ref={ref => {
-              if (ref) inputRefs.current[index] = ref;
-            }}
-            style={styles.input}
-            maxLength={1}
-            keyboardType="number-pad"
-            value={otp[index]}
-            onChangeText={text => handleChange(text, index)}
-            onKeyPress={e => handleKeyPress(e, index)}
-            autoFocus={index === 0}
-            accessible={true}
-            accessibilityLabel={`OTP digit ${index + 1}`}
-          />
-          <View style={[styles.underline, { backgroundColor: otp[index] ? '#147E93' : '#676B73' }]} />
-        </View>
-      ))}
+    <View className="flex-row justify-center items-center gap-2.5 ">
+      {Array(length)
+        .fill(0)
+        .map((_, index) => (
+          <View key={index} className="items-center">
+            <TextInput
+              ref={(ref) => {
+                if (ref) inputRefs.current[index] = ref;
+              }}
+              style={styles.input}
+              maxLength={1}
+              keyboardType="number-pad"
+              value={otp[index]}
+              onChangeText={(text) => handleChange(text, index)}
+              onKeyPress={(e) => handleKeyPress(e, index)}
+              autoFocus={index === 0}
+              accessible={true}
+              accessibilityLabel={`OTP digit ${index + 1}`}
+            />
+            <View
+              style={[
+                styles.underline,
+                { backgroundColor: otp[index] ? '#147E93' : '#676B73' },
+              ]}
+            />
+          </View>
+        ))}
     </View>
   );
 };
