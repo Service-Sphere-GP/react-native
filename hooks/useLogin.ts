@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ApiService from '../constants/ApiService';
-import { API_ENDPOINTS } from '../constants/ApiConfig';
+import ApiService from '@/constants/ApiService';
+import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginError = string | null;

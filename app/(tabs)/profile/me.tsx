@@ -63,7 +63,7 @@ const ProfileComponent = () => {
                 description="Manage your personal details"
                 image={require('@/assets/images/personalData.png')}
               />
-              {user.role === 'Provider' && (
+              {user.role === 'provider' && (
                 <>
                   <ProfileDetail
                     title="Services"

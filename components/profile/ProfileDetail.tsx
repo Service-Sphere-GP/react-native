@@ -22,9 +22,11 @@ const ProfileDetail = ({ title, description, image }: ProfileDetailProps) => {
             >
               {title}
             </Text>
-            <Text className="text-[#666B73] text-sm font-Roboto">
-              {description}
-            </Text>
+            {description && (
+              <Text className="text-[#666B73] text-sm font-Roboto">
+                {description}
+              </Text>
+            )}
           </View>
         </View>
         {width > 375 && (
