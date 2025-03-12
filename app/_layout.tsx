@@ -37,6 +37,7 @@ export default function RootLayout() {
     <ThemeProvider value={DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+        <Stack.Screen name="admin" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
