@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 
+interface AdminUser {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  full_name: string;
+  status: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
     // Check if admin is authenticated
     const checkAuth = async () => {
       try {
         const adminAuth = await AsyncStorage.getItem('adminAuthenticated');
-        if (adminAuth !== 'true') {
+        const adminUserStr = await AsyncStorage.getItem('adminUser');
+        const adminToken = await AsyncStorage.getItem('adminToken');
+        
+        if (adminAuth !== 'true' || !adminUserStr || !adminToken) {
           // Redirect to login if not authenticated
           router.replace('/admin/login');
         } else {
+          const user = JSON.parse(adminUserStr) as AdminUser;
+          
+          // Verify the user has admin role
+          if (user.role !== 'admin') {
+            await AsyncStorage.removeItem('adminAuthenticated');
+            await AsyncStorage.removeItem('adminToken');
+            await AsyncStorage.removeItem('adminUser');
+            router.replace('/admin/login');
+            return;
+          }
+          
+          setAdminUser(user);
           setIsAuthenticated(true);
         }
       } catch (error) {
@@ -32,6 +60,8 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('adminAuthenticated');
+    await AsyncStorage.removeItem('adminToken');
+    await AsyncStorage.removeItem('adminUser');
     router.replace('/admin/login');
   };
 
@@ -52,7 +82,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !adminUser) {
     return null; // Will redirect to login in useEffect
   }
 
@@ -60,17 +90,24 @@ export default function AdminDashboard() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Admin Dashboard</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.userInfo}>
+          <Text style={styles.userInfoText}>
+            {adminUser.full_name} ({adminUser.email})
+          </Text>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       
-      <View style={styles.content}>
-        <Text style={styles.welcomeText}>Hello World!</Text>
-        <Text style={styles.subText}>
-          This is your admin dashboard. Here you will be able to manage service provider verifications.
-        </Text>
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.content}>
+          <Text style={styles.welcomeText}>Hello World!</Text>
+          <Text style={styles.subText}>
+            This is your admin dashboard. Here you will be able to manage service provider verifications.
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -94,6 +131,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Roboto-Bold',
   },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userInfoText: {
+    color: '#fff',
+    marginRight: 15,
+    fontFamily: 'Roboto-Medium',
+  },
   logoutButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 15,
@@ -105,11 +151,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Roboto-Medium',
   },
-  content: {
+  scrollView: {
     flex: 1,
+  },
+  content: {
     padding: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   welcomeText: {
     fontSize: 32,

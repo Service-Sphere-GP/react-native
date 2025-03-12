@@ -1,33 +1,81 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
+import ApiService from '../../constants/ApiService';
 
-// Mock admin credentials - in a real app, this would be handled securely on the backend
-const ADMIN_USERNAME = 'admin';
-const ADMIN_EMAIL = 'admin@example.com';
+interface LoginResponse {
+  status: string;
+  data: {
+    token: string;
+    user: {
+      _id: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      full_name: string;
+      status: string;
+      role: string;
+      created_at: string;
+      updated_at: string;
+    }
+  }
+}
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     // Simple validation
-    if (!username || !email) {
-      setError('Please enter both username and email');
+    if (!email || !password) {
+      setError('Please enter both email and password');
       return;
     }
 
-    // Check credentials
-    if (username === ADMIN_USERNAME && email === ADMIN_EMAIL) {
-      // Store admin session
-      await AsyncStorage.setItem('adminAuthenticated', 'true');
-      // Navigate to admin dashboard
-      router.replace('/admin/dashboard');
-    } else {
-      setError('Invalid credentials');
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Call the login API endpoint using ApiService
+      const response = await ApiService.post<LoginResponse>('/auth/login', {
+        email,
+        password
+      });
+
+      console.log('Login response:', response.data);
+
+      // Check if login was successful and user has admin role
+      if (response.data && response.data.status === 'success' && response.data.data) {
+        const { token, user } = response.data.data;
+        
+        // Check if user has admin role
+        if (user.role === 'admin') {
+          // Store admin session and token
+          await AsyncStorage.setItem('adminAuthenticated', 'true');
+          await AsyncStorage.setItem('adminToken', token);
+          await AsyncStorage.setItem('adminUser', JSON.stringify(user));
+          
+          // Navigate to admin dashboard
+          router.replace('/admin/dashboard');
+        } else {
+          setError('Access denied. Admin privileges required.');
+        }
+      } else {
+        setError('Invalid credentials or server error');
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Login failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -48,31 +96,40 @@ export default function AdminLogin() {
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Username</Text>
-          <TextInput
-            style={styles.input}
-            value={username}
-            onChangeText={setUsername}
-            placeholder="Enter admin username"
-            placeholderTextColor="#687076"
-          />
-        </View>
-        
-        <View style={styles.inputContainer}>
           <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            placeholder="Enter admin email"
+            placeholder="Enter your email"
             placeholderTextColor="#687076"
             keyboardType="email-address"
             autoCapitalize="none"
           />
         </View>
         
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Enter your password"
+            placeholderTextColor="#687076"
+            secureTextEntry
+          />
+        </View>
+        
+        <TouchableOpacity 
+          style={styles.loginButton} 
+          onPress={handleLogin}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <Text style={styles.loginButtonText}>Login</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
