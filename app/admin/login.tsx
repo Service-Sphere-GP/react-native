@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 import ApiService from '../../constants/ApiService';
+import ToastService from '../../constants/ToastService';
 
 interface LoginResponse {
   status: string;
@@ -26,18 +27,16 @@ interface LoginResponse {
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     // Simple validation
     if (!email || !password) {
-      setError('Please enter both email and password');
+      ToastService.error('Validation Error', 'Please enter both email and password');
       return;
     }
 
     setIsLoading(true);
-    setError('');
 
     try {
       // Call the login API endpoint using ApiService
@@ -59,21 +58,26 @@ export default function AdminLogin() {
           await AsyncStorage.setItem('adminToken', token);
           await AsyncStorage.setItem('adminUser', JSON.stringify(user));
           
+          // Show success toast
+          ToastService.success('Login Successful', `Welcome back, ${user.full_name}!`);
+          
           // Navigate to admin dashboard
           router.replace('/admin/dashboard');
         } else {
-          setError('Access denied. Admin privileges required.');
+          ToastService.error('Access Denied', 'Admin privileges required');
         }
       } else {
-        setError('Invalid credentials or server error');
+        ToastService.error('Authentication Failed', 'Invalid credentials or server error');
       }
     } catch (error: any) {
       console.error('Login error:', error);
+      let errorMessage = 'Login failed. Please try again.';
+      
       if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError('Login failed. Please try again.');
+        errorMessage = error.response.data.message;
       }
+      
+      ToastService.error('Authentication Failed', errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -92,8 +96,6 @@ export default function AdminLogin() {
     <View style={styles.container}>
       <View style={styles.loginBox}>
         <Text style={styles.title}>Admin Login</Text>
-        
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
         
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Email</Text>
@@ -195,11 +197,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 15,
-    textAlign: 'center',
-    fontFamily: 'Roboto-Regular',
   },
 }); 

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from '
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
+import ToastService from '../../constants/ToastService';
 
 interface AdminUser {
   _id: string;
@@ -59,10 +60,24 @@ export default function AdminDashboard() {
   }, []);
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('adminAuthenticated');
-    await AsyncStorage.removeItem('adminToken');
-    await AsyncStorage.removeItem('adminUser');
-    router.replace('/admin/login');
+    try {
+      // Get user name before clearing storage
+      const userName = adminUser?.full_name || 'Admin';
+      
+      // Clear admin session data
+      await AsyncStorage.removeItem('adminAuthenticated');
+      await AsyncStorage.removeItem('adminToken');
+      await AsyncStorage.removeItem('adminUser');
+      
+      // Show logout toast
+      ToastService.success('Logged Out Successfully', `Goodbye, ${userName}!`);
+      
+      // Navigate to login page
+      router.replace('/admin/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+      router.replace('/admin/login');
+    }
   };
 
   // Only render on web platform
