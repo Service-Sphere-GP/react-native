@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView, TextInput, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 import ToastService from '../../constants/ToastService';
+import ApiService from '../../constants/ApiService';
 
 interface AdminUser {
   _id: string;
@@ -17,10 +18,37 @@ interface AdminUser {
   updated_at: string;
 }
 
+interface ServiceProvider {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  full_name: string;
+  status: string;
+  role: string;
+  business_name: string;
+  verification_status: 'pending' | 'approved' | 'rejected';
+  rating_average: number;
+  business_address: string;
+  tax_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+  const [providers, setProviders] = useState<ServiceProvider[]>([]);
+  const [pendingProviders, setPendingProviders] = useState<ServiceProvider[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0
+  });
 
   useEffect(() => {
     // Check if admin is authenticated
@@ -47,6 +75,9 @@ export default function AdminDashboard() {
           
           setAdminUser(user);
           setIsAuthenticated(true);
+          
+          // Load service providers
+          fetchServiceProviders();
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
@@ -58,6 +89,66 @@ export default function AdminDashboard() {
 
     checkAuth();
   }, []);
+
+  const fetchServiceProviders = async () => {
+    try {
+      setIsLoading(true);
+      const response = await ApiService.get('/users/service-providers');
+      
+      if (response.data && response.data.status === 'success') {
+        const allProviders = response.data.data as ServiceProvider[];
+        setProviders(allProviders);
+        
+        // Filter pending providers
+        const pending = allProviders.filter(p => p.verification_status === 'pending');
+        setPendingProviders(pending);
+        
+        // Calculate stats
+        setStats({
+          total: allProviders.length,
+          pending: allProviders.filter(p => p.verification_status === 'pending').length,
+          approved: allProviders.filter(p => p.verification_status === 'approved').length,
+          rejected: allProviders.filter(p => p.verification_status === 'rejected').length
+        });
+        
+        ToastService.success('Data Loaded', 'Service provider data loaded successfully');
+      } else {
+        ToastService.error('Data Error', 'Failed to load service provider data');
+      }
+    } catch (error) {
+      console.error('Error fetching service providers:', error);
+      ToastService.error('Data Error', 'Failed to load service provider data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateVerificationStatus = async (providerId: string, status: 'approved' | 'rejected') => {
+    try {
+      setIsUpdating(true);
+      
+      const response = await ApiService.put(`/service-providers/${providerId}/verification`, {
+        verification_status: status
+      });
+      
+      if (response.data && response.data.status === 'success') {
+        // Refresh the provider list
+        fetchServiceProviders();
+        
+        ToastService.success(
+          'Status Updated', 
+          `Provider verification status updated to ${status}`
+        );
+      } else {
+        ToastService.error('Update Failed', 'Failed to update verification status');
+      }
+    } catch (error) {
+      console.error('Error updating verification status:', error);
+      ToastService.error('Update Failed', 'Failed to update verification status');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -79,6 +170,14 @@ export default function AdminDashboard() {
       router.replace('/admin/login');
     }
   };
+
+  const filteredProviders = searchQuery 
+    ? providers.filter(p => 
+        p.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.business_name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : providers;
 
   // Only render on web platform
   if (Platform.OS !== 'web') {
@@ -117,10 +216,130 @@ export default function AdminDashboard() {
       
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
-          <Text style={styles.welcomeText}>Hello World!</Text>
-          <Text style={styles.subText}>
-            This is your admin dashboard. Here you will be able to manage service provider verifications.
-          </Text>
+          {/* Stats Cards */}
+          <View style={styles.statsContainer}>
+            <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
+              <Text style={styles.statNumber}>{stats.total}</Text>
+              <Text style={styles.statLabel}>Total Providers</Text>
+            </View>
+            <View style={[styles.statCard, { backgroundColor: '#FFF9C4' }]}>
+              <Text style={styles.statNumber}>{stats.pending}</Text>
+              <Text style={styles.statLabel}>Pending Verification</Text>
+            </View>
+            <View style={[styles.statCard, { backgroundColor: '#E8F5E9' }]}>
+              <Text style={styles.statNumber}>{stats.approved}</Text>
+              <Text style={styles.statLabel}>Approved</Text>
+            </View>
+            <View style={[styles.statCard, { backgroundColor: '#FFEBEE' }]}>
+              <Text style={styles.statNumber}>{stats.rejected}</Text>
+              <Text style={styles.statLabel}>Rejected</Text>
+            </View>
+          </View>
+
+          {/* Pending Verification Card */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Pending Verifications</Text>
+            {pendingProviders.length === 0 ? (
+              <Text style={styles.emptyMessage}>No pending verifications</Text>
+            ) : (
+              pendingProviders.map(provider => (
+                <View key={provider._id} style={styles.providerItem}>
+                  <View style={styles.providerInfo}>
+                    <Text style={styles.providerName}>{provider.full_name}</Text>
+                    <Text style={styles.providerBusiness}>{provider.business_name}</Text>
+                    <Text style={styles.providerDetail}>Email: {provider.email}</Text>
+                    <Text style={styles.providerDetail}>Tax ID: {provider.tax_id}</Text>
+                    <Text style={styles.providerDetail}>Address: {provider.business_address}</Text>
+                    <Text style={styles.providerDetail}>
+                      Registered: {new Date(provider.created_at).toLocaleDateString()}
+                    </Text>
+                  </View>
+                  <View style={styles.actionButtons}>
+                    <TouchableOpacity 
+                      style={[styles.actionButton, styles.approveButton]}
+                      onPress={() => updateVerificationStatus(provider._id, 'approved')}
+                      disabled={isUpdating}
+                    >
+                      {isUpdating ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        <Text style={styles.actionButtonText}>Approve</Text>
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={[styles.actionButton, styles.rejectButton]}
+                      onPress={() => updateVerificationStatus(provider._id, 'rejected')}
+                      disabled={isUpdating}
+                    >
+                      {isUpdating ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        <Text style={styles.actionButtonText}>Reject</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))
+            )}
+          </View>
+
+          {/* Search and Filter Card */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>All Service Providers</Text>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search by name, email, or business name"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            
+            {filteredProviders.length === 0 ? (
+              <Text style={styles.emptyMessage}>No providers found</Text>
+            ) : (
+              filteredProviders.map(provider => (
+                <View key={provider._id} style={styles.providerItem}>
+                  <View style={styles.providerInfo}>
+                    <Text style={styles.providerName}>{provider.full_name}</Text>
+                    <Text style={styles.providerBusiness}>{provider.business_name}</Text>
+                    <Text style={styles.providerDetail}>Email: {provider.email}</Text>
+                    <View style={styles.statusBadge}>
+                      <Text style={[
+                        styles.statusText,
+                        provider.verification_status === 'approved' ? styles.approvedText :
+                        provider.verification_status === 'rejected' ? styles.rejectedText :
+                        styles.pendingText
+                      ]}>
+                        {provider.verification_status.toUpperCase()}
+                      </Text>
+                    </View>
+                  </View>
+                  {provider.verification_status !== 'pending' && (
+                    <View style={styles.actionButtons}>
+                      <TouchableOpacity 
+                        style={[
+                          styles.actionButton, 
+                          provider.verification_status === 'rejected' ? styles.approveButton : styles.rejectButton
+                        ]}
+                        onPress={() => updateVerificationStatus(
+                          provider._id, 
+                          provider.verification_status === 'rejected' ? 'approved' : 'rejected'
+                        )}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? (
+                          <ActivityIndicator size="small" color="#fff" />
+                        ) : (
+                          <Text style={styles.actionButtonText}>
+                            {provider.verification_status === 'rejected' ? 'Approve' : 'Reject'}
+                          </Text>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              ))
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -170,30 +389,150 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 30,
+    padding: 20,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  statCard: {
+    width: '23%',
+    padding: 15,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  welcomeText: {
-    fontSize: 32,
+  statNumber: {
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: Colors.light.text,
+    marginBottom: 5,
     fontFamily: 'Roboto-Bold',
   },
-  subText: {
-    fontSize: 18,
+  statLabel: {
+    fontSize: 14,
+    color: '#555',
     textAlign: 'center',
-    color: Colors.light.icon,
-    maxWidth: 600,
+    fontFamily: 'Roboto-Medium',
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    fontFamily: 'Roboto-Bold',
+  },
+  providerItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    paddingVertical: 15,
+  },
+  providerInfo: {
+    flex: 1,
+  },
+  providerName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    fontFamily: 'Roboto-Bold',
+  },
+  providerBusiness: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 8,
+    fontFamily: 'Roboto-Medium',
+  },
+  providerDetail: {
+    fontSize: 14,
+    color: '#777',
+    marginBottom: 2,
     fontFamily: 'Roboto-Regular',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  actionButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginLeft: 10,
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  approveButton: {
+    backgroundColor: '#4CAF50',
+  },
+  rejectButton: {
+    backgroundColor: '#F44336',
+  },
+  actionButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto-Medium',
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+    fontFamily: 'Roboto-Regular',
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    padding: 20,
+    color: '#777',
+    fontFamily: 'Roboto-Regular',
+  },
+  statusBadge: {
+    marginTop: 5,
+  },
+  statusText: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    fontSize: 12,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    alignSelf: 'flex-start',
+    fontFamily: 'Roboto-Bold',
+  },
+  approvedText: {
+    backgroundColor: '#E8F5E9',
+    color: '#2E7D32',
+  },
+  pendingText: {
+    backgroundColor: '#FFF9C4',
+    color: '#F57F17',
+  },
+  rejectedText: {
+    backgroundColor: '#FFEBEE',
+    color: '#C62828',
   },
   loadingText: {
     fontSize: 18,
     textAlign: 'center',
     color: Colors.light.text,
     fontFamily: 'Roboto-Regular',
+    marginTop: 50,
   },
   title: {
     fontSize: 24,
