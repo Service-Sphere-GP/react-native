@@ -63,19 +63,12 @@ const ProfileComponent = () => {
                 description="Manage your personal details"
                 image={require('@/assets/images/personalData.png')}
               />
-              {user.role === 'provider' && (
-                <>
-                  <ProfileDetail
-                    title="Services"
-                    description="Manage your services"
-                    image={require('@/assets/images/services.png')}
-                  />
-                  <ProfileDetail
-                    title="Time Slots"
-                    description="Available time slots"
-                    image={require('@/assets/images/timeSlots.png')}
-                  />
-                </>
+              {user.role === 'service_provider' && (
+                <ProfileDetail
+                  title="Services"
+                  description="Manage your services"
+                  image={require('@/assets/images/services.png')}
+                />
               )}
               <ProfileDetail
                 title="Reviews"

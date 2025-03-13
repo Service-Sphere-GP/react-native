@@ -54,18 +54,11 @@ export default function Profile() {
           />
           <View className="bg-white rounded-3xl w-full">
             {user?.role === 'service_provider' && (
-              <>
-                <ProfileDetail
-                  title="Services"
-                  description="Manage your services"
-                  image={require('@/assets/images/services.png')}
-                />
-                <ProfileDetail
-                  title="Time Slots"
-                  description="Available time slots"
-                  image={require('@/assets/images/timeSlots.png')}
-                />
-              </>
+              <ProfileDetail
+                title="Services"
+                description="Manage your services"
+                image={require('@/assets/images/services.png')}
+              />
             )}
             <ProfileDetail
               title="Reviews"
