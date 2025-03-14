@@ -6,13 +6,19 @@ interface ProfileDetailProps {
   title: string;
   description: null | string;
   image: any;
+  onPress?: () => void;
 }
 
-const ProfileDetail = ({ title, description, image }: ProfileDetailProps) => {
+const ProfileDetail = ({
+  title,
+  description,
+  image,
+  onPress,
+}: ProfileDetailProps) => {
   const { width } = useWindowDimensions();
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View className="flex-row justify-between p-4 items-center">
         <View className="flex-row gap-4">
           <Image source={image} style={{ width: 40, height: 40 }} />

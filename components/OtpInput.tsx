@@ -6,7 +6,7 @@ interface OtpInputProps {
   onComplete?: (code: string) => void;
 }
 
-const OtpInput: React.FC<OtpInputProps> = ({ length = 4, onComplete }) => {
+const OtpInput: React.FC<OtpInputProps> = ({ length = 6, onComplete }) => {
   const [otp, setOtp] = useState<string[]>(Array(length).fill(''));
   const inputRefs = useRef<TextInput[]>([]);
 
@@ -64,7 +64,7 @@ const OtpInput: React.FC<OtpInputProps> = ({ length = 4, onComplete }) => {
 
 const styles = StyleSheet.create({
   input: {
-    width: 65,
+    width: 40,
     height: 55,
     textAlign: 'center',
     fontSize: 22,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   underline: {
     height: 2,
-    width: 50,
+    width: 35,
     marginTop: 3,
   },
 });

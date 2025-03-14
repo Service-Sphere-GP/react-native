@@ -1,12 +1,42 @@
 import { View, Image, useWindowDimensions, Text } from 'react-native';
 import { router } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RegistrationSuccess = () => {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setRole(parsedUser.role);
+        } else {
+          setTimeout(() => {
+            router.push('/customer/login');
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+        setTimeout(() => {
+          router.push('/customer/login');
+        }, 100);
+      }
+    };
+
+    checkUser();
+  }, []);
 
   const handleGetStarted = () => {
-    router.push('/(otp)/home');
+    if (role === 'customer') {
+      router.push('/customer/login');
+    } else {
+      router.push('/provider/login');
+    }
   };
 
   return (

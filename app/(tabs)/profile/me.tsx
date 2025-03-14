@@ -40,6 +40,10 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
+  const navigateToPerosnalData = () => {
+    router.push('/profile/settings');
+  };
+
   return (
     <ScrollView>
       {user ? (
@@ -62,6 +66,7 @@ const ProfileComponent = () => {
                 title="Personal Data"
                 description="Manage your personal details"
                 image={require('@/assets/images/personalData.png')}
+                onPress={navigateToPerosnalData}
               />
               {user.role === 'service_provider' && (
                 <ProfileDetail

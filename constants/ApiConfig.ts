@@ -13,6 +13,7 @@ const API_ENDPOINTS = {
   Get_USER: '/users/:id',
   Delete_CUSTOMER: '/users/customers/:id',
   Delete_PROVIDER: '/users/service-providers/:id',
+  Verify_EMAIL: '/auth/verify-email/:id',
 
   // Add more endpoints as needed
 };

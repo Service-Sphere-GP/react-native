@@ -122,7 +122,12 @@ const Settings = () => {
       {user ? (
         <View className="px-1 py-4 xs:px-4 mt-12 gap-4">
           <View className="flex-row justify-between mr-2">
-            <Image source={require('@/assets/images/blackArrow.png')} />
+            <TouchableOpacity
+              onPress={() => router.push('/profile/me')}
+              className="flex-row items-center"
+            >
+              <Image source={require('@/assets/images/blackArrow.png')} />
+            </TouchableOpacity>
             <Text className="font-Roboto-Medium text-xl flex-1 text-center">
               Personal Data
             </Text>
