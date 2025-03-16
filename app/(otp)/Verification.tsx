@@ -69,6 +69,15 @@ const Verification = () => {
   const handleResend = () => {
     setShowError(false);
     setOtp('');
+    ApiService.post(API_ENDPOINTS.RESEND_OTP, { email })
+      .then((response: any) => {
+        if (response.data.status === 'success') {
+          console.log('OTP sent successfully');
+        }
+      })
+      .catch(() => {
+        console.error('Failed to resend OTP');
+      });
   };
 
   return (

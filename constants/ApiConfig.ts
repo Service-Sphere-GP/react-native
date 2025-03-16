@@ -14,6 +14,7 @@ const API_ENDPOINTS = {
   Delete_CUSTOMER: '/users/customers/:id',
   Delete_PROVIDER: '/users/service-providers/:id',
   Verify_EMAIL: '/auth/verify-email/:id',
+  RESEND_OTP: '/auth/resend-verification',
 
   // Add more endpoints as needed
 };
