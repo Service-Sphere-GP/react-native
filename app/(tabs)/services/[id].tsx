@@ -45,6 +45,8 @@ const ServiceDetailsPage = () => {
   useEffect(() => {
     const fetchServiceDetails = async () => {
       try {
+        setLoading(true);
+        
         const response: any = await ApiService.get(
           API_ENDPOINTS.Get_SERVICE_DETAILS.replace(':id', id as string),
         );
@@ -58,14 +60,20 @@ const ServiceDetailsPage = () => {
         );
 
         setProvider(providerResponse.data.data);
-        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch service details', error);
+        // Handle authentication errors
+        if ((error as any)?.response?.status === 401) {
+          // Redirect to login if unauthorized
+          router.push('/customer/login');
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchServiceDetails();
-  }, [id]);
+  }, [id, router]);
 
   const navigateHandler = () => {
     router.push(`/profile/${service?.service_provider_id}`);
@@ -127,12 +135,12 @@ const ServiceDetailsPage = () => {
               {service?.description}
             </Text>
           </View>
-          <View className="flex-row justify-between items-end mb-28">
+          <View className="flex-row justify-center xs:justify-between items-end mb-28">
             <View className="hidden xs:flex items-center">
               <Text className="font-Roboto-Medium text-lg">4.7</Text>
               <Rating readonly startingValue={4.7} imageSize={18} />
             </View>
-            <View className="xs:items-end w-full xs:w-fit">
+            <View className="xs:items-end">
               <Text className="font-Roboto text-lg text-center">
                 Base Price: {service?.base_price} EGP
               </Text>
