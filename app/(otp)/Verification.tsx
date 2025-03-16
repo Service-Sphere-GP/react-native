@@ -6,16 +6,44 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { router } from 'expo-router';
+import { useState, useEffect } from 'react';
 import CustomButton from '@/components/CustomButton';
 import OtpInput from '@/components/OtpInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ApiService from '@/constants/ApiService';
+import { API_ENDPOINTS } from '@/constants/ApiConfig';
 
-const EmailOtp2 = () => {
+const Verification = () => {
   const { width, height } = useWindowDimensions();
-  const { email } = useLocalSearchParams();
   const [otp, setOtp] = useState('');
   const [showError, setShowError] = useState(false);
+  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setEmail(parsedUser.email);
+          setId(parsedUser._id);
+        } else {
+          setTimeout(() => {
+            router.push('/customer/login');
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+        setTimeout(() => {
+          router.push('/customer/login');
+        }, 100);
+      }
+    };
+
+    checkUser();
+  }, []);
 
   const handleOtpComplete = (code: string) => {
     setOtp(code);
@@ -23,16 +51,33 @@ const EmailOtp2 = () => {
   };
 
   const handleConfirmCode = () => {
-    if (otp.length === 4) {
-      router.replace('/(otp)/RegistrationSuccess');
-    } else {
-      setShowError(true);
-    }
+    ApiService.post(API_ENDPOINTS.Verify_EMAIL.replace(':id', id as string), {
+      otp,
+    })
+      .then((response: any) => {
+        if (response.data.status === 'success') {
+          router.replace('/RegistrationSuccess');
+        } else {
+          setShowError(true);
+        }
+      })
+      .catch(() => {
+        setShowError(true);
+      });
   };
 
   const handleResend = () => {
     setShowError(false);
     setOtp('');
+    ApiService.post(API_ENDPOINTS.RESEND_OTP, { email })
+      .then((response: any) => {
+        if (response.data.status === 'success') {
+          console.log('OTP sent successfully');
+        }
+      })
+      .catch(() => {
+        console.error('Failed to resend OTP');
+      });
   };
 
   return (
@@ -44,10 +89,10 @@ const EmailOtp2 = () => {
       <View className="flex-1 bg-white">
         <TouchableOpacity
           className="mt-12 ml-6"
-          onPress={() => router.replace('/(otp)/EmailOtp')}
+          onPress={() => router.replace('/customer/register')}
         >
           <Image
-            source={require('../../assets/images/back-Icon.png')}
+            source={require('@/assets/images/back-Icon.png')}
             style={{ width: width * 0.035, height: height * 0.03 }}
             resizeMode="contain"
           />
@@ -55,7 +100,7 @@ const EmailOtp2 = () => {
 
         <View className="items-center mt-3">
           <Image
-            source={require('../../assets/images/OTP.png')}
+            source={require('@/assets/images/OTP.png')}
             style={{ width: width * 0.6, height: height * 0.25 }}
             resizeMode="contain"
           />
@@ -80,7 +125,7 @@ const EmailOtp2 = () => {
         {showError && (
           <View className="flex-row items-center px-6 mt-4">
             <Image
-              source={require('../../assets/images/xicon.png')}
+              source={require('@/assets/images/xicon.png')}
               style={{ width: width * 0.04, height: width * 0.04 }}
               resizeMode="contain"
               className="mr-2"
@@ -121,4 +166,4 @@ const EmailOtp2 = () => {
   );
 };
 
-export default EmailOtp2;
+export default Verification;

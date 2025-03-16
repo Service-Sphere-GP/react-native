@@ -34,7 +34,7 @@ const Register = () => {
     taxId: '',
   });
 
-  const { error, data, loading, providerRegister } = useRegister();
+  const { error, loading, providerRegister } = useRegister();
   const router = useRouter();
 
   const validateForm = (provider: Provider) => {
@@ -105,8 +105,7 @@ const Register = () => {
       provider.businessAddress,
       provider.taxId,
     ).then(() => {
-      // Redirect to OTP verification after successful registration
-      router.push('/(otp)/VerificationOptions');
+      router.push('/(otp)/Verification');
     });
   };
 
@@ -234,13 +233,6 @@ const Register = () => {
           onPress={handleRegister}
           disabled={loading || !checked}
         />
-
-        {data && (
-          <Text className="text-center text-2xl text-green-500">
-            Registeration Successful!
-          </Text>
-        )}
-
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Already have an account?{' '}
