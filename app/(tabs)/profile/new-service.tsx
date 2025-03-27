@@ -102,7 +102,7 @@ const NewService = () => {
     try {
       console.log('Images array before sending:', images);
       
-      // Try the alternative approach with pure FormData
+      // Create a new FormData instance
       const formData = new FormData();
       
       // Add text fields
@@ -116,18 +116,21 @@ const NewService = () => {
         JSON.stringify(service.service_attributes),
       );
 
-      // Add each image as a separate 'images' field
-      // This is the format that works with React Native and matches the curl example
-      images.forEach((uri) => {
-        formData.append('images', {
-          uri: uri,
-          type: 'image/jpeg',
-          name: uri.split('/').pop() || 'photo.jpg',
-        } as any);
-      });
+      // Convert images to blobs and append to FormData
+      await Promise.all(images.map(async (uri, index) => {
+        try {
+          // Fetch the image and convert to blob
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          
+          // Append blob to FormData with appropriate filename and type
+          formData.append('images', blob, `image_${index}.jpg`);
+        } catch (error) {
+          console.error(`Failed to process image ${index}:`, error);
+        }
+      }));
 
-      // Send FormData to server
-      console.log('Sending form data...');
+      // Send FormData to server with proper configuration
       const response = await ApiService.post(
         API_ENDPOINTS.CREATE_SERVICE,
         formData,
@@ -136,7 +139,7 @@ const NewService = () => {
             'Content-Type': 'multipart/form-data',
             Accept: 'application/json',
           },
-          transformRequest: (data) => data, // Important: don't transform FormData
+          transformRequest: (data) => data, // Don't transform FormData
         },
       );
       console.log('Response:', response);
