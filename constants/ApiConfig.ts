@@ -16,6 +16,7 @@ const API_ENDPOINTS = {
   Verify_EMAIL: '/auth/verify-email/:id',
   RESEND_OTP: '/auth/resend-verification',
   Get_SERVICE_DETAILS: '/services/:id',
+  CREATE_SERVICE: '/services',
 
   // Add more endpoints as needed
 };
