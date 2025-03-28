@@ -86,7 +86,7 @@ const Register = () => {
     return errors;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const errors = validateForm(provider);
     setErrorMessages(errors);
 
@@ -94,19 +94,24 @@ const Register = () => {
     if (hasErrors) {
       return;
     }
+    try {
+      const success = await providerRegister(
+        provider.email,
+        provider.password,
+        provider.firstName,
+        provider.lastName,
+        provider.confirmPassword,
+        provider.businessName,
+        provider.businessAddress,
+        provider.taxId,
+      );
 
-    providerRegister(
-      provider.email,
-      provider.password,
-      provider.firstName,
-      provider.lastName,
-      provider.confirmPassword,
-      provider.businessName,
-      provider.businessAddress,
-      provider.taxId,
-    ).then(() => {
-      router.push('/(otp)/Verification');
-    });
+      if (success) {
+        router.push('/(otp)/Verification');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (

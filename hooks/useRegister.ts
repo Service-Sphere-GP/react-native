@@ -76,8 +76,11 @@ const useRegister = () => {
       await AsyncStorage.multiSet([
         ['user', JSON.stringify(response.data.data)],
       ]);
+
+      return true;
     } catch (err: any) {
       setError(err.response?.data?.data?.message || 'Registration failed');
+      return false;
     } finally {
       setLoading(false);
     }
