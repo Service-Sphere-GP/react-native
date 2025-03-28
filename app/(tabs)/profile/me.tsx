@@ -44,6 +44,16 @@ const ProfileComponent = () => {
     router.push('/profile/settings');
   };
 
+  const logoutHandler = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('authToken');
+      router.push('/customer/login');
+    } catch (error) {
+      console.error('Failed to logout', error);
+    }
+  };
+
   return (
     <ScrollView>
       {user ? (
@@ -84,6 +94,7 @@ const ProfileComponent = () => {
                 title="Log out"
                 description="logging out will clear your session"
                 image={require('@/assets/images/logout.png')}
+                onPress={logoutHandler}
               />
             </View>
             <View className="bg-white rounded-3xl w-full">

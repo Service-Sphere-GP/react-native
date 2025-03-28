@@ -21,11 +21,12 @@ const ProfileHeader = ({
     >
       <View className="flex-row items-center gap-2">
         <Image
-          source={require('@/assets/images/UserImage.png')}
+          source={require('@/assets/images/anonymous.jpg')}
           style={{
             borderColor: '#fff',
-            borderWidth: 2,
             borderRadius: 100,
+            width: 60,
+            height: 60,
           }}
         />
         <View>
