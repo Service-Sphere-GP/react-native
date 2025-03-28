@@ -49,26 +49,24 @@ const NewService = () => {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           if (parsedUser.role === 'customer') {
-            setTimeout(() => {
-              router.push('/profile/me');
-            }, 100);
+            router.push('/profile/me');
+            return; // Don't set loading to false, we're redirecting
           }
         } else {
-          setTimeout(() => {
-            router.push('/customer/login');
-          }, 100);
+          router.push('/customer/login');
+          return; // Don't set loading to false, we're redirecting
         }
+
+        // Only set loading to false if we're not redirecting
+        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user data', error);
-        setTimeout(() => {
-          router.push('/customer/login');
-        }, 100);
+        router.push('/customer/login');
+        // Don't set loading to false, we're redirecting
       }
     };
 
     checkUser();
-
-    setLoading(false);
   }, [router]);
 
   const addImagesHandler = async () => {
@@ -101,10 +99,10 @@ const NewService = () => {
   const addNewServiceHandler = async () => {
     try {
       console.log('Images array before sending:', images);
-      
+
       // Create a new FormData instance
       const formData = new FormData();
-      
+
       // Add text fields
       formData.append('service_name', service.service_name);
       formData.append('description', service.description);
@@ -117,18 +115,20 @@ const NewService = () => {
       );
 
       // Convert images to blobs and append to FormData
-      await Promise.all(images.map(async (uri, index) => {
-        try {
-          // Fetch the image and convert to blob
-          const response = await fetch(uri);
-          const blob = await response.blob();
-          
-          // Append blob to FormData with appropriate filename and type
-          formData.append('images', blob, `image_${index}.jpg`);
-        } catch (error) {
-          console.error(`Failed to process image ${index}:`, error);
-        }
-      }));
+      await Promise.all(
+        images.map(async (uri, index) => {
+          try {
+            // Fetch the image and convert to blob
+            const response = await fetch(uri);
+            const blob = await response.blob();
+
+            // Append blob to FormData with appropriate filename and type
+            formData.append('images', blob, `image_${index}.jpg`);
+          } catch (error) {
+            console.error(`Failed to process image ${index}:`, error);
+          }
+        }),
+      );
 
       // Send FormData to server with proper configuration
       const response = await ApiService.post(
@@ -146,8 +146,10 @@ const NewService = () => {
 
       router.push('/profile/me');
     } catch (err: any) {
-      console.error('Error creating service:', 
-        err.response?.data || err.message || err);
+      console.error(
+        'Error creating service:',
+        err.response?.data || err.message || err,
+      );
     }
   };
 

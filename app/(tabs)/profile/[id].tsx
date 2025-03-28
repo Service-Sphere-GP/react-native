@@ -7,6 +7,7 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProfileDetail from '@/components/profile/ProfileDetail';
 import NotificationIcon from '@/assets/icons/Notification';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface User {
   first_name: string;
   last_name: string;
@@ -24,17 +25,29 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response: any = await ApiService.get(
-          API_ENDPOINTS.Get_USER.replace(':id', id as string),
-        );
-        setUser(response.data.data);
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          if (parsedUser._id === id) {
+            router.push('/profile/me');
+          } else {
+            const response: any = await ApiService.get(
+              API_ENDPOINTS.Get_USER.replace(':id', id as string),
+            );
+            setUser(response.data.data);
+          }
+        } else {
+          setTimeout(() => {
+            router.push('/customer/login');
+          }, 100);
+        }
       } catch (error) {
         console.error('Failed to fetch profile data:', error);
       }
     };
 
     fetchProfile();
-  }, [id]);
+  }, [id, router]);
 
   return (
     <View>
