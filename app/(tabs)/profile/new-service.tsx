@@ -96,6 +96,16 @@ const NewService = () => {
     }
   };
 
+  const removeImageHandler = (index: number) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+    setService((prev) => ({
+      ...prev,
+      images: newImages,
+    }));
+  };
+
   const addNewServiceHandler = async () => {
     try {
       console.log('Images array before sending:', images);
@@ -198,11 +208,18 @@ const NewService = () => {
                 className="mt-3"
               >
                 {images.map((image, index) => (
-                  <View key={index} className="mr-3">
+                  <View key={index} className="mr-3 relative">
                     <Image
                       source={{ uri: image }}
                       style={{ width: 130, height: 108, borderRadius: 10 }}
                     />
+                    <TouchableOpacity
+                      onPress={() => removeImageHandler(index)}
+                      className="absolute top-1 right-1 rounded-full w-6 h-6 flex items-center justify-center"
+                      style={{ backgroundColor: 'rgba(255, 59, 48, 1)' }}
+                    >
+                      <Text className="text-white font-bold text-xs">✕</Text>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </ScrollView>

@@ -135,7 +135,7 @@ const Settings = () => {
           </View>
           <View>
             <Image
-              source={require('@/assets/images/largeUser.png')}
+              source={require('@/assets/images/anonymous.jpg')}
               style={{
                 width: 118,
                 height: 118,
