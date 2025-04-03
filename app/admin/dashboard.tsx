@@ -127,7 +127,7 @@ export default function AdminDashboard() {
     try {
       setIsUpdating(true);
       
-      const response = await ApiService.put(`/service-providers/${providerId}/verification`, {
+      const response = await ApiService.patch(`/users/service-providers/${providerId}`, {
         verification_status: status
       });
       
