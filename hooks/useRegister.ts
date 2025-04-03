@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import ApiService from '../constants/ApiService';
 import { API_ENDPOINTS } from '../constants/ApiConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Define types for the response data and error
-type RegisterData = any; // Replace with your actual register response type
 type RegisterError = string | null;
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<RegisterError>(null);
-  const [data, setData] = useState<RegisterData | null>(null);
 
   const customerRegister = async (
     email: string,
@@ -20,10 +19,9 @@ const useRegister = () => {
   ) => {
     setLoading(true);
     setError(null);
-    setData(null);
 
     try {
-      const response = await ApiService.post(
+      const response: any = await ApiService.post(
         API_ENDPOINTS.REGISTER + '/customer',
         {
           email,
@@ -34,9 +32,14 @@ const useRegister = () => {
         },
       );
 
-      setData(response.data);
+      await AsyncStorage.multiSet([
+        ['user', JSON.stringify(response.data.data)],
+      ]);
+
+      return true;
     } catch (err: any) {
       setError(err.response?.data?.data?.message || 'Registration failed');
+      return false;
     } finally {
       setLoading(false);
     }
@@ -54,10 +57,9 @@ const useRegister = () => {
   ) => {
     setLoading(true);
     setError(null);
-    setData(null);
 
     try {
-      const response = await ApiService.post(
+      const response: any = await ApiService.post(
         API_ENDPOINTS.REGISTER + '/service-provider',
         {
           email,
@@ -71,9 +73,14 @@ const useRegister = () => {
         },
       );
 
-      setData(response.data);
+      await AsyncStorage.multiSet([
+        ['user', JSON.stringify(response.data.data)],
+      ]);
+
+      return true;
     } catch (err: any) {
       setError(err.response?.data?.data?.message || 'Registration failed');
+      return false;
     } finally {
       setLoading(false);
     }
@@ -84,7 +91,6 @@ const useRegister = () => {
     providerRegister,
     loading,
     error,
-    data,
   };
 };
 

@@ -50,8 +50,23 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
+
   const handleAdminAccess = () => {
     router.push('/admin/login');
+  }
+  const navigateToPerosnalData = () => {
+    router.push('/profile/settings');
+  };
+
+  const logoutHandler = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('authToken');
+      router.push('/customer/login');
+    } catch (error) {
+      console.error('Failed to logout', error);
+    }
+
   };
 
   return (
@@ -76,20 +91,14 @@ const ProfileComponent = () => {
                 title="Personal Data"
                 description="Manage your personal details"
                 image={require('@/assets/images/personalData.png')}
+                onPress={navigateToPerosnalData}
               />
-              {user.role === 'provider' && (
-                <>
-                  <ProfileDetail
-                    title="Services"
-                    description="Manage your services"
-                    image={require('@/assets/images/services.png')}
-                  />
-                  <ProfileDetail
-                    title="Time Slots"
-                    description="Available time slots"
-                    image={require('@/assets/images/timeSlots.png')}
-                  />
-                </>
+              {user.role === 'service_provider' && (
+                <ProfileDetail
+                  title="Services"
+                  description="Manage your services"
+                  image={require('@/assets/images/services.png')}
+                />
               )}
               <ProfileDetail
                 title="Reviews"
@@ -100,6 +109,7 @@ const ProfileComponent = () => {
                 title="Log out"
                 description="logging out will clear your session"
                 image={require('@/assets/images/logout.png')}
+                onPress={logoutHandler}
               />
             </View>
             <View className="bg-white rounded-3xl w-full">

@@ -27,7 +27,7 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  const { error, data, loading, customerRegister } = useRegister();
+  const { error, loading, customerRegister } = useRegister();
 
   const validateForm = (customer: Customer) => {
     const errors = {
@@ -63,7 +63,7 @@ const Register = () => {
     return errors;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const errors = validateForm(customer);
     setErrorMessages(errors);
 
@@ -72,15 +72,23 @@ const Register = () => {
       return;
     }
 
-    customerRegister(
-      customer.email,
-      customer.password,
-      customer.firstName,
-      customer.lastName,
-      customer.confirmPassword,
-    ).then(() => {
-      router.push('/(otp)/VerificationOptions');
-    });
+    try {
+      const success = await customerRegister(
+        customer.email,
+        customer.password,
+        customer.firstName,
+        customer.lastName,
+        customer.confirmPassword,
+      );
+
+      console.log('success', success);
+
+      if (success) {
+        router.push('/(otp)/Verification');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -174,12 +182,6 @@ const Register = () => {
           onPress={handleRegister}
           disabled={loading || !checked}
         />
-
-        {data && (
-          <Text className="text-center text-2xl text-green-500">
-            Registeration Successful!
-          </Text>
-        )}
 
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">

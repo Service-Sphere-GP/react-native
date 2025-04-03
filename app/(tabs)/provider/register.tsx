@@ -34,7 +34,7 @@ const Register = () => {
     taxId: '',
   });
 
-  const { error, data, loading, providerRegister } = useRegister();
+  const { error, loading, providerRegister } = useRegister();
   const router = useRouter();
 
   const validateForm = (provider: Provider) => {
@@ -86,7 +86,7 @@ const Register = () => {
     return errors;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const errors = validateForm(provider);
     setErrorMessages(errors);
 
@@ -94,20 +94,24 @@ const Register = () => {
     if (hasErrors) {
       return;
     }
+    try {
+      const success = await providerRegister(
+        provider.email,
+        provider.password,
+        provider.firstName,
+        provider.lastName,
+        provider.confirmPassword,
+        provider.businessName,
+        provider.businessAddress,
+        provider.taxId,
+      );
 
-    providerRegister(
-      provider.email,
-      provider.password,
-      provider.firstName,
-      provider.lastName,
-      provider.confirmPassword,
-      provider.businessName,
-      provider.businessAddress,
-      provider.taxId,
-    ).then(() => {
-      // Redirect to OTP verification after successful registration
-      router.push('/(otp)/VerificationOptions');
-    });
+      if (success) {
+        router.push('/(otp)/Verification');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -234,13 +238,6 @@ const Register = () => {
           onPress={handleRegister}
           disabled={loading || !checked}
         />
-
-        {data && (
-          <Text className="text-center text-2xl text-green-500">
-            Registeration Successful!
-          </Text>
-        )}
-
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Already have an account?{' '}

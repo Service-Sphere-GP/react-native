@@ -11,7 +11,7 @@ const apiClient = axios.create({
   },
 });
 
-// Add request interceptor for authentication tokens if needed
+// Add request interceptor for authentication tokens
 apiClient.interceptors.request.use(
   async (config) => {
     // Add auth token from AsyncStorage
