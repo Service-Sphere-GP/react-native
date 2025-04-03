@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,6 +16,7 @@ const ProfileComponent = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const [showAdminOption, setShowAdminOption] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -24,6 +25,15 @@ const ProfileComponent = () => {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser);
+          
+          // Check if user is admin or has admin privileges
+          if (parsedUser.role === 'admin') {
+            setShowAdminOption(true);
+          } else {
+            // For development purposes, allow accessing admin panel from non-admin accounts
+            // In production, you might want to remove this or add more secure conditions
+            setShowAdminOption(true);
+          }
         } else {
           setTimeout(() => {
             router.push('/customer/login');
@@ -40,6 +50,10 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
+
+  const handleAdminAccess = () => {
+    router.push('/admin/login');
+  }
   const navigateToPerosnalData = () => {
     router.push('/profile/settings');
   };
@@ -52,6 +66,7 @@ const ProfileComponent = () => {
     } catch (error) {
       console.error('Failed to logout', error);
     }
+
   };
 
   return (
@@ -108,6 +123,27 @@ const ProfileComponent = () => {
                 description={null}
                 image={require('@/assets/images/info.png')}
               />
+              
+              {/* Admin Panel Access Button */}
+              {showAdminOption && (
+                <TouchableOpacity onPress={handleAdminAccess}>
+                  <View className="flex-row justify-between p-4 items-center border-t border-[#f5f5f5]">
+                    <View className="flex-row gap-4">
+                      <View className="w-10 h-10 rounded-full bg-[#FFF9C4] items-center justify-center">
+                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">A</Text>
+                      </View>
+                      <View className="justify-center">
+                        <Text className="font-Roboto-Medium text-base text-[#147E93]">
+                          Admin Panel
+                        </Text>
+                        <Text className="text-[#676B73] text-sm font-Roboto">
+                          Access administration dashboard
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>

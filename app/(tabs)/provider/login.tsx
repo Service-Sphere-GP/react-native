@@ -5,6 +5,7 @@ import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
 import { Link, useRouter } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
+import ToastService from '../../../constants/ToastService';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -42,18 +43,21 @@ const Login = () => {
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
     if (hasErrors) {
+      const errorMessage = Object.values(errors).find(error => error.length > 0) || 'Please check your input';
+      ToastService.error('Validation Error', errorMessage);
       return;
     }
 
-    try {
-      const success = await login(email, password);
-
-      if (success) {
-        router.push('/profile/me');
-      }
-    } catch (err) {
-      console.error('Login error:', err);
-    }
+    login(email, password)
+      .then(success => {
+        if (success) {
+          ToastService.success('Login Successful', 'Welcome back!');
+        }
+      })
+      .catch(err => {
+        console.error('Login error:', err);
+        ToastService.error('Login Failed', 'Please check your credentials and try again');
+      });
   };
 
   return (
@@ -91,12 +95,6 @@ const Login = () => {
             Reset it
           </Text>
         </Text>
-
-        {error && (
-          <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
-            {error}
-          </Text>
-        )}
 
         <CustomButton
           title="Login"

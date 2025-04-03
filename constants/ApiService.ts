@@ -14,10 +14,14 @@ const apiClient = axios.create({
 // Add request interceptor for authentication tokens
 apiClient.interceptors.request.use(
   async (config) => {
-    // Get auth token from AsyncStorage
-    const token = await AsyncStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Add auth token from AsyncStorage
+    try {
+      const token = await AsyncStorage.getItem('adminToken');
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (error) {
+      console.error('Error getting token from AsyncStorage:', error);
     }
     return config;
   },
