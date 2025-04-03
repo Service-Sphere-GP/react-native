@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView, TextInput, ActivityIndicator, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
@@ -179,15 +179,11 @@ export default function AdminDashboard() {
       )
     : providers;
 
-  // Only render on web platform
-  if (Platform.OS !== 'web') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Admin Panel is only available on web</Text>
-      </View>
-    );
-  }
+  // Only show limited functionality on mobile
+  const isMobile = Platform.OS !== 'web';
+  const screenWidth = Dimensions.get('window').width;
 
+  // Removed platform restriction to allow mobile access
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -206,7 +202,7 @@ export default function AdminDashboard() {
         <Text style={styles.headerTitle}>Admin Dashboard</Text>
         <View style={styles.userInfo}>
           <Text style={styles.userInfoText}>
-            {adminUser.full_name} ({adminUser.email})
+            {adminUser.full_name} {!isMobile && `(${adminUser.email})`}
           </Text>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Logout</Text>
@@ -215,26 +211,36 @@ export default function AdminDashboard() {
       </View>
       
       <ScrollView style={styles.scrollView}>
-        <View style={styles.content}>
+        <View style={[styles.content, isMobile && styles.mobileContent]}>
           {/* Stats Cards */}
-          <View style={styles.statsContainer}>
-            <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
+          <View style={[styles.statsContainer, isMobile && styles.mobileStatsContainer]}>
+            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#E3F2FD' }]}>
               <Text style={styles.statNumber}>{stats.total}</Text>
               <Text style={styles.statLabel}>Total Providers</Text>
             </View>
-            <View style={[styles.statCard, { backgroundColor: '#FFF9C4' }]}>
+            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#FFF9C4' }]}>
               <Text style={styles.statNumber}>{stats.pending}</Text>
-              <Text style={styles.statLabel}>Pending Verification</Text>
+              <Text style={styles.statLabel}>Pending</Text>
             </View>
-            <View style={[styles.statCard, { backgroundColor: '#E8F5E9' }]}>
+            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#E8F5E9' }]}>
               <Text style={styles.statNumber}>{stats.approved}</Text>
               <Text style={styles.statLabel}>Approved</Text>
             </View>
-            <View style={[styles.statCard, { backgroundColor: '#FFEBEE' }]}>
+            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#FFEBEE' }]}>
               <Text style={styles.statNumber}>{stats.rejected}</Text>
               <Text style={styles.statLabel}>Rejected</Text>
             </View>
           </View>
+
+          {/* Mobile notice */}
+          {isMobile && (
+            <View style={styles.mobileNotice}>
+              <Text style={styles.mobileNoticeText}>
+                You're using the mobile version of the admin dashboard with limited functionality.
+                For full access, please use a desktop browser.
+              </Text>
+            </View>
+          )}
 
           {/* Pending Verification Card */}
           <View style={styles.card}>
@@ -541,4 +547,28 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
     fontFamily: 'Roboto-Bold',
   },
-}); 
+  mobileContent: {
+    padding: 10,
+  },
+  mobileStatsContainer: {
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  mobileStatCard: {
+    width: '48%',
+    marginBottom: 10,
+  },
+  mobileNotice: {
+    backgroundColor: '#FFF3E0',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FFB74D',
+  },
+  mobileNoticeText: {
+    color: '#E65100',
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+  },
+});

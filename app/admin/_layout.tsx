@@ -1,18 +1,13 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import { Platform, View, Text, StyleSheet } from 'react-native';
+import { Platform, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../../constants/Colors';
+import { useRouter } from 'expo-router';
 
 export default function AdminLayout() {
-  // Only render on web platform
-  if (Platform.OS !== 'web') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Admin Panel is only available on web</Text>
-      </View>
-    );
-  }
+  const router = useRouter();
 
+  // Removed the platform restriction
   return (
     <Stack
       screenOptions={{
@@ -39,4 +34,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Roboto-Medium',
   },
-}); 
+});

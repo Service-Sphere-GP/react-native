@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, ActivityIndicator, ScrollView, Image } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
@@ -83,58 +83,68 @@ export default function AdminLogin() {
     }
   };
 
-  // Only render on web platform
-  if (Platform.OS !== 'web') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Admin Panel is only available on web</Text>
-      </View>
-    );
-  }
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.loginBox}>
-        <Text style={styles.title}>Admin Login</Text>
+    <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.contentContainer}>
+        {/* Back button for mobile */}
+        {Platform.OS !== 'web' && (
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <Text style={styles.backButtonText}>← Back</Text>
+          </TouchableOpacity>
+        )}
         
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Enter your email"
-            placeholderTextColor="#687076"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+        {/* Logo or Icon - Optional */}
+        <View style={styles.logoContainer}>
+          <Text style={styles.logoText}>Service Sphere</Text>
+          <Text style={styles.adminText}>Admin Portal</Text>
         </View>
         
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Enter your password"
-            placeholderTextColor="#687076"
-            secureTextEntry
-          />
+        <View style={[styles.loginBox, Platform.OS !== 'web' && styles.mobileLoginBox]}>
+          <Text style={styles.title}>Admin Login</Text>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              placeholderTextColor="#687076"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+          
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Enter your password"
+              placeholderTextColor="#687076"
+              secureTextEntry
+            />
+          </View>
+          
+          <TouchableOpacity 
+            style={styles.loginButton} 
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={styles.loginButtonText}>Login</Text>
+            )}
+          </TouchableOpacity>
         </View>
-        
-        <TouchableOpacity 
-          style={styles.loginButton} 
-          onPress={handleLogin}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <Text style={styles.loginButtonText}>Login</Text>
-          )}
-        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -142,8 +152,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.light.background,
+  },
+  contentContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 10,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: Colors.light.tint,
+    fontFamily: 'Roboto-Medium',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  logoText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#147E93',
+    fontFamily: 'Roboto-Bold',
+  },
+  adminText: {
+    fontSize: 18,
+    color: '#FDBC10',
+    fontFamily: 'Roboto-Medium',
+    marginTop: 5,
   },
   loginBox: {
     width: 400,
@@ -155,6 +196,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
+  },
+  mobileLoginBox: {
+    width: '100%',
+    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -198,4 +243,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Roboto-Bold',
   },
-}); 
+});
