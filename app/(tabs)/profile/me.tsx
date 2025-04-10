@@ -57,6 +57,9 @@ const ProfileComponent = () => {
   const navigateToPerosnalData = () => {
     router.push('/profile/settings');
   };
+  const navigateToMyServices = () => {
+    router.push('/profile/my-services');
+  };
 
   const logoutHandler = async () => {
     try {
@@ -98,6 +101,7 @@ const ProfileComponent = () => {
                   title="Services"
                   description="Manage your services"
                   image={require('@/assets/images/services.png')}
+                  onPress={navigateToMyServices}
                 />
               )}
               <ProfileDetail
