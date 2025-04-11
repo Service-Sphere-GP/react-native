@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
 import ToastService from '../../../constants/ToastService';
 
@@ -11,14 +11,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const router = useRouter();
-
   const [errorMessages, setErrorMessages] = useState({
     email: '',
     password: '',
   });
 
-  const { login, loading, error } = useLogin();
+  const { login, loading } = useLogin();
 
   const validateForm = (user: { email: string; password: string }) => {
     const errors = {
@@ -43,20 +41,25 @@ const Login = () => {
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
     if (hasErrors) {
-      const errorMessage = Object.values(errors).find(error => error.length > 0) || 'Please check your input';
+      const errorMessage =
+        Object.values(errors).find((error) => error.length > 0) ||
+        'Please check your input';
       ToastService.error('Validation Error', errorMessage);
       return;
     }
 
     login(email, password)
-      .then(success => {
+      .then((success) => {
         if (success) {
           ToastService.success('Login Successful', 'Welcome back!');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error('Login error:', err);
-        ToastService.error('Login Failed', 'Please check your credentials and try again');
+        ToastService.error(
+          'Login Failed',
+          'Please check your credentials and try again',
+        );
       });
   };
 

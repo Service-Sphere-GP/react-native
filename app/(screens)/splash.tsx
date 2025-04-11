@@ -1,16 +1,15 @@
-import { View, Text, Image, useWindowDimensions } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 
 export default function SplashScreen() {
   const router = useRouter();
-  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     setTimeout(() => {
       router.push('/(tabs)');
     }, 2000);
-  }, []);
+  }, [router]);
 
   return (
     <View className="flex-1 bg-[#f8f7f8] justify-center items-center">

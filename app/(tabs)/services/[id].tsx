@@ -46,7 +46,7 @@ const ServiceDetailsPage = () => {
     const fetchServiceDetails = async () => {
       try {
         setLoading(true);
-        
+
         const response: any = await ApiService.get(
           API_ENDPOINTS.Get_SERVICE_DETAILS.replace(':id', id as string),
         );

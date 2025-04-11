@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView, TextInput, ActivityIndicator, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  ScrollView,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
@@ -40,14 +49,16 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const [providers, setProviders] = useState<ServiceProvider[]>([]);
-  const [pendingProviders, setPendingProviders] = useState<ServiceProvider[]>([]);
+  const [pendingProviders, setPendingProviders] = useState<ServiceProvider[]>(
+    [],
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
     approved: 0,
-    rejected: 0
+    rejected: 0,
   });
 
   useEffect(() => {
@@ -57,13 +68,13 @@ export default function AdminDashboard() {
         const adminAuth = await AsyncStorage.getItem('adminAuthenticated');
         const adminUserStr = await AsyncStorage.getItem('adminUser');
         const adminToken = await AsyncStorage.getItem('adminToken');
-        
+
         if (adminAuth !== 'true' || !adminUserStr || !adminToken) {
           // Redirect to login if not authenticated
           router.replace('/admin/login');
         } else {
           const user = JSON.parse(adminUserStr) as AdminUser;
-          
+
           // Verify the user has admin role
           if (user.role !== 'admin') {
             await AsyncStorage.removeItem('adminAuthenticated');
@@ -72,10 +83,10 @@ export default function AdminDashboard() {
             router.replace('/admin/login');
             return;
           }
-          
+
           setAdminUser(user);
           setIsAuthenticated(true);
-          
+
           // Load service providers
           fetchServiceProviders();
         }
@@ -94,26 +105,40 @@ export default function AdminDashboard() {
     try {
       setIsLoading(true);
       const response = await ApiService.get('/users/service-providers');
-      
+
       if (response.data && response.data.status === 'success') {
         const allProviders = response.data.data as ServiceProvider[];
         setProviders(allProviders);
-        
+
         // Filter pending providers
-        const pending = allProviders.filter(p => p.verification_status === 'pending');
+        const pending = allProviders.filter(
+          (p) => p.verification_status === 'pending',
+        );
         setPendingProviders(pending);
-        
+
         // Calculate stats
         setStats({
           total: allProviders.length,
-          pending: allProviders.filter(p => p.verification_status === 'pending').length,
-          approved: allProviders.filter(p => p.verification_status === 'approved').length,
-          rejected: allProviders.filter(p => p.verification_status === 'rejected').length
+          pending: allProviders.filter(
+            (p) => p.verification_status === 'pending',
+          ).length,
+          approved: allProviders.filter(
+            (p) => p.verification_status === 'approved',
+          ).length,
+          rejected: allProviders.filter(
+            (p) => p.verification_status === 'rejected',
+          ).length,
         });
-        
-        ToastService.success('Data Loaded', 'Service provider data loaded successfully');
+
+        ToastService.success(
+          'Data Loaded',
+          'Service provider data loaded successfully',
+        );
       } else {
-        ToastService.error('Data Error', 'Failed to load service provider data');
+        ToastService.error(
+          'Data Error',
+          'Failed to load service provider data',
+        );
       }
     } catch (error) {
       console.error('Error fetching service providers:', error);
@@ -123,28 +148,40 @@ export default function AdminDashboard() {
     }
   };
 
-  const updateVerificationStatus = async (providerId: string, status: 'approved' | 'rejected') => {
+  const updateVerificationStatus = async (
+    providerId: string,
+    status: 'approved' | 'rejected',
+  ) => {
     try {
       setIsUpdating(true);
-      
-      const response = await ApiService.patch(`/users/service-providers/${providerId}`, {
-        verification_status: status
-      });
-      
+
+      const response = await ApiService.patch(
+        `/users/service-providers/${providerId}`,
+        {
+          verification_status: status,
+        },
+      );
+
       if (response.data && response.data.status === 'success') {
         // Refresh the provider list
         fetchServiceProviders();
-        
+
         ToastService.success(
-          'Status Updated', 
-          `Provider verification status updated to ${status}`
+          'Status Updated',
+          `Provider verification status updated to ${status}`,
         );
       } else {
-        ToastService.error('Update Failed', 'Failed to update verification status');
+        ToastService.error(
+          'Update Failed',
+          'Failed to update verification status',
+        );
       }
     } catch (error) {
       console.error('Error updating verification status:', error);
-      ToastService.error('Update Failed', 'Failed to update verification status');
+      ToastService.error(
+        'Update Failed',
+        'Failed to update verification status',
+      );
     } finally {
       setIsUpdating(false);
     }
@@ -154,15 +191,15 @@ export default function AdminDashboard() {
     try {
       // Get user name before clearing storage
       const userName = adminUser?.full_name || 'Admin';
-      
+
       // Clear admin session data
       await AsyncStorage.removeItem('adminAuthenticated');
       await AsyncStorage.removeItem('adminToken');
       await AsyncStorage.removeItem('adminUser');
-      
+
       // Show logout toast
       ToastService.success('Logged Out Successfully', `Goodbye, ${userName}!`);
-      
+
       // Navigate to login page
       router.replace('/admin/login');
     } catch (error) {
@@ -171,17 +208,17 @@ export default function AdminDashboard() {
     }
   };
 
-  const filteredProviders = searchQuery 
-    ? providers.filter(p => 
-        p.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.business_name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProviders = searchQuery
+    ? providers.filter(
+        (p) =>
+          p.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.business_name.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : providers;
 
   // Only show limited functionality on mobile
   const isMobile = Platform.OS !== 'web';
-  const screenWidth = Dimensions.get('window').width;
 
   // Removed platform restriction to allow mobile access
   if (isLoading) {
@@ -209,24 +246,53 @@ export default function AdminDashboard() {
           </TouchableOpacity>
         </View>
       </View>
-      
+
       <ScrollView style={styles.scrollView}>
         <View style={[styles.content, isMobile && styles.mobileContent]}>
           {/* Stats Cards */}
-          <View style={[styles.statsContainer, isMobile && styles.mobileStatsContainer]}>
-            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#E3F2FD' }]}>
+          <View
+            style={[
+              styles.statsContainer,
+              isMobile && styles.mobileStatsContainer,
+            ]}
+          >
+            <View
+              style={[
+                styles.statCard,
+                isMobile && styles.mobileStatCard,
+                { backgroundColor: '#E3F2FD' },
+              ]}
+            >
               <Text style={styles.statNumber}>{stats.total}</Text>
               <Text style={styles.statLabel}>Total Providers</Text>
             </View>
-            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#FFF9C4' }]}>
+            <View
+              style={[
+                styles.statCard,
+                isMobile && styles.mobileStatCard,
+                { backgroundColor: '#FFF9C4' },
+              ]}
+            >
               <Text style={styles.statNumber}>{stats.pending}</Text>
               <Text style={styles.statLabel}>Pending</Text>
             </View>
-            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#E8F5E9' }]}>
+            <View
+              style={[
+                styles.statCard,
+                isMobile && styles.mobileStatCard,
+                { backgroundColor: '#E8F5E9' },
+              ]}
+            >
               <Text style={styles.statNumber}>{stats.approved}</Text>
               <Text style={styles.statLabel}>Approved</Text>
             </View>
-            <View style={[styles.statCard, isMobile && styles.mobileStatCard, { backgroundColor: '#FFEBEE' }]}>
+            <View
+              style={[
+                styles.statCard,
+                isMobile && styles.mobileStatCard,
+                { backgroundColor: '#FFEBEE' },
+              ]}
+            >
               <Text style={styles.statNumber}>{stats.rejected}</Text>
               <Text style={styles.statLabel}>Rejected</Text>
             </View>
@@ -236,8 +302,9 @@ export default function AdminDashboard() {
           {isMobile && (
             <View style={styles.mobileNotice}>
               <Text style={styles.mobileNoticeText}>
-                You're using the mobile version of the admin dashboard with limited functionality.
-                For full access, please use a desktop browser.
+                You're using the mobile version of the admin dashboard with
+                limited functionality. For full access, please use a desktop
+                browser.
               </Text>
             </View>
           )}
@@ -248,22 +315,35 @@ export default function AdminDashboard() {
             {pendingProviders.length === 0 ? (
               <Text style={styles.emptyMessage}>No pending verifications</Text>
             ) : (
-              pendingProviders.map(provider => (
+              pendingProviders.map((provider) => (
                 <View key={provider._id} style={styles.providerItem}>
                   <View style={styles.providerInfo}>
-                    <Text style={styles.providerName}>{provider.full_name}</Text>
-                    <Text style={styles.providerBusiness}>{provider.business_name}</Text>
-                    <Text style={styles.providerDetail}>Email: {provider.email}</Text>
-                    <Text style={styles.providerDetail}>Tax ID: {provider.tax_id}</Text>
-                    <Text style={styles.providerDetail}>Address: {provider.business_address}</Text>
+                    <Text style={styles.providerName}>
+                      {provider.full_name}
+                    </Text>
+                    <Text style={styles.providerBusiness}>
+                      {provider.business_name}
+                    </Text>
                     <Text style={styles.providerDetail}>
-                      Registered: {new Date(provider.created_at).toLocaleDateString()}
+                      Email: {provider.email}
+                    </Text>
+                    <Text style={styles.providerDetail}>
+                      Tax ID: {provider.tax_id}
+                    </Text>
+                    <Text style={styles.providerDetail}>
+                      Address: {provider.business_address}
+                    </Text>
+                    <Text style={styles.providerDetail}>
+                      Registered:{' '}
+                      {new Date(provider.created_at).toLocaleDateString()}
                     </Text>
                   </View>
                   <View style={styles.actionButtons}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={[styles.actionButton, styles.approveButton]}
-                      onPress={() => updateVerificationStatus(provider._id, 'approved')}
+                      onPress={() =>
+                        updateVerificationStatus(provider._id, 'approved')
+                      }
                       disabled={isUpdating}
                     >
                       {isUpdating ? (
@@ -272,9 +352,11 @@ export default function AdminDashboard() {
                         <Text style={styles.actionButtonText}>Approve</Text>
                       )}
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={[styles.actionButton, styles.rejectButton]}
-                      onPress={() => updateVerificationStatus(provider._id, 'rejected')}
+                      onPress={() =>
+                        updateVerificationStatus(provider._id, 'rejected')
+                      }
                       disabled={isUpdating}
                     >
                       {isUpdating ? (
@@ -298,45 +380,63 @@ export default function AdminDashboard() {
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
-            
+
             {filteredProviders.length === 0 ? (
               <Text style={styles.emptyMessage}>No providers found</Text>
             ) : (
-              filteredProviders.map(provider => (
+              filteredProviders.map((provider) => (
                 <View key={provider._id} style={styles.providerItem}>
                   <View style={styles.providerInfo}>
-                    <Text style={styles.providerName}>{provider.full_name}</Text>
-                    <Text style={styles.providerBusiness}>{provider.business_name}</Text>
-                    <Text style={styles.providerDetail}>Email: {provider.email}</Text>
+                    <Text style={styles.providerName}>
+                      {provider.full_name}
+                    </Text>
+                    <Text style={styles.providerBusiness}>
+                      {provider.business_name}
+                    </Text>
+                    <Text style={styles.providerDetail}>
+                      Email: {provider.email}
+                    </Text>
                     <View style={styles.statusBadge}>
-                      <Text style={[
-                        styles.statusText,
-                        provider.verification_status === 'approved' ? styles.approvedText :
-                        provider.verification_status === 'rejected' ? styles.rejectedText :
-                        styles.pendingText
-                      ]}>
+                      <Text
+                        style={[
+                          styles.statusText,
+                          provider.verification_status === 'approved'
+                            ? styles.approvedText
+                            : provider.verification_status === 'rejected'
+                              ? styles.rejectedText
+                              : styles.pendingText,
+                        ]}
+                      >
                         {provider.verification_status.toUpperCase()}
                       </Text>
                     </View>
                   </View>
                   {provider.verification_status !== 'pending' && (
                     <View style={styles.actionButtons}>
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         style={[
-                          styles.actionButton, 
-                          provider.verification_status === 'rejected' ? styles.approveButton : styles.rejectButton
+                          styles.actionButton,
+                          provider.verification_status === 'rejected'
+                            ? styles.approveButton
+                            : styles.rejectButton,
                         ]}
-                        onPress={() => updateVerificationStatus(
-                          provider._id, 
-                          provider.verification_status === 'rejected' ? 'approved' : 'rejected'
-                        )}
+                        onPress={() =>
+                          updateVerificationStatus(
+                            provider._id,
+                            provider.verification_status === 'rejected'
+                              ? 'approved'
+                              : 'rejected',
+                          )
+                        }
                         disabled={isUpdating}
                       >
                         {isUpdating ? (
                           <ActivityIndicator size="small" color="#fff" />
                         ) : (
                           <Text style={styles.actionButtonText}>
-                            {provider.verification_status === 'rejected' ? 'Approve' : 'Reject'}
+                            {provider.verification_status === 'rejected'
+                              ? 'Approve'
+                              : 'Reject'}
                           </Text>
                         )}
                       </TouchableOpacity>

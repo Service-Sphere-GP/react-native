@@ -25,7 +25,7 @@ const ProfileComponent = () => {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser);
-          
+
           // Check if user is admin or has admin privileges
           if (parsedUser.role === 'admin') {
             setShowAdminOption(true);
@@ -50,10 +50,9 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
-
   const handleAdminAccess = () => {
     router.push('/admin/login');
-  }
+  };
   const navigateToPerosnalData = () => {
     router.push('/profile/settings');
   };
@@ -69,7 +68,6 @@ const ProfileComponent = () => {
     } catch (error) {
       console.error('Failed to logout', error);
     }
-
   };
 
   return (
@@ -127,14 +125,16 @@ const ProfileComponent = () => {
                 description={null}
                 image={require('@/assets/images/info.png')}
               />
-              
+
               {/* Admin Panel Access Button */}
               {showAdminOption && (
                 <TouchableOpacity onPress={handleAdminAccess}>
                   <View className="flex-row justify-between p-4 items-center border-t border-[#f5f5f5]">
                     <View className="flex-row gap-4">
                       <View className="w-10 h-10 rounded-full bg-[#FFF9C4] items-center justify-center">
-                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">A</Text>
+                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">
+                          A
+                        </Text>
                       </View>
                       <View className="justify-center">
                         <Text className="font-Roboto-Medium text-base text-[#147E93]">

@@ -95,7 +95,7 @@ const MyServices = () => {
               className="flex-row py-3 w-full items-center"
             >
               <Image
-                source={{uri: item.images[0]}}
+                source={{ uri: item.images[0] }}
                 className="rounded-full mr-3"
                 style={{
                   width: imageSize,
@@ -116,14 +116,8 @@ const MyServices = () => {
 
                 <View className="flex-row items-center justify-between">
                   <View className="flex-row items-center gap-1">
-                    <Text className="text-sm text-[#030B19] mr-1">
-                      4.5
-                    </Text>
-                    <Rating
-                      readonly
-                      startingValue={4.5}
-                      imageSize={10}
-                    />
+                    <Text className="text-sm text-[#030B19] mr-1">4.5</Text>
+                    <Rating readonly startingValue={4.5} imageSize={10} />
                   </View>
                   <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
                     {item.base_price} EGP

@@ -6,11 +6,11 @@ import BottomNavigation from '../../components/BottomNavigation';
 export default function TabsLayout() {
   return (
     <View style={{ flex: 1 }}>
-      <Stack 
-        screenOptions={{ 
+      <Stack
+        screenOptions={{
           headerShown: false,
-          contentStyle: { paddingBottom: 70 } 
-        }} 
+          contentStyle: { paddingBottom: 70 },
+        }}
       />
       <BottomNavigation />
     </View>
