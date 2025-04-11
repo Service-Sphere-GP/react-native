@@ -79,6 +79,7 @@ export default function Profile() {
                 title="Services"
                 description="Manage your services"
                 image={require('@/assets/images/services.png')}
+                onPress={() => router.push('/services/providerServices')}
               />
             )}
             <ProfileDetail

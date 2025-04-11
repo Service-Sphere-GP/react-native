@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';

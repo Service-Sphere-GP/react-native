@@ -17,6 +17,7 @@ const API_ENDPOINTS = {
   RESEND_OTP: '/auth/resend-verification',
   Get_SERVICE_DETAILS: '/services/:id',
   CREATE_SERVICE: '/services',
+  GET_SERVICES: '/services',
 
   // Add more endpoints as needed
 };

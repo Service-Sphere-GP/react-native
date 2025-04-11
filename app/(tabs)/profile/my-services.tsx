@@ -6,60 +6,53 @@ import {
   TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const servicesData = [
-  {
-    id: '1',
-    title: 'Living Room Setup',
-    provider: 'Mark Johnson (Plumber)',
-    rating: 4.7,
-    price: '10.500$',
-    image: require('@/assets/images/service1.png'),
-  },
-  {
-    id: '2',
-    title: 'Kitchen Remodeling',
-    provider: 'Mark Johnson (Plumber)',
-    rating: 4,
-    price: '12.000$',
-    image: require('@/assets/images/service2.png'),
-  },
-  {
-    id: '3',
-    title: 'Bedroom Decoration',
-    provider: 'Mark Johnson (Plumber)',
-    rating: 5,
-    price: '8.500$',
-    image: require('@/assets/images/service3.png'),
-  },
-  {
-    id: '4',
-    title: 'Office Furniture Setup',
-    provider: 'David Martinez (Carpenter)',
-    rating: 5,
-    price: '8.500$',
-    image: require('@/assets/images/service4.png'),
-  },
-  {
-    id: '5',
-    title: 'Bedroom Decoration',
-    provider: 'Mark Johnson (Plumber)',
-    rating: 5,
-    price: '8.500$',
-    image: require('@/assets/images/service5.png'),
-  },
-];
+interface Service {
+  service_name: string;
+  description: string;
+  base_price: number;
+  images: string[];
+  service_provider_id: string;
+  service_attributes: any[];
+  status: string;
+  _id: string;
+}
+
 const MyServices = () => {
   const router = useRouter();
 
   const { width: screenWidth } = useWindowDimensions();
+  const [services, setServices] = useState<Service[] | null>(null);
 
   const imageSize = screenWidth < 375 ? 45 : screenWidth < 768 ? 60 : 75;
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setServices(parsedUser.services);
+        } else {
+          setTimeout(() => {
+            router.push('/customer/login');
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+        setTimeout(() => {
+          router.push('/customer/login');
+        }, 100);
+      }
+    };
+
+    checkUser();
+  }, [router]);
 
   return (
     <View className="flex-1 bg-[#F9F9F9]">
@@ -94,15 +87,15 @@ const MyServices = () => {
       {/* Services List */}
       <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2  flex-1">
         <FlatList
-          data={servicesData}
-          keyExtractor={(item) => item.id}
+          data={services}
+          keyExtractor={(service) => service._id}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => router.push(`/services/providerServices`)}
               className="flex-row py-3 w-full items-center"
             >
               <Image
-                source={item.image}
+                source={{uri: item.images[0]}}
                 className="rounded-full mr-3"
                 style={{
                   width: imageSize,
@@ -112,11 +105,11 @@ const MyServices = () => {
               />
               <View className="flex-1 ">
                 <Text className="text-[#030B19] font-bold text-sm xs:text-base">
-                  {item.title}
+                  {item.service_name}
                 </Text>
                 <View className="flex-row items-center justify-between">
                   <Text className="text-gray-600 text-xs xs:text-sm flex-1 pr-2">
-                    {item.provider}
+                    Moaz
                   </Text>
                   <Ionicons name="chevron-forward" size={20} color="#030B19" />
                 </View>
@@ -124,16 +117,16 @@ const MyServices = () => {
                 <View className="flex-row items-center justify-between">
                   <View className="flex-row items-center gap-1">
                     <Text className="text-sm text-[#030B19] mr-1">
-                      {item.rating}
+                      4.5
                     </Text>
                     <Rating
                       readonly
-                      startingValue={item.rating}
+                      startingValue={4.5}
                       imageSize={10}
                     />
                   </View>
                   <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
-                    {item.price}
+                    {item.base_price} EGP
                   </Text>
                 </View>
               </View>
@@ -146,7 +139,7 @@ const MyServices = () => {
       {/* Footer Button */}
       <View className="mt-4 px-4 mb-3">
         <TouchableOpacity
-          onPress={() => router.push('/services/add-service')}
+          onPress={() => router.push('/profile/new-service')}
           className="bg-[#FDBC10] rounded-xl items-center justify-center w-[156px] h-[50px] self-end shadow-lg"
         >
           <Text className="text-[#030B19] font-Roboto-Medium ">

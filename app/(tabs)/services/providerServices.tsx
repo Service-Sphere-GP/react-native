@@ -64,7 +64,7 @@ const ProviderServices = () => {
       {/* Header */}
       <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
         <TouchableOpacity
-          onPress={() => router.push('/services/all-services')}
+          onPress={() => router.push('/services')}
           className="absolute left-4 w-6 h-6"
         >
           <Image
