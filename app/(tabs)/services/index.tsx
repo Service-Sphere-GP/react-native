@@ -65,7 +65,7 @@ const AllServices = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <SafeAreaView className="flex-1 bg-[#F9F9F9]">
+        <SafeAreaView className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
           <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
             <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-2xl">

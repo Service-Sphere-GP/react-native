@@ -55,7 +55,7 @@ const Login = () => {
 
       if (success) {
         ToastService.success('Login Successful', 'Welcome back!');
-        router.push('/profile/me');
+        router.push('/services');
       }
     } catch (err) {
       console.error('Login error:', err);

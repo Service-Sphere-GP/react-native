@@ -32,7 +32,7 @@ export default function Profile() {
             router.push('/profile/me');
           } else {
             const response: any = await ApiService.get(
-              API_ENDPOINTS.Get_USER.replace(':id', id as string),
+              API_ENDPOINTS.GET_USER.replace(':id', id as string),
             );
             setUser(response.data.data);
           }

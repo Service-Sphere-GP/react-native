@@ -55,7 +55,7 @@ const Settings = () => {
     setModalVisible(false);
     if (user?.role === 'customer') {
       ApiService.delete(
-        API_ENDPOINTS.Delete_CUSTOMER.replace(':id', user._id as string),
+        API_ENDPOINTS.DELETE_CUSTOMER.replace(':id', user._id as string),
       )
         .then(() => {
           AsyncStorage.clear();
@@ -66,7 +66,7 @@ const Settings = () => {
         });
     } else {
       ApiService.delete(
-        API_ENDPOINTS.Delete_PROVIDER.replace(':id', user?._id as string),
+        API_ENDPOINTS.DELETE_PROVIDER.replace(':id', user?._id as string),
       )
         .then(() => {
           AsyncStorage.clear();
@@ -175,6 +175,12 @@ const Settings = () => {
               placeholder="Enter new password"
               className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
             />
+           
+            <TouchableOpacity className="bg-[#147E93] rounded-xl shadow-md items-center px-6 py-3 mt-3">
+              <Text className="text-white font-Roboto-Medium text-base">
+                Save Changes
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View className="flex-row justify-between">

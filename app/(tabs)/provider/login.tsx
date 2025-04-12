@@ -6,8 +6,10 @@ import Input from '@/components/login/Input';
 import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
 import ToastService from '../../../constants/ToastService';
+import { useRouter } from 'expo-router';
 
 const Login = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -52,6 +54,7 @@ const Login = () => {
       .then((success) => {
         if (success) {
           ToastService.success('Login Successful', 'Welcome back!');
+          router.push('/services');
         }
       })
       .catch((err) => {

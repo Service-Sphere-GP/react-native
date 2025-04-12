@@ -60,7 +60,7 @@ const ProviderServices = () => {
   const imageSize = screenWidth < 375 ? 45 : screenWidth < 768 ? 60 : 75;
 
   return (
-    <View className="flex-1 bg-[#F9F9F9]">
+    <View className="flex-1 bg-[#F4F4F4]">
       {/* Header */}
       <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
         <TouchableOpacity

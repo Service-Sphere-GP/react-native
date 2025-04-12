@@ -48,12 +48,12 @@ const ServiceDetailsPage = () => {
         setLoading(true);
 
         const response: any = await ApiService.get(
-          API_ENDPOINTS.Get_SERVICE_DETAILS.replace(':id', id as string),
+          API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
         );
         setService(response.data.data);
 
         const providerResponse: any = await ApiService.get(
-          API_ENDPOINTS.Get_USER.replace(
+          API_ENDPOINTS.GET_USER.replace(
             ':id',
             response.data.data.service_provider_id as string,
           ),
