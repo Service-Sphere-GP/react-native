@@ -47,7 +47,7 @@ const BottomNavigation: React.FC = () => {
     {
       name: 'Bookings',
       icon: ({ color }) => <BookingsIcon color={color} />,
-      href: '/(tabs)/bookings',
+      href: '/(tabs)/bookings/bookings', 
       section: 'bookings'
     },
     {

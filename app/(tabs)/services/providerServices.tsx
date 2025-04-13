@@ -2,6 +2,7 @@ import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Ionicons } from "@expo/vector-icons"
 import { StarRatingDisplay } from 'react-native-star-rating-widget'
+import Header from '@/components/Header';
 import { useRouter } from 'expo-router'
 
 const servicesData = [
@@ -52,36 +53,19 @@ const providerServices = () => {
   return (
     <View className="flex-1 bg-[#F9F9F9]">
       {/* Header */}
-      <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
-        <TouchableOpacity 
-          onPress={() => router.push('/services/all-services')} 
-          className="absolute left-4 w-6 h-6"
-        >
-          <Image
-            source={require('@/assets/images/blackArrow.png')}
-            className="w-full h-full"
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        
-        <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-lg"> Services by (Provider Name) </Text>
-
-
-        <View className="absolute right-4">
-          <View className="relative">
-            <Ionicons name="notifications-outline" size={24} color="#030B19" />
-            <View className="absolute -top-2 -right-2 bg-[#FDBC10] rounded-full w-5 h-5 items-center justify-center">
-              <Text className="text-white text-xs font-bold">4</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+      <Header 
+        title="Services by (Provider Name)" 
+        textSize="text-lg" 
+        backRoute="/services/all-services" 
+        notificationsCount={4} 
+      />
       
       <View className="flex-1 bg-[#FFFFFF] rounded-2xl mx-4 shadow-md mb-4">
         <FlatList 
           data={servicesData}
           keyExtractor={(item) => item.id}
           className="px-4 pb-5"
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => router.push(`/services/all-services`)} // Navigate to all services

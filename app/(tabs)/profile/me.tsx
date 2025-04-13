@@ -61,6 +61,9 @@ const ProfileComponent = () => {
     router.push('/profile/my-services');
   };
 
+  const navigateToMyReviws = () => {
+    router.push('/profile/myReviews');
+  };
   const logoutHandler = async () => {
     try {
       await AsyncStorage.removeItem('user');
@@ -108,6 +111,7 @@ const ProfileComponent = () => {
                 title="Reviews"
                 description="What people are saying about you"
                 image={require('@/assets/images/reviews.png')}
+                onPress={navigateToMyReviws}
               />
               <ProfileDetail
                 title="Log out"

@@ -1,9 +1,9 @@
 import { View, Text, TextInput, useWindowDimensions, Image, SafeAreaView, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import NotificationIcon from '@/assets/icons/Notification'; 
 import { Ionicons } from "@expo/vector-icons"
 import { StarRatingDisplay } from 'react-native-star-rating-widget'
 import { useRouter } from 'expo-router'
+import Header from '@/components/Header';
 
 const servicesData = [
   {
@@ -71,19 +71,13 @@ const AllServices = () => {
   return (
     <View className="flex-1 bg-white">
       {/* Header */}
-      <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
-        <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-2xl">Services</Text>
-        <View style={{ position: 'absolute', right: 16 ,marginBottom: 23}}>
-          <View className="absolute right-4">
-            <View className="relative ">
-            <NotificationIcon /> 
-              <View className="absolute -top-2 -right-2 bg-[#FDBC10] rounded-full w-5 h-5 items-center justify-center">
-                <Text className="text-white text-xs font-bold">4</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
+      <Header 
+        title="Services" 
+        textSize="text-2xl" 
+        showBackButton={false} 
+        notificationsCount={4} 
+      />
+      
 
       {/* Search & Filter */}
       <View className="px-4 py-2 flex-row items-center justify-between mb-2">
@@ -117,6 +111,7 @@ const AllServices = () => {
           data={filteredServices}
           keyExtractor={(item) => item.id}
           className="px-4 pb-5"
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => router.push(`/services/providerServices`)} // Navigate to provider services
@@ -145,7 +140,7 @@ const AllServices = () => {
                 </View>
               </View>
               
-              
+
               <View className="items-end">
                 <Text className="text-[#030B19] font-semibold text-sm">{item.price}</Text>
                 <Ionicons name="chevron-forward" size={20} color="#030B19" />
