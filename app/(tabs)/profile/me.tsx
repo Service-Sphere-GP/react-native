@@ -9,8 +9,7 @@ import ProfileDetail from '@/components/profile/ProfileDetail';
 
 const ProfileComponent = () => {
   interface User {
-    first_name: string;
-    last_name: string;
+    full_name: string;
     role: string;
   }
 
@@ -82,11 +81,7 @@ const ProfileComponent = () => {
           </View>
 
           <View className="justify-center items-center p-2 gap-4">
-            <ProfileHeader
-              firstName={user.first_name}
-              LastName={user.last_name}
-              rating={4.5}
-            />
+            <ProfileHeader fullName={user.full_name} rating={4.5} />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
                 title="Personal Data"

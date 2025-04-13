@@ -20,23 +20,20 @@ interface Service {
   description: string;
   base_price: number;
   images: string[];
-  service_provider_id: string;
+  service_provider: {
+    _id: string;
+    full_name: string;
+    rating_average: number;
+    business_name: string;
+  };
   service_attributes: any[];
   status: string;
   _id: string;
 }
 
-interface Provider {
-  first_name: string;
-  last_name: string;
-  rating: number;
-  business_name: string;
-}
-
 const ServiceDetailsPage = () => {
   const router = useRouter();
   const [service, setService] = useState<Service | null>(null);
-  const [provider, setProvider] = useState<Provider | null>(null);
   const [loading, setLoading] = useState(true);
 
   const params = useLocalSearchParams();
@@ -51,15 +48,6 @@ const ServiceDetailsPage = () => {
           API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
         );
         setService(response.data.data);
-
-        const providerResponse: any = await ApiService.get(
-          API_ENDPOINTS.GET_USER.replace(
-            ':id',
-            response.data.data.service_provider_id as string,
-          ),
-        );
-
-        setProvider(providerResponse.data.data);
       } catch (error) {
         console.error('Failed to fetch service details', error);
         // Handle authentication errors
@@ -76,7 +64,7 @@ const ServiceDetailsPage = () => {
   }, [id, router]);
 
   const navigateHandler = () => {
-    router.push(`/profile/${service?.service_provider_id}`);
+    router.push(`/profile/${service?.service_provider._id}`);
   };
 
   return (
@@ -106,10 +94,9 @@ const ServiceDetailsPage = () => {
               </Text>
             </View>
             <ProfileHeader
-              firstName={provider?.first_name}
-              LastName={provider?.last_name}
+              fullName={service?.service_provider.full_name}
               rating={4.5}
-              role={provider?.business_name}
+              role={service?.service_provider.business_name}
               onPress={navigateHandler}
             />
 
@@ -149,7 +136,7 @@ const ServiceDetailsPage = () => {
                 disabled={service?.status !== 'active'}
               >
                 <Text className="font-Roboto-Medium text-base text-center">
-                  Open a chat with {provider?.first_name}
+                  Open a chat with {service?.service_provider.full_name}
                 </Text>
               </TouchableOpacity>
             </View>

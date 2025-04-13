@@ -22,10 +22,15 @@ interface Service {
   description: string;
   base_price: number;
   images: string[];
-  service_provider_id: string;
-  service_attributes: any[];
+  service_provider: {
+    _id: string;
+    full_name: string;
+    rating_average: number;
+    business_name: string;
+  };
   status: string;
   _id: string;
+  rating_average: number;
 }
 
 const AllServices = () => {
@@ -140,7 +145,7 @@ const AllServices = () => {
                     </Text>
                     <View className="flex-row items-center justify-between">
                       <Text className="text-gray-600 text-xs xs:text-sm flex-1 pr-2">
-                        Moaz
+                        {item.service_provider.full_name}
                       </Text>
                       <Ionicons
                         name="chevron-forward"
@@ -151,8 +156,14 @@ const AllServices = () => {
 
                     <View className="flex-row items-center justify-between">
                       <View className="flex-row items-center gap-1">
-                        <Text className="text-sm text-[#030B19] mr-1">4.5</Text>
-                        <Rating readonly startingValue={4.5} imageSize={10} />
+                        <Text className="text-sm text-[#030B19] mr-1">
+                          {item.rating_average}
+                        </Text>
+                        <Rating
+                          readonly
+                          startingValue={item.rating_average}
+                          imageSize={10}
+                        />
                       </View>
                       <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
                         {item.base_price} EGP
