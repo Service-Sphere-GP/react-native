@@ -37,13 +37,13 @@ const Settings = () => {
           setUser(parsedUser);
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -59,7 +59,7 @@ const Settings = () => {
       )
         .then(() => {
           AsyncStorage.clear();
-          router.replace('/customer/login');
+          router.replace('/(otp)/customer/login');
         })
         .catch((err) => {
           console.error(err);
@@ -70,7 +70,7 @@ const Settings = () => {
       )
         .then(() => {
           AsyncStorage.clear();
-          router.replace('/provider/login');
+          router.replace('/(otp)/provider/login');
         })
         .catch((err) => {
           console.error(err);

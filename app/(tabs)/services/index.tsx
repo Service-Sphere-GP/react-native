@@ -53,7 +53,7 @@ const AllServices = () => {
         console.error('Failed to fetch services', error);
         if ((error as any)?.response?.status === 401) {
           // Redirect to login if unauthorized
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }
       } finally {
         setLoading(false);

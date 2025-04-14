@@ -51,7 +51,7 @@ const ServiceDetailsPage = () => {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser);
         } else {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }
         const response: any = await ApiService.get(
           API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
@@ -62,7 +62,7 @@ const ServiceDetailsPage = () => {
         // Handle authentication errors
         if ((error as any)?.response?.status === 401) {
           // Redirect to login if unauthorized
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }
       } finally {
         setLoading(false);

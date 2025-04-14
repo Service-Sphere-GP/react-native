@@ -36,13 +36,13 @@ const ProfileComponent = () => {
           }
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -67,7 +67,7 @@ const ProfileComponent = () => {
     try {
       await AsyncStorage.removeItem('user');
       await AsyncStorage.removeItem('authToken');
-      router.push('/customer/login');
+      router.push('/(otp)/customer/login');
     } catch (error) {
       console.error('Failed to logout', error);
     }

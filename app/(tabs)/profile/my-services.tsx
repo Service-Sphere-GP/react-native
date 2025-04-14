@@ -46,7 +46,7 @@ const MyServices = () => {
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       } finally {
         setLoading(false);

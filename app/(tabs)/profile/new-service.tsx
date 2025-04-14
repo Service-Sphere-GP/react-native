@@ -53,7 +53,7 @@ const NewService = () => {
             return; // Don't set loading to false, we're redirecting
           }
         } else {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
           return; // Don't set loading to false, we're redirecting
         }
 
@@ -61,7 +61,7 @@ const NewService = () => {
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user data', error);
-        router.push('/customer/login');
+        router.push('/(otp)/customer/login');
         // Don't set loading to false, we're redirecting
       }
     };
