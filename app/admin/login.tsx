@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, ActivityIndicator, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
@@ -20,8 +29,8 @@ interface LoginResponse {
       role: string;
       created_at: string;
       updated_at: string;
-    }
-  }
+    };
+  };
 }
 
 export default function AdminLogin() {
@@ -32,7 +41,10 @@ export default function AdminLogin() {
   const handleLogin = async () => {
     // Simple validation
     if (!email || !password) {
-      ToastService.error('Validation Error', 'Please enter both email and password');
+      ToastService.error(
+        'Validation Error',
+        'Please enter both email and password',
+      );
       return;
     }
 
@@ -42,41 +54,55 @@ export default function AdminLogin() {
       // Call the login API endpoint using ApiService
       const response = await ApiService.post<LoginResponse>('/auth/login', {
         email,
-        password
+        password,
       });
 
       console.log('Login response:', response.data);
 
       // Check if login was successful and user has admin role
-      if (response.data && response.data.status === 'success' && response.data.data) {
+      if (
+        response.data &&
+        response.data.status === 'success' &&
+        response.data.data
+      ) {
         const { token, user } = response.data.data;
-        
+
         // Check if user has admin role
         if (user.role === 'admin') {
           // Store admin session and token
           await AsyncStorage.setItem('adminAuthenticated', 'true');
           await AsyncStorage.setItem('adminToken', token);
           await AsyncStorage.setItem('adminUser', JSON.stringify(user));
-          
+
           // Show success toast
-          ToastService.success('Login Successful', `Welcome back, ${user.full_name}!`);
-          
+          ToastService.success(
+            'Login Successful',
+            `Welcome back, ${user.full_name}!`,
+          );
+
           // Navigate to admin dashboard
           router.replace('/admin/dashboard');
         } else {
           ToastService.error('Access Denied', 'Admin privileges required');
         }
       } else {
-        ToastService.error('Authentication Failed', 'Invalid credentials or server error');
+        ToastService.error(
+          'Authentication Failed',
+          'Invalid credentials or server error',
+        );
       }
     } catch (error: any) {
       console.error('Login error:', error);
       let errorMessage = 'Login failed. Please try again.';
-      
-      if (error.response && error.response.data && error.response.data.message) {
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         errorMessage = error.response.data.message;
       }
-      
+
       ToastService.error('Authentication Failed', errorMessage);
     } finally {
       setIsLoading(false);
@@ -88,7 +114,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <View style={styles.contentContainer}>
         {/* Back button for mobile */}
         {Platform.OS !== 'web' && (
@@ -96,16 +125,21 @@ export default function AdminLogin() {
             <Text style={styles.backButtonText}>← Back</Text>
           </TouchableOpacity>
         )}
-        
+
         {/* Logo or Icon - Optional */}
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>Service Sphere</Text>
           <Text style={styles.adminText}>Admin Portal</Text>
         </View>
-        
-        <View style={[styles.loginBox, Platform.OS !== 'web' && styles.mobileLoginBox]}>
+
+        <View
+          style={[
+            styles.loginBox,
+            Platform.OS !== 'web' && styles.mobileLoginBox,
+          ]}
+        >
           <Text style={styles.title}>Admin Login</Text>
-          
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -118,7 +152,7 @@ export default function AdminLogin() {
               autoCapitalize="none"
             />
           </View>
-          
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
             <TextInput
@@ -130,9 +164,9 @@ export default function AdminLogin() {
               secureTextEntry
             />
           </View>
-          
-          <TouchableOpacity 
-            style={styles.loginButton} 
+
+          <TouchableOpacity
+            style={styles.loginButton}
             onPress={handleLogin}
             disabled={isLoading}
           >

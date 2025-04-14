@@ -51,7 +51,7 @@ const Verification = () => {
   };
 
   const handleConfirmCode = () => {
-    ApiService.post(API_ENDPOINTS.Verify_EMAIL.replace(':id', id as string), {
+    ApiService.post(API_ENDPOINTS.VERIFY_EMAIL.replace(':id', id as string), {
       otp,
     })
       .then((response: any) => {
