@@ -11,6 +11,7 @@ const ProfileComponent = () => {
   interface User {
     full_name: string;
     role: string;
+    rating_average: number;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -81,7 +82,10 @@ const ProfileComponent = () => {
           </View>
 
           <View className="justify-center items-center p-2 gap-4">
-            <ProfileHeader fullName={user.full_name} rating={4.5} />
+            <ProfileHeader
+              fullName={user.full_name}
+              rating={user.rating_average}
+            />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
                 title="Personal Data"

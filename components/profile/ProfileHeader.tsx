@@ -8,7 +8,7 @@ const ProfileHeader = ({
   onPress,
 }: {
   fullName?: string | undefined;
-  rating: number;
+  rating: number | undefined;
   role?: string | null;
   onPress?: () => void;
 }) => {

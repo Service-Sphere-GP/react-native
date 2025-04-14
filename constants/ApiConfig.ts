@@ -20,6 +20,8 @@ const API_ENDPOINTS = {
   GET_SERVICES: '/services',
   UPDATE_PROVIDER: '/users/service-providers/:id',
   UPDATE_CUSTOMER: '/users/customers/:id',
+  GET_PROVIDER_SERVICES: '/services/provider/:id',
+  GET_MY_SERVICES: '/services/my-services',
 
   // Add more endpoints as needed
 };

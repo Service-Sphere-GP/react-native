@@ -10,8 +10,9 @@ import {
 import { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import ApiService from '@/constants/ApiService';
+import { API_ENDPOINTS } from '@/constants/ApiConfig';
 
 interface Service {
   service_name: string;
@@ -37,15 +38,11 @@ const MyServices = () => {
     const checkUser = async () => {
       try {
         setLoading(true);
-        const userData = await AsyncStorage.getItem('user');
-        if (userData) {
-          const parsedUser = JSON.parse(userData);
-          setServices(parsedUser.services);
-        } else {
-          setTimeout(() => {
-            router.push('/customer/login');
-          }, 100);
-        }
+        const response: any = await ApiService.get(
+          API_ENDPOINTS.GET_MY_SERVICES,
+        );
+
+        setServices(response.data.data);
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
@@ -108,7 +105,7 @@ const MyServices = () => {
                 keyExtractor={(service) => service._id}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => router.push(`/services/providerServices`)}
+                    onPress={() => router.push(`/services/${item._id}`)}
                     className="flex-row py-3 w-full items-center"
                   >
                     <Image
@@ -120,13 +117,10 @@ const MyServices = () => {
                       }}
                       resizeMode="cover"
                     />
-                    <View className="flex-1 ">
-                      <Text className="text-[#030B19] font-bold text-sm xs:text-base">
-                        {item.service_name}
-                      </Text>
-                      <View className="flex-row items-center justify-between">
-                        <Text className="text-gray-600 text-xs xs:text-sm flex-1 pr-2">
-                          Moaz
+                    <View className="flex-1">
+                      <View className="flex-row justify-between items-center">
+                        <Text className="text-[#030B19] font-bold text-sm xs:text-base">
+                          {item.service_name}
                         </Text>
                         <Ionicons
                           name="chevron-forward"

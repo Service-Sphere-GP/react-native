@@ -14,6 +14,7 @@ import NotificationIcon from '@/assets/icons/Notification';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { useRouter } from 'expo-router';
 import { Rating } from 'react-native-ratings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Service {
   service_name: string;
@@ -29,12 +30,14 @@ interface Service {
   service_attributes: any[];
   status: string;
   _id: string;
+  rating_average: number;
 }
 
 const ServiceDetailsPage = () => {
   const router = useRouter();
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -43,7 +46,13 @@ const ServiceDetailsPage = () => {
     const fetchServiceDetails = async () => {
       try {
         setLoading(true);
-
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+        } else {
+          router.push('/customer/login');
+        }
         const response: any = await ApiService.get(
           API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
         );
@@ -77,7 +86,9 @@ const ServiceDetailsPage = () => {
         <View className="justify-between bg-white p-2 pt-12 h-full">
           <View>
             <View className="flex-row justify-between items-center">
-              <Image source={require('@/assets/images/blackArrow.png')} />
+              <TouchableOpacity onPress={() => router.back()}>
+                <Image source={require('@/assets/images/blackArrow.png')} />
+              </TouchableOpacity>
               <Text className="text-2xl font-Roboto-SemiBold">
                 {service?.service_name}
               </Text>
@@ -95,7 +106,7 @@ const ServiceDetailsPage = () => {
             </View>
             <ProfileHeader
               fullName={service?.service_provider.full_name}
-              rating={4.5}
+              rating={service?.service_provider.rating_average}
               role={service?.service_provider.business_name}
               onPress={navigateHandler}
             />
@@ -124,8 +135,14 @@ const ServiceDetailsPage = () => {
           </View>
           <View className="flex-row justify-center xs:justify-between items-end mb-28">
             <View className="hidden xs:flex items-center">
-              <Text className="font-Roboto-Medium text-lg">4.7</Text>
-              <Rating readonly startingValue={4.7} imageSize={18} />
+              <Text className="font-Roboto-Medium text-lg">
+                {service?.rating_average}
+              </Text>
+              <Rating
+                readonly
+                startingValue={service?.rating_average}
+                imageSize={18}
+              />
             </View>
             <View className="xs:items-end">
               <Text className="font-Roboto text-lg text-center">
@@ -136,7 +153,9 @@ const ServiceDetailsPage = () => {
                 disabled={service?.status !== 'active'}
               >
                 <Text className="font-Roboto-Medium text-base text-center">
-                  Open a chat with {service?.service_provider.full_name}
+                  {service?.service_provider.full_name === user?.full_name
+                    ? 'Edit your Service'
+                    : `Open Chat with ${service?.service_provider.full_name}`}
                 </Text>
               </TouchableOpacity>
             </View>

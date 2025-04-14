@@ -23,6 +23,7 @@ interface Service {
   service_attributes: any[];
   status: string;
   _id: string;
+  rating_average: number;
 }
 
 const ProviderServices = () => {
@@ -40,9 +41,9 @@ const ProviderServices = () => {
     const fetchServices = async () => {
       try {
         const response: any = await ApiService.get(
-          API_ENDPOINTS.GET_USER.replace(':id', id as string),
+          API_ENDPOINTS.GET_PROVIDER_SERVICES.replace(':id', id as string),
         );
-        setServices(response.data.data.services);
+        setServices(response.data.data);
       } catch (error) {
         console.error('Failed to fetch services', error);
       }
@@ -56,7 +57,7 @@ const ProviderServices = () => {
       {/* Header */}
       <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
         <TouchableOpacity
-          onPress={() => router.push('/services')}
+          onPress={() => router.back()}
           className="absolute left-4 w-6 h-6"
         >
           <Image
@@ -67,8 +68,7 @@ const ProviderServices = () => {
         </TouchableOpacity>
 
         <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-lg">
-          {' '}
-          Services by Moaz{' '}
+          Provider Services
         </Text>
 
         <View className="absolute right-4">
@@ -100,21 +100,24 @@ const ProviderServices = () => {
                 }}
                 resizeMode="cover"
               />
-              <View className="flex-1 ">
-                <Text className="text-[#030B19] font-bold text-sm xs:text-base">
-                  {item.service_name}
-                </Text>
-                <View className="flex-row items-center justify-between">
-                  <Text className="text-gray-600 text-xs xs:text-sm flex-1 pr-2">
-                    Moaz
+              <View className="flex-1">
+                <View className="flex-row justify-between items-center">
+                  <Text className="text-[#030B19] font-bold text-sm xs:text-base">
+                    {item.service_name}
                   </Text>
                   <Ionicons name="chevron-forward" size={20} color="#030B19" />
                 </View>
 
                 <View className="flex-row items-center justify-between">
                   <View className="flex-row items-center gap-1">
-                    <Text className="text-sm text-[#030B19] mr-1">4.5</Text>
-                    <Rating readonly startingValue={4.5} imageSize={10} />
+                    <Text className="text-sm text-[#030B19] mr-1">
+                      {item.rating_average}
+                    </Text>
+                    <Rating
+                      readonly
+                      startingValue={item.rating_average}
+                      imageSize={10}
+                    />
                   </View>
                   <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
                     {item.base_price} EGP
