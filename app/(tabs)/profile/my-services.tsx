@@ -57,7 +57,7 @@ const MyServices = () => {
   }, [router]);
 
   return (
-    <>
+  <>
       {/* Loading Indicator */}
       {loading ? (
         <View className="flex items-center justify-center h-screen">
