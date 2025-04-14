@@ -2,15 +2,13 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Rating } from 'react-native-ratings';
 
 const ProfileHeader = ({
-  firstName,
-  LastName,
+  fullName,
   rating,
   role,
   onPress,
 }: {
-  firstName: string | undefined;
-  LastName: string | undefined;
-  rating: number;
+  fullName?: string | undefined;
+  rating: number | undefined;
   role?: string | null;
   onPress?: () => void;
 }) => {
@@ -31,7 +29,7 @@ const ProfileHeader = ({
         />
         <View>
           <Text className="font-Roboto-Medium text-lg text-white">
-            {firstName} {LastName}
+            {fullName}
           </Text>
           {role && (
             <Text className="font-Roboto-Light text-[#D9DEE4] text-sm">

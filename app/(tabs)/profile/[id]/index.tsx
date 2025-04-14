@@ -10,7 +10,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 interface User {
   first_name: string;
-  last_name: string;
+  full_name: string;
   business_name: string;
   role: string;
 }
@@ -32,7 +32,7 @@ export default function Profile() {
             router.push('/profile/me');
           } else {
             const response: any = await ApiService.get(
-              API_ENDPOINTS.Get_USER.replace(':id', id as string),
+              API_ENDPOINTS.GET_USER.replace(':id', id as string),
             );
             setUser(response.data.data);
           }
@@ -68,8 +68,7 @@ export default function Profile() {
             <NotificationIcon />
           </View>
           <ProfileHeader
-            firstName={user?.first_name}
-            LastName={user?.last_name}
+            fullName={user?.full_name}
             rating={4.5}
             role={user?.business_name}
           />
@@ -77,13 +76,14 @@ export default function Profile() {
             {user?.role === 'service_provider' && (
               <ProfileDetail
                 title="Services"
-                description="Manage your services"
+                description={`Services Provided by ${user?.first_name}`}
                 image={require('@/assets/images/services.png')}
+                onPress={() => router.push(`/profile/${id}/services`)}
               />
             )}
             <ProfileDetail
               title="Reviews"
-              description="What people are saying about you"
+              description={`What people are saying about ${user?.first_name}`}
               image={require('@/assets/images/reviews.png')}
             />
           </View>

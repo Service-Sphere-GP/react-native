@@ -18,7 +18,7 @@ const Login = () => {
     password: '',
   });
 
-  const { login, loading, error } = useLogin();
+  const { login, loading } = useLogin();
 
   const validateForm = (user: { email: string; password: string }) => {
     const errors = {
@@ -43,7 +43,9 @@ const Login = () => {
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
     if (hasErrors) {
-      const errorMessage = Object.values(errors).find(error => error.length > 0) || 'Please check your input';
+      const errorMessage =
+        Object.values(errors).find((error) => error.length > 0) ||
+        'Please check your input';
       ToastService.error('Validation Error', errorMessage);
       return;
     }
@@ -53,11 +55,14 @@ const Login = () => {
 
       if (success) {
         ToastService.success('Login Successful', 'Welcome back!');
-        router.push('/profile/me');
+        router.push('/services');
       }
     } catch (err) {
       console.error('Login error:', err);
-      ToastService.error('Login Failed', 'Please check your credentials and try again');
+      ToastService.error(
+        'Login Failed',
+        'Please check your credentials and try again',
+      );
     }
   };
 

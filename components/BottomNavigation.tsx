@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, useWindowDimensions, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 
 // Import icons
@@ -16,45 +16,36 @@ interface NavigationItem {
 }
 
 const BottomNavigation: React.FC = () => {
-  const { width } = useWindowDimensions();
   const router = useRouter();
   const pathname = usePathname();
-  
-  // Calculate icon size based on screen width (responsive)
-  const getIconSize = () => {
-    if (width < 375) return 0.06 * width; // xs screens
-    if (width < 640) return 0.055 * width; // sm screens
-    if (width < 768) return 0.05 * width; // md screens
-    return 0.04 * width; // larger screens
-  };
 
   const [activeSection, setActiveSection] = useState<string>('home');
-  
+
   // Navigation items configuration with specific destination pages
   const navigationItems: NavigationItem[] = [
     {
       name: 'Home',
       icon: ({ color }) => <HomeIcon color={color} />,
       href: '/(tabs)/home',
-      section: 'home'
+      section: 'home',
     },
     {
       name: 'Services',
       icon: ({ color }) => <ServicesIcon color={color} />,
-      href: '/(tabs)/services/all-services', // Changed to all-services
-      section: 'services'
+      href: '/(tabs)/services', // Changed to all-services
+      section: 'services',
     },
     {
       name: 'Bookings',
       icon: ({ color }) => <BookingsIcon color={color} />,
       href: '/(tabs)/bookings',
-      section: 'bookings'
+      section: 'bookings',
     },
     {
       name: 'Profile',
       icon: ({ color }) => <ProfileIcon color={color} />,
       href: '/(tabs)/profile/me', // Changed to me.tsx
-      section: 'profile'
+      section: 'profile',
     },
   ];
 
@@ -94,12 +85,7 @@ const BottomNavigation: React.FC = () => {
           activeOpacity={0.7}
         >
           {item.icon({ color: getColor(item.section) })}
-          <Text
-            style={[
-              styles.tabText,
-              { color: getColor(item.section) }
-            ]}
-          >
+          <Text style={[styles.tabText, { color: getColor(item.section) }]}>
             {item.name}
           </Text>
         </TouchableOpacity>
@@ -115,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F2F2F2',
     paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 0, // Changed from 16 to 0
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     position: 'absolute',
