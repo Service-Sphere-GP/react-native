@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router'; 
 import Header from '@/components/Header'; 
 import { Ionicons } from '@expo/vector-icons'; 
 
@@ -81,8 +80,6 @@ const bookingsData = [
 ];
 
 const customerBookings  = () => {
-  const router = useRouter(); 
-
   const renderBookingItem = ({ item }: { item: typeof bookingsData[0] }) => (
     <TouchableOpacity
     //   onPress={() => router.push('/bookings/customerBookings')} // Navigate to chat

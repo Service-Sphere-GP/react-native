@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Image, ScrollView, FlatList } from 'react-native';
 import NotificationIcon from '@/assets/icons/Notification';
 
 const Dashboard = () => {
@@ -177,20 +168,4 @@ const Dashboard = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-});
+export default Dashboard;
