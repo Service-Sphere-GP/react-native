@@ -23,7 +23,8 @@ const API_ENDPOINTS = {
   GET_PROVIDER_SERVICES: '/services/provider/:id',
   GET_MY_SERVICES: '/services/my-services',
   BOOK_SERVICE: '/bookings/:serviceId',
-  GET_BOOKINGS: '/bookings',
+  GET_CUSTOMER_BOOKINGS: '/bookings',
+  GET_PROVIDER_BOOKINGS: '/bookings/provider',
   // Add more endpoints as needed
 };
 

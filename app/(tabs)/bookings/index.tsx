@@ -17,6 +17,10 @@ import BookingText from '@/components/BookingText';
 
 interface BookingItem {
   _id: string;
+  customer: {
+    full_name: string;
+    profile_image: string;
+  };
   service: {
     service_name: string;
     base_price: string;
@@ -37,7 +41,7 @@ const Booking = () => {
     const fetchBookings = async () => {
       try {
         setLoading(true);
-        const response: any = await ApiService.get(API_ENDPOINTS.GET_BOOKINGS);
+
         const userData = await AsyncStorage.getItem('user');
         if (userData) {
           const parsedUser = JSON.parse(userData);
@@ -45,7 +49,18 @@ const Booking = () => {
         } else {
           router.push('/(otp)/customer/login');
         }
-        setBookings(response.data.data || []);
+
+        if (role === 'customer') {
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_CUSTOMER_BOOKINGS,
+          );
+          setBookings(response.data.data || []);
+        } else if (role === 'service_provider') {
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_PROVIDER_BOOKINGS,
+          );
+          setBookings(response.data.data || []);
+        }
       } catch (error) {
         console.error('Error fetching bookings:', error);
         setLoading(false);
@@ -55,7 +70,7 @@ const Booking = () => {
     };
 
     fetchBookings();
-  }, []);
+  }, [role]);
 
   const renderBookingItem = ({
     item,
@@ -66,7 +81,9 @@ const Booking = () => {
   }) => {
     const service = item.service;
     const providerName = service.service_provider?.full_name;
+    const customerName = item.customer?.full_name;
     const providerImage = service.service_provider?.profile_image;
+    const customerImage = item.customer?.profile_image;
     const serviceName = service.service_name;
     const servicePrice = service.base_price;
 
@@ -77,13 +94,15 @@ const Booking = () => {
         >
           <View className="flex-row items-center">
             <Image
-              source={{ uri: providerImage }}
+              source={{
+                uri: role === 'customer' ? providerImage : customerImage,
+              }}
               className="w-10 h-10 rounded-full"
               resizeMode="cover"
             />
             <View className="ml-3">
               <Text className="text-sm font-Roboto-Medium text-gray-900">
-                {providerName}
+                {role === 'customer' ? `${providerName}` : `${customerName}`}
               </Text>
               <Text className="text-sm text-gray-500">{serviceName}</Text>
             </View>
