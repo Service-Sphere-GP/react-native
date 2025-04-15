@@ -85,7 +85,7 @@ const ServiceDetailsPage = () => {
         ),
       );
       if (response.status === 201) {
-        router.push('/(tabs)/bookings/customerBookings');
+        router.push('/(tabs)/bookings');
       }
     } catch (error) {
       console.error('Failed to book service', error);
