@@ -25,6 +25,8 @@ const API_ENDPOINTS = {
   BOOK_SERVICE: '/bookings/:serviceId',
   GET_CUSTOMER_BOOKINGS: '/bookings',
   GET_PROVIDER_BOOKINGS: '/bookings/provider',
+  COMPELETE_BOOKING: '/bookings/:id/status',
+  SEND_FEEDBACK: '/feedback',
   // Add more endpoints as needed
 };
 

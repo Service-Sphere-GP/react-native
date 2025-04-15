@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Modal,
+  TextInput,
 } from 'react-native';
 import { router } from 'expo-router';
 import Header from '@/components/Header';
@@ -22,6 +24,7 @@ interface BookingItem {
     profile_image: string;
   };
   service: {
+    _id: string;
     service_name: string;
     base_price: string;
     service_provider: {
@@ -35,6 +38,12 @@ const Booking = () => {
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<BookingItem>(
+    {} as BookingItem,
+  );
+  const [feedback, setFeedback] = useState('');
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     // Fetch bookings data from the API
@@ -72,6 +81,73 @@ const Booking = () => {
     fetchBookings();
   }, [role]);
 
+  const handleOpenFeedbackModal = (booking: BookingItem) => {
+    setSelectedBooking(booking);
+    setModalVisible(true);
+  };
+
+  const handleCloseFeedbackModal = () => {
+    setModalVisible(false);
+    setSelectedBooking({} as BookingItem);
+    setFeedback('');
+    setRating(0);
+  };
+
+  const handleSubmitFeedback = async () => {
+    // Here you would implement the API call to submit feedback
+    const changeStatusResponse = await ApiService.patch(
+      API_ENDPOINTS.COMPELETE_BOOKING.replace(':id', selectedBooking._id),
+      {
+        status: 'completed',
+      },
+    );
+
+    console.log('changeStatusResponse', changeStatusResponse);
+
+    if (
+      changeStatusResponse.status === 200 ||
+      changeStatusResponse.status === 201
+    ) {
+      const feedbackResponse = await ApiService.post(
+        API_ENDPOINTS.SEND_FEEDBACK,
+        {
+          rating,
+          message: feedback,
+          service: selectedBooking.service._id,
+          booking: selectedBooking._id,
+        },
+      );
+
+      if (feedbackResponse.status === 200 || feedbackResponse.status === 201) {
+        console.log(feedbackResponse.data);
+        console.log('Feedback submitted successfully');
+      } else {
+        console.error('Failed to submit feedback');
+      }
+    } else {
+      console.error('Failed to submit feedback');
+    }
+    // For now, just close the modal
+    handleCloseFeedbackModal();
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableOpacity key={i} onPress={() => setRating(i)}>
+          <Ionicons
+            name={i <= rating ? 'star' : 'star-outline'}
+            size={30}
+            color={i <= rating ? '#FFD700' : '#C4C4C4'}
+            style={{ marginHorizontal: 5 }}
+          />
+        </TouchableOpacity>,
+      );
+    }
+    return stars;
+  };
+
   const renderBookingItem = ({
     item,
     index,
@@ -88,7 +164,7 @@ const Booking = () => {
     const servicePrice = service.base_price;
 
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => handleOpenFeedbackModal(item)}>
         <View
           className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3`}
         >
@@ -168,6 +244,56 @@ const Booking = () => {
           ) : null}
         </View>
       )}
+
+      {/* Feedback Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseFeedbackModal}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="w-80 bg-white rounded-2xl p-6 shadow-lg">
+            <Text className="text-xl text-center font-bold text-[#147E93] mb-4">
+              Leave Feedback
+            </Text>
+
+            <Text className="text-base mb-3 text-gray-700 self-start">
+              Rate the service:
+            </Text>
+
+            <View className="flex-row justify-center mb-5 space-x-2">
+              {renderStars()}
+            </View>
+
+            <TextInput
+              className="w-full border border-gray-300 rounded-lg p-3 h-24"
+              placeholder="Tell us about your experience..."
+              multiline
+              textAlignVertical="top"
+              value={feedback}
+              onChangeText={setFeedback}
+            />
+
+            <View className="flex-row justify-between w-full mt-6 space-x-4">
+              <TouchableOpacity
+                className="px-4 py-2 rounded-lg bg-gray-200 flex-1 items-center"
+                onPress={handleCloseFeedbackModal}
+              >
+                <Text className="text-gray-700 font-semibold">Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="px-4 py-2 rounded-lg bg-[#147E93] flex-1 items-center disabled:opacity-50"
+                onPress={handleSubmitFeedback}
+                disabled={rating === 0}
+              >
+                <Text className="text-white font-semibold">Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
