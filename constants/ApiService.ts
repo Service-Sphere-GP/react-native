@@ -16,7 +16,7 @@ apiClient.interceptors.request.use(
   async (config) => {
     // Add auth token from AsyncStorage
     try {
-      const token = await AsyncStorage.getItem('adminToken');
+      const token = await AsyncStorage.getItem('authToken');
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,9 +9,9 @@ import ProfileDetail from '@/components/profile/ProfileDetail';
 
 const ProfileComponent = () => {
   interface User {
-    first_name: string;
-    last_name: string;
+    full_name: string;
     role: string;
+    rating_average: number;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -25,7 +25,7 @@ const ProfileComponent = () => {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser);
-          
+
           // Check if user is admin or has admin privileges
           if (parsedUser.role === 'admin') {
             setShowAdminOption(true);
@@ -50,10 +50,9 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
-
   const handleAdminAccess = () => {
     router.push('/admin/login');
-  }
+  };
   const navigateToPerosnalData = () => {
     router.push('/profile/settings');
   };
@@ -72,7 +71,6 @@ const ProfileComponent = () => {
     } catch (error) {
       console.error('Failed to logout', error);
     }
-
   };
 
   return (
@@ -88,9 +86,8 @@ const ProfileComponent = () => {
 
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader
-              firstName={user.first_name}
-              LastName={user.last_name}
-              rating={4.5}
+              fullName={user.full_name}
+              rating={user.rating_average}
             />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
@@ -131,14 +128,16 @@ const ProfileComponent = () => {
                 description={null}
                 image={require('@/assets/images/info.png')}
               />
-              
+
               {/* Admin Panel Access Button */}
               {showAdminOption && (
                 <TouchableOpacity onPress={handleAdminAccess}>
                   <View className="flex-row justify-between p-4 items-center border-t border-[#f5f5f5]">
                     <View className="flex-row gap-4">
                       <View className="w-10 h-10 rounded-full bg-[#FFF9C4] items-center justify-center">
-                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">A</Text>
+                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">
+                          A
+                        </Text>
                       </View>
                       <View className="justify-center">
                         <Text className="font-Roboto-Medium text-base text-[#147E93]">

@@ -2,7 +2,7 @@ import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
-import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { Rating } from 'react-native-ratings';
 
 const reviewsData = [
   {
@@ -41,24 +41,24 @@ const reviewsData = [
       'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
     Cimage: require('@/assets/images/Profile.png'),
   },
-    {
-        id: '5',
-        name: 'Customer Name',
-        rating: 5,
-        date: '26/5/2025',
-        review:
-        'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-        Cimage: require('@/assets/images/Profile.png'),
-    },
+  {
+    id: '5',
+    name: 'Customer Name',
+    rating: 5,
+    date: '26/5/2025',
+    review:
+      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
+    Cimage: require('@/assets/images/Profile.png'),
+  },
 ];
 
-  
-const myReviews = () => {
-    const router = useRouter();
-  const renderReviewItem = ({ item }: { item: typeof reviewsData[0] }) => (
-    <TouchableOpacity onPress={() => router.push('/profile/userReviews')}
-    className="bg-white rounded-2xl mx-1 p-3 flex-row items-start  ">
-        
+const MyReviews = () => {
+  const router = useRouter();
+  const renderReviewItem = ({ item }: { item: (typeof reviewsData)[0] }) => (
+    <TouchableOpacity
+      onPress={() => router.push('/profile/userReviews')}
+      className="bg-white rounded-2xl mx-1 p-3 flex-row items-start  "
+    >
       <Image
         source={item.Cimage}
         className="w-12 h-12 rounded-full mt-1"
@@ -67,22 +67,32 @@ const myReviews = () => {
 
       {/* Review Details */}
       <View className="ml-4 flex-1">
-        <Text className="text-base font-Roboto-Medium text-[#030B19] ">{item.name}</Text>
+        <Text className="text-base font-Roboto-Medium text-[#030B19] ">
+          {item.name}
+        </Text>
 
         <View className="flex-row items-center ">
-        <Text className="text-xs text-[#363E4C] ">{item.rating}</Text>
-          <StarRatingDisplay rating={item.rating} starSize={11} starStyle={{ marginHorizontal: 1 }}  color="#FF9D00" />
+          <Text className="text-xs text-[#363E4C] ">{item.rating}</Text>
+          <Rating
+            type="star"
+            ratingCount={5}
+            imageSize={12}
+            startingValue={item.rating}
+            readonly
+          />
         </View>
         <Text className="text-xs text-[#676B73]  ">{item.date}</Text>
-        <Text className="text-xs font-Roboto text-[#363E4C] mt-2 ml-[-65] ">{item.review}</Text>
+        <Text className="text-xs font-Roboto text-[#363E4C] mt-2 ml-[-65] ">
+          {item.review}
+        </Text>
       </View>
       <View className="self-center">
-  <Image
-    source={require('@/assets/images/rightArrow.png')}
-    className="w-4 h-4 mb-16"
-    resizeMode="contain"
-  />
-</View>
+        <Image
+          source={require('@/assets/images/rightArrow.png')}
+          className="w-4 h-4 mb-16"
+          resizeMode="contain"
+        />
+      </View>
     </TouchableOpacity>
   );
 
@@ -100,22 +110,22 @@ const myReviews = () => {
         className="flex-1 bg-[#FFFFFF] rounded-2xl mx-4 shadow-md"
         style={{ marginBottom: 15 }}
       >
-      {/* Reviews List */}
-      <FlatList
-        data={reviewsData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderReviewItem}
-        contentContainerStyle={{
-          paddingBottom: 16, 
-        }}
-        style={{
+        {/* Reviews List */}
+        <FlatList
+          data={reviewsData}
+          keyExtractor={(item) => item.id}
+          renderItem={renderReviewItem}
+          contentContainerStyle={{
+            paddingBottom: 16,
+          }}
+          style={{
             borderRadius: 20,
           }}
-        showsVerticalScrollIndicator={false}
-      />
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
 };
 
-export default myReviews;
+export default MyReviews;
