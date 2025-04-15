@@ -10,11 +10,11 @@ import { useState, useEffect } from 'react';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import { useLocalSearchParams } from 'expo-router';
-import NotificationIcon from '@/assets/icons/Notification';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { useRouter } from 'expo-router';
 import { Rating } from 'react-native-ratings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from '@/components/Header';
 
 interface Service {
   service_name: string;
@@ -99,17 +99,14 @@ const ServiceDetailsPage = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="justify-between bg-white p-2 pt-12 h-full">
+        <View className="justify-between bg-white p-2 h-full">
           <View>
-            <View className="flex-row justify-between items-center">
-              <TouchableOpacity onPress={() => router.back()}>
-                <Image source={require('@/assets/images/blackArrow.png')} />
-              </TouchableOpacity>
-              <Text className="text-2xl font-Roboto-SemiBold">
-                {service?.service_name}
-              </Text>
-              <NotificationIcon />
-            </View>
+            <Header
+              title={service?.service_name}
+              showBackButton={true}
+              notificationsCount={4}
+            />
+
             <View className="flex-row justify-between my-4 items-center">
               <Text className="font-Roboto-Medium text-lg">
                 Service Provider

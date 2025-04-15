@@ -118,8 +118,7 @@ const Booking = () => {
           {/* Header */}
           <Header
             title="Bookings"
-            textSize="text-xl"
-            backRoute="/bookings/bookings"
+            showBackButton={false}
             notificationsCount={4}
           />
 

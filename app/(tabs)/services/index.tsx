@@ -10,12 +10,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import NotificationIcon from '@/assets/icons/Notification';
 import { Ionicons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { useRouter } from 'expo-router';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import Header from '@/components/Header';
 
 interface Service {
   service_name: string;
@@ -72,21 +72,11 @@ const AllServices = () => {
       ) : (
         <SafeAreaView className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
-            <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-2xl">
-              Services
-            </Text>
-            <View style={{ position: 'absolute', right: 16, marginBottom: 23 }}>
-              <View className="absolute right-4">
-                <View className="relative ">
-                  <NotificationIcon />
-                  <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
-                    <Text className="text-white text-xs font-bold">4</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
+          <Header
+            title="Services"
+            showBackButton={false}
+            notificationsCount={0}
+          />
 
           {/* Search & Filter */}
           <View className="px-4 py-2 flex-row items-center justify-between mb-2">
