@@ -90,7 +90,7 @@ const AllServices = () => {
 
           {/* Search & Filter */}
           <View className="px-4 py-2 flex-row items-center justify-between mb-2">
-            <View className="flex-row items-center bg-white rounded-lg px-2 py-2 flex-1 mr-3 h-10">
+            <View className="flex-row items-center bg-white rounded-lg px-2 py-2 flex-1 h-10">
               <Ionicons
                 name="search"
                 size={20}
@@ -110,13 +110,6 @@ const AllServices = () => {
                   }}
                 />
               </SafeAreaView>
-            </View>
-
-            <View className="w-10 h-10 bg-white rounded-lg justify-center items-center">
-              <Image
-                source={require('@/assets/images/filter.png')}
-                resizeMode="contain"
-              />
             </View>
           </View>
 

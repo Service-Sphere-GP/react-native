@@ -76,6 +76,22 @@ const ServiceDetailsPage = () => {
     router.push(`/profile/${service?.service_provider._id}`);
   };
 
+  const bookServiceHandler = async () => {
+    try {
+      const response: any = await ApiService.post(
+        API_ENDPOINTS.BOOK_SERVICE.replace(
+          ':serviceId',
+          service?._id as string,
+        ),
+      );
+      if (response.status === 201) {
+        router.push('/(tabs)/bookings/customerBookings');
+      }
+    } catch (error) {
+      console.error('Failed to book service', error);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -151,6 +167,13 @@ const ServiceDetailsPage = () => {
               <TouchableOpacity
                 className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-xl`}
                 disabled={service?.status !== 'active'}
+                onPress={() => {
+                  if (service?.service_provider._id === user?._id) {
+                    router.push(`/profile/edit-service/${service?._id}`);
+                  } else {
+                    bookServiceHandler();
+                  }
+                }}
               >
                 <Text className="font-Roboto-Medium text-base text-center">
                   {service?.service_provider.full_name === user?.full_name
