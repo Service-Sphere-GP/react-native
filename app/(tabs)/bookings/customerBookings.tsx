@@ -85,7 +85,7 @@ const customerBookings  = () => {
 
   const renderBookingItem = ({ item }: { item: typeof bookingsData[0] }) => (
     <TouchableOpacity
-    //   onPress={() => router.push('/bookings/customerBookings')} // Navigate to chat
+    onPress={() => router.push('/bookings/Chat/ChatRoomScreen')} 
     >
       <View className="flex-row items-center justify-between bg-white px-4 py-3">
   
@@ -140,7 +140,7 @@ const customerBookings  = () => {
       </View>
 
       <TouchableOpacity
-  // onPress={() => router.push('/bookings/addBooking')} // Navigate to the Add Booking screen
+     onPress={() => router.push('/bookings/Chat/ChatRoomScreen')} 
   className="bg-[#147E93] h-14 w-14 rounded-full items-center justify-center shadow-lg mb-4 mr-4 self-end"
 >
   <Ionicons name="add" size={28} color="#FFFFFF" />
