@@ -1,6 +1,5 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
 import { Rating } from 'react-native-ratings';
 
@@ -53,7 +52,6 @@ const reviewsData = [
 ];
 
 const UserReviews = () => {
-  const router = useRouter();
   const renderReviewItem = ({ item }: { item: (typeof reviewsData)[0] }) => (
     <TouchableOpacity className="bg-white rounded-2xl mx-1 p-3 flex-row items-start  ">
       <Image

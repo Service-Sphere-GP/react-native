@@ -3,9 +3,9 @@ import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NotificationIcon from '@/assets/icons/Notification';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProfileDetail from '@/components/profile/ProfileDetail';
+import Header from '@/components/Header';
 
 const ProfileComponent = () => {
   interface User {
@@ -36,13 +36,13 @@ const ProfileComponent = () => {
           }
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -67,7 +67,7 @@ const ProfileComponent = () => {
     try {
       await AsyncStorage.removeItem('user');
       await AsyncStorage.removeItem('authToken');
-      router.push('/customer/login');
+      router.push('/(otp)/customer/login');
     } catch (error) {
       console.error('Failed to logout', error);
     }
@@ -76,13 +76,12 @@ const ProfileComponent = () => {
   return (
     <ScrollView>
       {user ? (
-        <View className="px-1 py-4 xs:px-4 mt-12 gap-4">
-          <View className="flex-row justify-between mr-2">
-            <Text className="font-Roboto-Medium text-xl flex-1 text-center">
-              Profile
-            </Text>
-            <NotificationIcon />
-          </View>
+        <View className="px-1 py-4 xs:px-4 gap-4">
+          <Header
+            title="Profile"
+            showBackButton={false}
+            notificationsCount={0}
+          />
 
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader

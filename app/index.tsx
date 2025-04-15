@@ -80,13 +80,13 @@ const App = () => {
           style={{ width: '100%', gap: 12, marginBottom: 20 }}
         >
           <CustomButton
-            onPress={() => router.push('/customer/register')}
+            onPress={() => router.push('/(otp)/customer/register')}
             title="Customer"
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
-            onPress={() => router.push('/provider/register')}
+            onPress={() => router.push('/(otp)/provider/register')}
             title="Service Provider"
             containerStyles="bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-[#147E93] font-Roboto-SemiBold"

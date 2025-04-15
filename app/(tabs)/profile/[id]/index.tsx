@@ -1,13 +1,13 @@
-import { View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProfileDetail from '@/components/profile/ProfileDetail';
-import NotificationIcon from '@/assets/icons/Notification';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from '@/components/Header';
 interface User {
   first_name: string;
   full_name: string;
@@ -38,7 +38,7 @@ export default function Profile() {
           }
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
@@ -56,17 +56,12 @@ export default function Profile() {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="px-1 py-4 xs:px-4 mt-12 gap-4">
-          <View className="flex-row justify-between">
-            <TouchableOpacity
-              onPress={() => {
-                router.back();
-              }}
-            >
-              <Image source={require('@/assets/images/blackArrow.png')} />
-            </TouchableOpacity>
-            <NotificationIcon />
-          </View>
+        <View className="px-1 py-4 xs:px-4 gap-4">
+          <Header
+            title="Profile"
+            showBackButton={true}
+            notificationsCount={0}
+          />
           <ProfileHeader
             fullName={user?.full_name}
             rating={4.5}

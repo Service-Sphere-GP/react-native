@@ -99,12 +99,7 @@ const MyReviews = () => {
   return (
     <View className="flex-1 bg-[#F9F9F9]">
       {/* Header */}
-      <Header
-        title="My Reviews"
-        textSize="text-lg"
-        backRoute="/profile/me"
-        notificationsCount={4}
-      />
+      <Header title="My Reviews" showBackButton={true} notificationsCount={4} />
 
       <View
         className="flex-1 bg-[#FFFFFF] rounded-2xl mx-4 shadow-md"

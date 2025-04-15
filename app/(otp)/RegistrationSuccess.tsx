@@ -17,13 +17,13 @@ const RegistrationSuccess = () => {
           setRole(parsedUser.role);
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -33,9 +33,9 @@ const RegistrationSuccess = () => {
 
   const handleGetStarted = () => {
     if (role === 'customer') {
-      router.push('/customer/login');
+      router.push('/(otp)/customer/login');
     } else {
-      router.push('/provider/login');
+      router.push('/(otp)/customer/login');
     }
   };
 

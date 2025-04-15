@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import NotificationIcon from '@/assets/icons/Notification';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import Header from '@/components/Header';
 
 const Settings = () => {
   interface User {
@@ -37,13 +37,13 @@ const Settings = () => {
           setUser(parsedUser);
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -59,7 +59,7 @@ const Settings = () => {
       )
         .then(() => {
           AsyncStorage.clear();
-          router.replace('/customer/login');
+          router.replace('/(otp)/customer/login');
         })
         .catch((err) => {
           console.error(err);
@@ -70,7 +70,7 @@ const Settings = () => {
       )
         .then(() => {
           AsyncStorage.clear();
-          router.replace('/provider/login');
+          router.replace('/(otp)/provider/login');
         })
         .catch((err) => {
           console.error(err);
@@ -120,19 +120,12 @@ const Settings = () => {
         </View>
       </Modal>
       {user ? (
-        <View className="px-1 py-4 xs:px-4 mt-12 gap-4">
-          <View className="flex-row justify-between mr-2">
-            <TouchableOpacity
-              onPress={() => router.push('/profile/me')}
-              className="flex-row items-center"
-            >
-              <Image source={require('@/assets/images/blackArrow.png')} />
-            </TouchableOpacity>
-            <Text className="font-Roboto-Medium text-xl flex-1 text-center">
-              Personal Data
-            </Text>
-            <NotificationIcon />
-          </View>
+        <View className="px-1 py-4 xs:px-4 gap-4">
+          <Header
+            title="Personal Data"
+            showBackButton={true}
+            notificationsCount={0}
+          />
           <View>
             <Image
               source={require('@/assets/images/anonymous.jpg')}
@@ -175,7 +168,7 @@ const Settings = () => {
               placeholder="Enter new password"
               className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
             />
-           
+
             <TouchableOpacity className="bg-[#147E93] rounded-xl shadow-md items-center px-6 py-3 mt-3">
               <Text className="text-white font-Roboto-Medium text-base">
                 Save Changes

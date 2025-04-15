@@ -114,7 +114,7 @@ const Login = () => {
           <Text className="font-Roboto-Light text-black/70 text-base">
             Don't have an account?{' '}
             <Link
-              href="/(tabs)/customer/register"
+              href="/(otp)/customer/register"
               className="text-[#147E93] underline font-Roboto-Medium"
             >
               Sign up
