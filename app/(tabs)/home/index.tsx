@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, Image, Dimensions,ScrollView , FlatList, StyleSheet } from 'react-native';
+import { View, Text, Image, Dimensions, ScrollView, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import NotificationIcon from '@/assets/icons/Notification';
 
 const Dashboard = () => {
 
+  const router = useRouter();
   const quickChats = [
     { id: '1', name: 'John Doe', image: require('@/assets/images/Profile.png') },
     { id: '2', name: 'John Doe', image: require('@/assets/images/Profile.png') },
@@ -33,12 +35,14 @@ const Dashboard = () => {
 />
     </View>
   </View>
+  <TouchableOpacity onPress={() => router.push('/profile/notification')}>
   <View className="relative mb-12">
   <NotificationIcon color="#FFFFFF" /> 
     <View className="absolute -top-1 -right-1 bg-amber-500 w-5 h-5 rounded-full items-center justify-center">
       <Text className="text-white text-xs font-bold">4</Text>
     </View>
   </View>
+  </TouchableOpacity>
 </View>
       
       {/* Feedback Insights */}
