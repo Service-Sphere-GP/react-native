@@ -13,6 +13,7 @@ interface User {
   full_name: string;
   business_name: string;
   role: string;
+  profile_image: string;
 }
 
 export default function Profile() {
@@ -66,6 +67,7 @@ export default function Profile() {
             fullName={user?.full_name}
             rating={4.5}
             role={user?.business_name}
+            imageUrl={user?.profile_image}
           />
           <View className="bg-white rounded-3xl w-full">
             {user?.role === 'service_provider' && (

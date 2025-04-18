@@ -10,10 +10,10 @@ import {
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import NotificationIcon from '@/assets/icons/Notification';
 import * as ImagePicker from 'expo-image-picker';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import Header from '@/components/Header';
 
 interface ServiceData {
   service_name: string;
@@ -170,17 +170,13 @@ const NewService = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="bg-white px-4 py-12 h-full justify-between">
+        <View className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
-            <View className="flex-row justify-between items-center">
-              <TouchableOpacity onPress={() => router.back()}>
-                <Image source={require('@/assets/images/blackArrow.png')} />
-              </TouchableOpacity>
-              <Text className="text-2xl font-Roboto-SemiBold">
-                Service Creation
-              </Text>
-              <NotificationIcon />
-            </View>
+            <Header
+              title="New Service"
+              showBackButton={true}
+              notificationsCount={4}
+            />
             <View>
               <Text className="font-Roboto-Medium text-lg">Name</Text>
               <TextInput

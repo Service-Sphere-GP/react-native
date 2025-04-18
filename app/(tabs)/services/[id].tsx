@@ -122,6 +122,7 @@ const ServiceDetailsPage = () => {
               rating={service?.service_provider.rating_average}
               role={service?.service_provider.business_name}
               onPress={navigateHandler}
+              imageUrl={user?.profile_image}
             />
 
             <View className="mt-6">

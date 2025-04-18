@@ -12,6 +12,7 @@ const ProfileComponent = () => {
     full_name: string;
     role: string;
     rating_average: number;
+    profile_image: string;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -87,6 +88,7 @@ const ProfileComponent = () => {
             <ProfileHeader
               fullName={user.full_name}
               rating={user.rating_average}
+              imageUrl={user.profile_image}
             />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail

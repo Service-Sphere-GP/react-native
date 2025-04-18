@@ -6,11 +6,13 @@ const ProfileHeader = ({
   rating,
   role,
   onPress,
+  imageUrl,
 }: {
   fullName?: string | undefined;
   rating: number | undefined;
   role?: string | null;
   onPress?: () => void;
+  imageUrl?: string | undefined;
 }) => {
   return (
     <TouchableOpacity
@@ -19,7 +21,7 @@ const ProfileHeader = ({
     >
       <View className="flex-row items-center gap-2">
         <Image
-          source={require('@/assets/images/anonymous.jpg')}
+          source={{ uri: imageUrl }}
           style={{
             borderColor: '#fff',
             borderRadius: 100,

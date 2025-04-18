@@ -81,10 +81,10 @@ const Booking = () => {
     fetchBookings();
   }, [role]);
 
-  const handleOpenFeedbackModal = (booking: BookingItem) => {
-    setSelectedBooking(booking);
-    setModalVisible(true);
-  };
+  // const handleOpenFeedbackModal = (booking: BookingItem) => {
+  //   setSelectedBooking(booking);
+  //   setModalVisible(true);
+  // };
 
   const handleCloseFeedbackModal = () => {
     setModalVisible(false);
@@ -164,7 +164,9 @@ const Booking = () => {
     const servicePrice = service.base_price;
 
     return (
-      <TouchableOpacity onPress={() => handleOpenFeedbackModal(item)}>
+      <TouchableOpacity
+        onPress={() => router.push('/bookings/Chat/ChatRoomScreen')}
+      >
         <View
           className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3`}
         >
