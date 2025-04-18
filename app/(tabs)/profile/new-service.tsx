@@ -53,7 +53,7 @@ const NewService = () => {
             return; // Don't set loading to false, we're redirecting
           }
         } else {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
           return; // Don't set loading to false, we're redirecting
         }
 
@@ -61,7 +61,7 @@ const NewService = () => {
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user data', error);
-        router.push('/customer/login');
+        router.push('/(otp)/customer/login');
         // Don't set loading to false, we're redirecting
       }
     };
@@ -173,7 +173,9 @@ const NewService = () => {
         <View className="bg-white px-4 py-12 h-full justify-between">
           <View className="gap-4">
             <View className="flex-row justify-between items-center">
-              <Image source={require('@/assets/images/blackArrow.png')} />
+              <TouchableOpacity onPress={() => router.back()}>
+                <Image source={require('@/assets/images/blackArrow.png')} />
+              </TouchableOpacity>
               <Text className="text-2xl font-Roboto-SemiBold">
                 Service Creation
               </Text>

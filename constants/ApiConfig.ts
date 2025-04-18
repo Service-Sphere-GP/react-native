@@ -10,14 +10,23 @@ const API_BASE_URL =
 const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
-  Get_USER: '/users/:id',
-  Delete_CUSTOMER: '/users/customers/:id',
-  Delete_PROVIDER: '/users/service-providers/:id',
-  Verify_EMAIL: '/auth/verify-email/:id',
+  GET_USER: '/users/:id',
+  DELETE_CUSTOMER: '/users/customers/:id',
+  DELETE_PROVIDER: '/users/service-providers/:id',
+  VERIFY_EMAIL: '/auth/verify-email/:id',
   RESEND_OTP: '/auth/resend-verification',
-  Get_SERVICE_DETAILS: '/services/:id',
+  GET_SERVICE_DETAILS: '/services/:id',
   CREATE_SERVICE: '/services',
-
+  GET_SERVICES: '/services',
+  UPDATE_PROVIDER: '/users/service-providers/:id',
+  UPDATE_CUSTOMER: '/users/customers/:id',
+  GET_PROVIDER_SERVICES: '/services/provider/:id',
+  GET_MY_SERVICES: '/services/my-services',
+  BOOK_SERVICE: '/bookings/:serviceId',
+  GET_CUSTOMER_BOOKINGS: '/bookings',
+  GET_PROVIDER_BOOKINGS: '/bookings/provider',
+  COMPELETE_BOOKING: '/bookings/:id/status',
+  SEND_FEEDBACK: '/feedback',
   // Add more endpoints as needed
 };
 

@@ -31,13 +31,13 @@ const Verification = () => {
           setId(parsedUser._id);
         } else {
           setTimeout(() => {
-            router.push('/customer/login');
+            router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
         setTimeout(() => {
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }, 100);
       }
     };
@@ -51,7 +51,7 @@ const Verification = () => {
   };
 
   const handleConfirmCode = () => {
-    ApiService.post(API_ENDPOINTS.Verify_EMAIL.replace(':id', id as string), {
+    ApiService.post(API_ENDPOINTS.VERIFY_EMAIL.replace(':id', id as string), {
       otp,
     })
       .then((response: any) => {
@@ -89,7 +89,7 @@ const Verification = () => {
       <View className="flex-1 bg-white">
         <TouchableOpacity
           className="mt-12 ml-6"
-          onPress={() => router.replace('/customer/register')}
+          onPress={() => router.replace('/(otp)/customer/register')}
         >
           <Image
             source={require('@/assets/images/back-Icon.png')}

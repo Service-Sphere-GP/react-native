@@ -10,34 +10,34 @@ import { useState, useEffect } from 'react';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import { useLocalSearchParams } from 'expo-router';
-import NotificationIcon from '@/assets/icons/Notification';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import { useRouter } from 'expo-router';
 import { Rating } from 'react-native-ratings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from '@/components/Header';
 
 interface Service {
   service_name: string;
   description: string;
   base_price: number;
   images: string[];
-  service_provider_id: string;
+  service_provider: {
+    _id: string;
+    full_name: string;
+    rating_average: number;
+    business_name: string;
+  };
   service_attributes: any[];
   status: string;
   _id: string;
-}
-
-interface Provider {
-  first_name: string;
-  last_name: string;
-  rating: number;
-  business_name: string;
+  rating_average: number;
 }
 
 const ServiceDetailsPage = () => {
   const router = useRouter();
   const [service, setService] = useState<Service | null>(null);
-  const [provider, setProvider] = useState<Provider | null>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -46,26 +46,23 @@ const ServiceDetailsPage = () => {
     const fetchServiceDetails = async () => {
       try {
         setLoading(true);
-        
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+        } else {
+          router.push('/(otp)/customer/login');
+        }
         const response: any = await ApiService.get(
-          API_ENDPOINTS.Get_SERVICE_DETAILS.replace(':id', id as string),
+          API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
         );
         setService(response.data.data);
-
-        const providerResponse: any = await ApiService.get(
-          API_ENDPOINTS.Get_USER.replace(
-            ':id',
-            response.data.data.service_provider_id as string,
-          ),
-        );
-
-        setProvider(providerResponse.data.data);
       } catch (error) {
         console.error('Failed to fetch service details', error);
         // Handle authentication errors
         if ((error as any)?.response?.status === 401) {
           // Redirect to login if unauthorized
-          router.push('/customer/login');
+          router.push('/(otp)/customer/login');
         }
       } finally {
         setLoading(false);
@@ -76,7 +73,23 @@ const ServiceDetailsPage = () => {
   }, [id, router]);
 
   const navigateHandler = () => {
-    router.push(`/profile/${service?.service_provider_id}`);
+    router.push(`/profile/${service?.service_provider._id}`);
+  };
+
+  const bookServiceHandler = async () => {
+    try {
+      const response: any = await ApiService.post(
+        API_ENDPOINTS.BOOK_SERVICE.replace(
+          ':serviceId',
+          service?._id as string,
+        ),
+      );
+      if (response.status === 201) {
+        router.push('/(tabs)/bookings');
+      }
+    } catch (error) {
+      console.error('Failed to book service', error);
+    }
   };
 
   return (
@@ -86,15 +99,14 @@ const ServiceDetailsPage = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="justify-between bg-white p-2 pt-12 h-full">
+        <View className="justify-between bg-white p-2 h-full">
           <View>
-            <View className="flex-row justify-between items-center">
-              <Image source={require('@/assets/images/blackArrow.png')} />
-              <Text className="text-2xl font-Roboto-SemiBold">
-                {service?.service_name}
-              </Text>
-              <NotificationIcon />
-            </View>
+            <Header
+              title={service?.service_name}
+              showBackButton={true}
+              notificationsCount={4}
+            />
+
             <View className="flex-row justify-between my-4 items-center">
               <Text className="font-Roboto-Medium text-lg">
                 Service Provider
@@ -106,10 +118,9 @@ const ServiceDetailsPage = () => {
               </Text>
             </View>
             <ProfileHeader
-              firstName={provider?.first_name}
-              LastName={provider?.last_name}
-              rating={4.5}
-              role={provider?.business_name}
+              fullName={service?.service_provider.full_name}
+              rating={service?.service_provider.rating_average}
+              role={service?.service_provider.business_name}
               onPress={navigateHandler}
             />
 
@@ -137,8 +148,14 @@ const ServiceDetailsPage = () => {
           </View>
           <View className="flex-row justify-center xs:justify-between items-end mb-28">
             <View className="hidden xs:flex items-center">
-              <Text className="font-Roboto-Medium text-lg">4.7</Text>
-              <Rating readonly startingValue={4.7} imageSize={18} />
+              <Text className="font-Roboto-Medium text-lg">
+                {service?.rating_average}
+              </Text>
+              <Rating
+                readonly
+                startingValue={service?.rating_average}
+                imageSize={18}
+              />
             </View>
             <View className="xs:items-end">
               <Text className="font-Roboto text-lg text-center">
@@ -147,9 +164,18 @@ const ServiceDetailsPage = () => {
               <TouchableOpacity
                 className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-xl`}
                 disabled={service?.status !== 'active'}
+                onPress={() => {
+                  if (service?.service_provider._id === user?._id) {
+                    router.push(`/profile/edit-service/${service?._id}`);
+                  } else {
+                    bookServiceHandler();
+                  }
+                }}
               >
                 <Text className="font-Roboto-Medium text-base text-center">
-                  Open a chat with {provider?.first_name}
+                  {service?.service_provider.full_name === user?.full_name
+                    ? 'Edit your Service'
+                    : `Open Chat with ${service?.service_provider.full_name}`}
                 </Text>
               </TouchableOpacity>
             </View>

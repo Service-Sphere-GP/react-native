@@ -2,21 +2,25 @@ import { View, Text, ScrollView } from 'react-native';
 import { CheckBox } from '@rneui/themed';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
-import { Customer } from '@/types/Customer';
+import { Provider } from '@/types/Provider';
+import { useRouter } from 'expo-router';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
 
-  const [customer, setCustomer] = useState({
+  const [provider, setProvider] = useState({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
     confirmPassword: '',
+    businessName: '',
+    businessAddress: '',
+    taxId: '',
   });
 
   const [errorMessages, setErrorMessages] = useState({
@@ -25,63 +29,82 @@ const Register = () => {
     firstName: '',
     lastName: '',
     confirmPassword: '',
+    businessName: '',
+    businessAddress: '',
+    taxId: '',
   });
 
-  const { error, loading, customerRegister } = useRegister();
+  const { error, loading, providerRegister } = useRegister();
+  const router = useRouter();
 
-  const validateForm = (customer: Customer) => {
+  const validateForm = (provider: Provider) => {
     const errors = {
       email: '',
       password: '',
       firstName: '',
       lastName: '',
       confirmPassword: '',
+      businessName: '',
+      businessAddress: '',
+      taxId: '',
     };
 
-    if (!customer.email) {
+    if (!provider.email) {
       errors.email = 'Email is required';
     }
 
-    if (!customer.password || customer.password.length < 8) {
+    if (!provider.password || provider.password.length < 8) {
       errors.password = 'Password must be at least 8 characters';
     }
 
-    if (!customer.confirmPassword) {
+    if (!provider.confirmPassword) {
       errors.confirmPassword = 'Confirm Password is required';
-    } else if (customer.password !== customer.confirmPassword) {
+    } else if (provider.password !== provider.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
     }
 
-    if (!customer.firstName) {
+    if (!provider.firstName) {
       errors.firstName = 'First Name is required';
     }
 
-    if (!customer.lastName) {
+    if (!provider.lastName) {
       errors.lastName = 'Last Name is required';
+    }
+
+    if (!provider.businessName) {
+      errors.businessName = 'Business Name is required';
+    }
+
+    if (!provider.businessAddress) {
+      errors.businessAddress = 'Business Address is required';
+    }
+
+    if (!provider.taxId) {
+      errors.taxId = 'Tax ID is required';
     }
 
     return errors;
   };
 
   const handleRegister = async () => {
-    const errors = validateForm(customer);
+    const errors = validateForm(provider);
     setErrorMessages(errors);
 
     const hasErrors = Object.values(errors).some((error) => error.length > 0);
     if (hasErrors) {
       return;
     }
-
     try {
-      const success = await customerRegister(
-        customer.email,
-        customer.password,
-        customer.firstName,
-        customer.lastName,
-        customer.confirmPassword,
+      const success = await providerRegister(
+        provider.email,
+        provider.password,
+        provider.firstName,
+        provider.lastName,
+        provider.confirmPassword,
+        provider.businessName,
+        provider.businessAddress,
+        provider.taxId,
       );
-
-      console.log('success', success);
 
       if (success) {
         router.push('/(otp)/Verification');
@@ -101,9 +124,9 @@ const Register = () => {
             label="First Name"
             placeholder="Enter your first name"
             isPassword={false}
-            value={customer.firstName}
+            value={provider.firstName}
             onChangeText={(text) =>
-              setCustomer({ ...customer, firstName: text })
+              setProvider({ ...provider, firstName: text })
             }
             error={errorMessages.firstName ? true : false}
             errorMessage={
@@ -114,9 +137,9 @@ const Register = () => {
             label="Last Name"
             placeholder="Enter your last name"
             isPassword={false}
-            value={customer.lastName}
+            value={provider.lastName}
             onChangeText={(text) =>
-              setCustomer({ ...customer, lastName: text })
+              setProvider({ ...provider, lastName: text })
             }
             error={errorMessages.lastName ? true : false}
             errorMessage={errorMessages.lastName ? errorMessages.lastName : ''}
@@ -125,8 +148,8 @@ const Register = () => {
             label="Email"
             placeholder="Enter your email"
             isPassword={false}
-            value={customer.email}
-            onChangeText={(text) => setCustomer({ ...customer, email: text })}
+            value={provider.email}
+            onChangeText={(text) => setProvider({ ...provider, email: text })}
             error={errorMessages.email ? true : false}
             errorMessage={errorMessages.email ? errorMessages.email : ''}
           />
@@ -134,9 +157,9 @@ const Register = () => {
             label="Password"
             placeholder="Enter your password"
             isPassword={true}
-            value={customer.password}
+            value={provider.password}
             onChangeText={(text) =>
-              setCustomer({ ...customer, password: text })
+              setProvider({ ...provider, password: text })
             }
             error={errorMessages.password ? true : false}
             errorMessage={errorMessages.password ? errorMessages.password : ''}
@@ -145,14 +168,49 @@ const Register = () => {
             label="Confirm Password"
             placeholder="Re-enter your password"
             isPassword={true}
-            value={customer.confirmPassword}
+            value={provider.confirmPassword}
             onChangeText={(text) =>
-              setCustomer({ ...customer, confirmPassword: text })
+              setProvider({ ...provider, confirmPassword: text })
             }
             error={errorMessages.confirmPassword ? true : false}
             errorMessage={
               errorMessages.confirmPassword ? errorMessages.confirmPassword : ''
             }
+          />
+          <Input
+            label="Business Name"
+            placeholder="Enter your business name"
+            isPassword={false}
+            value={provider.businessName}
+            onChangeText={(text) =>
+              setProvider({ ...provider, businessName: text })
+            }
+            error={errorMessages.businessName ? true : false}
+            errorMessage={
+              errorMessages.businessName ? errorMessages.businessName : ''
+            }
+          />
+          <Input
+            label="Business Address"
+            placeholder="Enter your business address"
+            isPassword={false}
+            value={provider.businessAddress}
+            onChangeText={(text) =>
+              setProvider({ ...provider, businessAddress: text })
+            }
+            error={errorMessages.businessAddress ? true : false}
+            errorMessage={
+              errorMessages.businessAddress ? errorMessages.businessAddress : ''
+            }
+          />
+          <Input
+            label="Tax ID"
+            placeholder="Enter your tax ID"
+            isPassword={false}
+            value={provider.taxId}
+            onChangeText={(text) => setProvider({ ...provider, taxId: text })}
+            error={errorMessages.taxId ? true : false}
+            errorMessage={errorMessages.taxId ? errorMessages.taxId : ''}
           />
         </View>
         <View className="flex-row items-center">
@@ -168,13 +226,11 @@ const Register = () => {
             </Text>
           </Text>
         </View>
-
         {error && (
           <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
             {error}
           </Text>
         )}
-
         <CustomButton
           title="Continue"
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"
@@ -182,12 +238,11 @@ const Register = () => {
           onPress={handleRegister}
           disabled={loading || !checked}
         />
-
         <View className="flex-row items-center justify-center my-5">
           <Text className="font-Roboto-Light text-black/70 text-base">
             Already have an account?{' '}
             <Link
-              href="/(tabs)/customer/login"
+              href="/(otp)/provider/login"
               className="text-[#147E93] underline font-Roboto-Medium"
             >
               Login
