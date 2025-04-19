@@ -100,8 +100,8 @@ const ServiceDetailsPage = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="justify-between bg-white p-2 h-full">
-          <View>
+        <View className="justify-between bg-white h-full">
+          <View className="px-2">
             <Header
               title={service?.service_name}
               showBackButton={true}
@@ -148,39 +148,24 @@ const ServiceDetailsPage = () => {
               {service?.description}
             </Text>
           </View>
-          <View className="flex-row justify-center xs:justify-between items-end mb-28">
-            <View className="hidden xs:flex items-center">
-              <Text className="font-Roboto-Medium text-lg">
-                {service?.rating_average}
+          <View className="flex-row justify-center xs:justify-between items-end">
+            <TouchableOpacity
+              className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-t-md w-full`}
+              disabled={service?.status !== 'active'}
+              onPress={() => {
+                if (service?.service_provider._id === user?._id) {
+                  router.push(`/profile/edit-service/${service?._id}`);
+                } else {
+                  bookServiceHandler();
+                }
+              }}
+            >
+              <Text className="font-Roboto-Medium text-base text-center">
+                {service?.service_provider.full_name === user?.full_name
+                  ? 'Edit your Service'
+                  : `Open Chat with ${service?.service_provider.full_name}`}
               </Text>
-              <Rating
-                readonly
-                startingValue={service?.rating_average}
-                imageSize={18}
-              />
-            </View>
-            <View className="xs:items-end">
-              <Text className="font-Roboto text-lg text-center">
-                Base Price: {service?.base_price} EGP
-              </Text>
-              <TouchableOpacity
-                className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-xl`}
-                disabled={service?.status !== 'active'}
-                onPress={() => {
-                  if (service?.service_provider._id === user?._id) {
-                    router.push(`/profile/edit-service/${service?._id}`);
-                  } else {
-                    bookServiceHandler();
-                  }
-                }}
-              >
-                <Text className="font-Roboto-Medium text-base text-center">
-                  {service?.service_provider.full_name === user?.full_name
-                    ? 'Edit your Service'
-                    : `Open Chat with ${service?.service_provider.full_name}`}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       )}

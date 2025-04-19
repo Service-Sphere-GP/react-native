@@ -39,7 +39,7 @@ const ProfileHeader = ({
             </Text>
           )}
           <View className="flex-row items-center gap-1">
-            <Text className="text-[#D9DEE4]">{rating}</Text>
+            <Text className="text-[#D9DEE4]">{rating?.toFixed(2)}</Text>
             <Rating
               readonly
               startingValue={rating}

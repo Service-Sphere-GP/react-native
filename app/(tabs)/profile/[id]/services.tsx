@@ -82,7 +82,7 @@ const ProviderServices = () => {
       </View>
 
       {/* Services List */}
-      <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2  flex-1">
+      <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2 flex-1">
         <FlatList
           data={services}
           keyExtractor={(item) => item._id}
@@ -111,7 +111,7 @@ const ProviderServices = () => {
                 <View className="flex-row items-center justify-between">
                   <View className="flex-row items-center gap-1">
                     <Text className="text-sm text-[#030B19] mr-1">
-                      {item.rating_average}
+                      {item.rating_average.toFixed(2)}
                     </Text>
                     <Rating
                       readonly

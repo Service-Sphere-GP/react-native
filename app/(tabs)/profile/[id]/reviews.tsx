@@ -118,21 +118,25 @@ const MyReviews = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="bg-[#F4F4F4]">
+        <View className="bg-[#F4F4F4] flex-1 px-4">
           <Header
-            title={`Reviews for ${username}`}
+            title={`Reviews of ${username}`}
             showBackButton={true}
             notificationsCount={4}
           />
 
-          <View className="rounded-2xl mx-4" style={{ marginBottom: 15 }}>
-            {/* Reviews List */}
+          <View className="bg-white flex-1 rounded-t-2xl">
             <FlatList
               data={reviews}
               keyExtractor={(item) => item._id}
               renderItem={renderReviewItem}
-              style={{ borderRadius: 20 }}
               showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                paddingHorizontal: 16,
+                paddingTop: 8,
+                paddingBottom: 16,
+              }}
             />
           </View>
         </View>

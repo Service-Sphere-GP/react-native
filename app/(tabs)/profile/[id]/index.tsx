@@ -14,6 +14,7 @@ interface User {
   business_name: string;
   role: string;
   profile_image: string;
+  rating_average: number;
 }
 
 export default function Profile() {
@@ -65,7 +66,7 @@ export default function Profile() {
           />
           <ProfileHeader
             fullName={user?.full_name}
-            rating={4.5}
+            rating={user?.rating_average}
             role={user?.business_name}
             imageUrl={user?.profile_image}
           />

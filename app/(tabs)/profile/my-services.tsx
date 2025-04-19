@@ -24,6 +24,7 @@ interface Service {
   service_attributes: any[];
   status: string;
   _id: string;
+  rating_average: number;
 }
 
 const MyServices = () => {
@@ -108,9 +109,13 @@ const MyServices = () => {
                       <View className="flex-row items-center justify-between">
                         <View className="flex-row items-center gap-1">
                           <Text className="text-sm text-[#030B19] mr-1">
-                            4.5
+                            {item.rating_average}
                           </Text>
-                          <Rating readonly startingValue={4.5} imageSize={10} />
+                          <Rating
+                            readonly
+                            startingValue={item.rating_average}
+                            imageSize={10}
+                          />
                         </View>
                         <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
                           {item.base_price} EGP
