@@ -1,13 +1,5 @@
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
 import { Rating } from 'react-native-ratings';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
@@ -30,7 +22,6 @@ interface Review {
 }
 
 const MyReviews = () => {
-  const router = useRouter();
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
@@ -69,10 +60,7 @@ const MyReviews = () => {
     fetchReviews();
   }, [id]);
   const renderReviewItem = ({ item }: { item: Review }) => (
-    <TouchableOpacity
-      onPress={() => router.push('/profile/userReviews')}
-      className="bg-white mx-1 px-2 py-3 flex-row items-start border-b border-[#E5E5E5]"
-    >
+    <View className="bg-white mx-1 px-2 py-3 flex-row items-start border-b border-[#E5E5E5]">
       <Image
         source={{ uri: item.user.profile_image }}
         className="w-12 h-12 rounded-full mt-1"
@@ -108,7 +96,7 @@ const MyReviews = () => {
           {item.message}
         </Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (

@@ -98,19 +98,22 @@ const ProfileComponent = () => {
                 onPress={navigateToPerosnalData}
               />
               {user.role === 'service_provider' && (
-                <ProfileDetail
-                  title="Services"
-                  description="Manage your services"
-                  image={require('@/assets/images/services.png')}
-                  onPress={navigateToMyServices}
-                />
+                <>
+                  <ProfileDetail
+                    title="Services"
+                    description="Manage your services"
+                    image={require('@/assets/images/services.png')}
+                    onPress={navigateToMyServices}
+                  />
+                  <ProfileDetail
+                    title="Reviews"
+                    description="What people are saying about you"
+                    image={require('@/assets/images/reviews.png')}
+                    onPress={navigateToMyReviews}
+                  />
+                </>
               )}
-              <ProfileDetail
-                title="Reviews"
-                description="What people are saying about you"
-                image={require('@/assets/images/reviews.png')}
-                onPress={navigateToMyReviews}
-              />
+
               <ProfileDetail
                 title="Log out"
                 description="logging out will clear your session"

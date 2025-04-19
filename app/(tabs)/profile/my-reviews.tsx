@@ -1,13 +1,5 @@
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
 import { Rating } from 'react-native-ratings';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
@@ -29,8 +21,6 @@ interface Review {
 }
 
 const MyReviews = () => {
-  const router = useRouter();
-
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -52,10 +42,7 @@ const MyReviews = () => {
     fetchReviews();
   }, []);
   const renderReviewItem = ({ item }: { item: Review }) => (
-    <TouchableOpacity
-      onPress={() => router.push('/profile/userReviews')}
-      className="bg-white py-3 flex-row border-b border-[#E5E5E5]"
-    >
+    <View className="bg-white py-3 flex-row border-b border-gray-200">
       <Image
         source={{ uri: item.user.profile_image }}
         className="w-12 h-12 rounded-full mt-1"
@@ -91,7 +78,7 @@ const MyReviews = () => {
           {item.message}
         </Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
