@@ -82,6 +82,7 @@ export default function Profile() {
               title="Reviews"
               description={`What people are saying about ${user?.first_name}`}
               image={require('@/assets/images/reviews.png')}
+              onPress={() => router.push(`/profile/${id}/reviews`)}
             />
           </View>
         </View>

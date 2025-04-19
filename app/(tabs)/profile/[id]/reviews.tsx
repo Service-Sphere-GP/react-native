@@ -1,73 +1,94 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
 import { Rating } from 'react-native-ratings';
+import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import ApiService from '@/constants/ApiService';
+import { useLocalSearchParams } from 'expo-router';
 
-const reviewsData = [
-  {
-    id: '1',
-    name: 'Customer Name',
-    rating: 4.7,
-    date: '26/5/2025',
-    review:
-      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-    Cimage: require('@/assets/images/Profile.png'),
-  },
-  {
-    id: '2',
-    name: 'Customer Name',
-    rating: 4,
-    date: '26/5/2025',
-    review:
-      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-    Cimage: require('@/assets/images/Profile.png'),
-  },
-  {
-    id: '3',
-    name: 'Customer Name',
-    rating: 3,
-    date: '26/5/2025',
-    review:
-      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-    Cimage: require('@/assets/images/Profile.png'),
-  },
-  {
-    id: '4',
-    name: 'Customer Name',
-    rating: 2.5,
-    date: '26/5/2025',
-    review:
-      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-    Cimage: require('@/assets/images/Profile.png'),
-  },
-  {
-    id: '5',
-    name: 'Customer Name',
-    rating: 5,
-    date: '26/5/2025',
-    review:
-      'We create stylish and functional bedrooms tailored to your needs, offering high-quality furniture with elegant finishes. Transform your space with our expert craftsmanship!',
-    Cimage: require('@/assets/images/Profile.png'),
-  },
-];
+interface Review {
+  _id: string;
+  rating: number;
+  message: string;
+  user: {
+    first_name: string;
+    last_name: string;
+    profile_image: string;
+  };
+  createdAt: string;
+  service: {
+    service_name: string;
+  };
+}
 
-const UserReviews = () => {
-  const renderReviewItem = ({ item }: { item: (typeof reviewsData)[0] }) => (
-    <TouchableOpacity className="bg-white rounded-2xl mx-1 p-3 flex-row items-start  ">
+const MyReviews = () => {
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [username, setUsername] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const userResponse: any = await ApiService.get(
+          API_ENDPOINTS.GET_USER.replace(':id', id as string),
+        );
+
+        setUsername(userResponse.data.data.first_name);
+
+        if (userResponse.data.data.role === 'customer') {
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_CUSTOMER_FEEDBACKS.replace(':id', id as string),
+          );
+          setReviews(response.data.data);
+        } else if (userResponse.data.data.role === 'service_provider') {
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_PROVIDER_FEEDBACKS.replace(':id', id as string),
+          );
+          setReviews(response.data.data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch reviews', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviews();
+  }, [id]);
+  const renderReviewItem = ({ item }: { item: Review }) => (
+    <TouchableOpacity
+      onPress={() => router.push('/profile/userReviews')}
+      className="bg-white mx-1 px-2 py-3 flex-row items-start border-b border-[#E5E5E5]"
+    >
       <Image
-        source={item.Cimage}
+        source={{ uri: item.user.profile_image }}
         className="w-12 h-12 rounded-full mt-1"
         resizeMode="cover"
       />
 
       {/* Review Details */}
-      <View className="ml-4 flex-1">
-        <Text className="text-base font-Roboto-Medium text-[#030B19] ">
-          {item.name}
+      <View className="ml-4">
+        <Text className="text-base font-Roboto-Medium text-[#030B19]">
+          {item.user.first_name} {item.user.last_name}
         </Text>
 
-        <View className="flex-row items-center ">
-          <Text className="text-xs text-[#363E4C] ">{item.rating}</Text>
+        <View className="flex-row items-center gap-2">
+          <Text className="text-xs text-[#363E4C]">
+            {item.rating.toFixed(2)}
+          </Text>
           <Rating
             type="star"
             ratingCount={5}
@@ -76,50 +97,48 @@ const UserReviews = () => {
             readonly
           />
         </View>
-        <Text className="text-xs text-[#676B73]  ">{item.date}</Text>
-        <Text className="text-xs font-Roboto text-[#363E4C] mt-2 ml-[-65] ">
-          {item.review}
+        <Text className="text-xs text-[#676B73]">
+          {new Date(item.createdAt).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })}
         </Text>
-      </View>
-      <View className="self-center">
-        <Image
-          source={require('@/assets/images/rightArrow.png')}
-          className="w-4 h-4 mb-16"
-          resizeMode="contain"
-        />
+        <Text className="text-xs font-Roboto text-[#363E4C] mt-2 ml-[-65]">
+          {item.message}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View className="flex-1 bg-[#F9F9F9]">
-      {/* Header */}
-      <Header
-        title=" Reviews for (Username)"
-        showBackButton={true}
-        notificationsCount={4}
-      />
+    <>
+      {loading ? (
+        <View className="flex items-center justify-center h-screen">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
+        <View className="bg-[#F4F4F4]">
+          <Header
+            title={`Reviews for ${username}`}
+            showBackButton={true}
+            notificationsCount={4}
+          />
 
-      <View
-        className="flex-1 bg-[#FFFFFF] rounded-2xl mx-4 shadow-md"
-        style={{ marginBottom: 15 }}
-      >
-        {/* Reviews List */}
-        <FlatList
-          data={reviewsData}
-          keyExtractor={(item) => item.id}
-          renderItem={renderReviewItem}
-          contentContainerStyle={{
-            paddingBottom: 16,
-          }}
-          style={{
-            borderRadius: 20,
-          }}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    </View>
+          <View className="rounded-2xl mx-4" style={{ marginBottom: 15 }}>
+            {/* Reviews List */}
+            <FlatList
+              data={reviews}
+              keyExtractor={(item) => item._id}
+              renderItem={renderReviewItem}
+              style={{ borderRadius: 20 }}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        </View>
+      )}
+    </>
   );
 };
 
-export default UserReviews;
+export default MyReviews;

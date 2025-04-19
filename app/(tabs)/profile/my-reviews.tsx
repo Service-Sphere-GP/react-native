@@ -108,21 +108,13 @@ const MyReviews = () => {
             notificationsCount={4}
           />
 
-          <View
-            className="flex-1 bg-[#FFFFFF] rounded-2xl mx-4"
-            style={{ marginBottom: 15 }}
-          >
+          <View className="rounded-2xl mx-4" style={{ marginBottom: 15 }}>
             {/* Reviews List */}
             <FlatList
               data={reviews}
               keyExtractor={(item) => item._id}
               renderItem={renderReviewItem}
-              contentContainerStyle={{
-                paddingBottom: 16,
-              }}
-              style={{
-                borderRadius: 20,
-              }}
+              style={{ borderRadius: 20 }}
               showsVerticalScrollIndicator={false}
             />
           </View>
