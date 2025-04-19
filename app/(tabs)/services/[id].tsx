@@ -26,6 +26,7 @@ interface Service {
     full_name: string;
     rating_average: number;
     business_name: string;
+    profile_image: string;
   };
   service_attributes: any[];
   status: string;
@@ -122,7 +123,7 @@ const ServiceDetailsPage = () => {
               rating={service?.service_provider.rating_average}
               role={service?.service_provider.business_name}
               onPress={navigateHandler}
-              imageUrl={user?.profile_image}
+              imageUrl={service?.service_provider?.profile_image}
             />
 
             <View className="mt-6">

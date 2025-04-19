@@ -13,6 +13,7 @@ import { Rating } from 'react-native-ratings';
 import { useRouter } from 'expo-router';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import Header from '@/components/Header';
 
 interface Service {
   service_name: string;
@@ -57,7 +58,7 @@ const MyServices = () => {
   }, [router]);
 
   return (
-  <>
+    <>
       {/* Loading Indicator */}
       {loading ? (
         <View className="flex items-center justify-center h-screen">
@@ -66,36 +67,11 @@ const MyServices = () => {
       ) : (
         <View className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
-            <TouchableOpacity
-              onPress={() => router.push('/profile/me')}
-              className="absolute left-4 w-6 h-6"
-            >
-              <Image
-                source={require('@/assets/images/blackArrow.png')}
-                className="w-full h-full"
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-
-            <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-xl">
-              {' '}
-              My Services
-            </Text>
-
-            <View className="absolute right-4">
-              <View className="relative">
-                <Ionicons
-                  name="notifications-outline"
-                  size={24}
-                  color="#030B19"
-                />
-                <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
-                  <Text className="text-white text-xs font-bold">4</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          <Header
+            title="My Services"
+            showBackButton={true}
+            notificationsCount={0}
+          />
 
           {/* Services List */}
           {services?.length ? (

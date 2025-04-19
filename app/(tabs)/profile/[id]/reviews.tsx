@@ -95,9 +95,8 @@ const UserReviews = () => {
     <View className="flex-1 bg-[#F9F9F9]">
       {/* Header */}
       <Header
-        title=" Reviews for (Username) "
-        textSize="text-lg"
-        backRoute="/profile/myReviews"
+        title=" Reviews for (Username)"
+        showBackButton={true}
         notificationsCount={4}
       />
 
