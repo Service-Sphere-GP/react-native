@@ -23,6 +23,7 @@ interface BookingItem {
     full_name: string;
     profile_image: string;
   };
+  status: string;
   service: {
     _id: string;
     service_name: string;
@@ -81,9 +82,41 @@ const Booking = () => {
     fetchBookings();
   }, [role]);
 
-  const handleOpenFeedbackModal = (booking: BookingItem) => {
-    setSelectedBooking(booking);
-    setModalVisible(true);
+  const confirmBookingHandler = async (booking: BookingItem) => {
+    try {
+      await ApiService.patch(
+        API_ENDPOINTS.CHANGE_BOOKING_STATUS.replace(':id', booking._id),
+        {
+          status: 'confirmed',
+        },
+      );
+      // update only this booking in state
+      setBookings(prev =>
+        prev.map(b =>
+          b._id === booking._id ? { ...b, status: 'confirmed' } : b
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const rejectBookingHandler = async (booking: BookingItem) => {
+    try {
+      await ApiService.patch(
+        API_ENDPOINTS.CHANGE_BOOKING_STATUS.replace(':id', booking._id),
+        {
+          status: 'cancelled',
+        },
+      );
+      setBookings(prev =>
+        prev.map(b =>
+          b._id === booking._id ? { ...b, status: 'cancelled' } : b
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCloseFeedbackModal = () => {
@@ -96,7 +129,7 @@ const Booking = () => {
   const handleSubmitFeedback = async () => {
     // Here you would implement the API call to submit feedback
     const changeStatusResponse = await ApiService.patch(
-      API_ENDPOINTS.COMPELETE_BOOKING.replace(':id', selectedBooking._id),
+      API_ENDPOINTS.CHANGE_BOOKING_STATUS.replace(':id', selectedBooking._id),
       {
         status: 'completed',
       },
@@ -162,9 +195,12 @@ const Booking = () => {
     const customerImage = item.customer?.profile_image;
     const serviceName = service.service_name;
     const servicePrice = service.base_price;
+    const bookingStatus = item.status;
 
     return (
-      <TouchableOpacity onPress={() => handleOpenFeedbackModal(item)}>
+      <TouchableOpacity
+        onPress={() => router.push('/bookings/Chat/ChatRoomScreen')}
+      >
         <View
           className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3`}
         >
@@ -184,10 +220,58 @@ const Booking = () => {
             </View>
           </View>
 
-          <View className="items-end mb-4">
+          <View className="items-end flex-col-reverse gap-1">
             <Text className="text-xs font-Roboto text-gray-900">
               {servicePrice} EGP
             </Text>
+            {role === 'service_provider' && bookingStatus === 'pending' ? (
+              <View className="flex-row gap-2">
+                <TouchableOpacity
+                  onPress={() => {
+                    confirmBookingHandler(item);
+                  }}
+                  className="bg-[#3BB143] px-3 py-1 rounded-full"
+                >
+                  <Ionicons
+                    name="checkmark-outline"
+                    size={16}
+                    color="#FFFFFF"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    rejectBookingHandler(item);
+                  }}
+                  className="bg-[#FF5757] px-3 py-1 rounded-full"
+                >
+                  <Ionicons name="close-outline" size={16} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Text
+                className={`text-xs font-Roboto px-2 py-1 rounded-full ${
+                  bookingStatus === 'pending'
+                    ? 'text-[#FFBF00] bg-[#FFBF00]/20'
+                    : bookingStatus === 'confirmed'
+                      ? 'text-[#3BB143] bg-[#3BB143]/20'
+                      : bookingStatus === 'cancelled'
+                        ? 'text-[#FF5757] bg-[#FF5757]/20'
+                        : bookingStatus === 'completed'
+                          ? 'text-[#147E93] bg-[#147E93]/20'
+                          : ''
+                }`}
+              >
+                {bookingStatus === 'pending'
+                  ? 'Pending'
+                  : bookingStatus === 'confirmed'
+                    ? 'Confirmed'
+                    : bookingStatus === 'cancelled'
+                      ? 'Rejected'
+                      : bookingStatus === 'completed'
+                        ? 'Completed'
+                        : ''}
+              </Text>
+            )}
           </View>
         </View>
       </TouchableOpacity>

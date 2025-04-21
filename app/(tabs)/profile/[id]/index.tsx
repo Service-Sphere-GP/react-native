@@ -13,6 +13,8 @@ interface User {
   full_name: string;
   business_name: string;
   role: string;
+  profile_image: string;
+  rating_average: number;
 }
 
 export default function Profile() {
@@ -64,8 +66,9 @@ export default function Profile() {
           />
           <ProfileHeader
             fullName={user?.full_name}
-            rating={4.5}
+            rating={user?.rating_average}
             role={user?.business_name}
+            imageUrl={user?.profile_image}
           />
           <View className="bg-white rounded-3xl w-full">
             {user?.role === 'service_provider' && (
@@ -80,6 +83,7 @@ export default function Profile() {
               title="Reviews"
               description={`What people are saying about ${user?.first_name}`}
               image={require('@/assets/images/reviews.png')}
+              onPress={() => router.push(`/profile/${id}/reviews`)}
             />
           </View>
         </View>

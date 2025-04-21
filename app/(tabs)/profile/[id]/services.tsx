@@ -13,6 +13,7 @@ import { Rating } from 'react-native-ratings';
 import { useRouter } from 'expo-router';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import Header from '@/components/Header';
 
 interface Service {
   service_name: string;
@@ -55,34 +56,10 @@ const ProviderServices = () => {
   return (
     <View className="flex-1 bg-[#F4F4F4]">
       {/* Header */}
-      <View className="flex-row items-center justify-center px-4 py-4 relative mt-6">
-        <TouchableOpacity
-          onPress={() => router.back()}
-          className="absolute left-4 w-6 h-6"
-        >
-          <Image
-            source={require('@/assets/images/blackArrow.png')}
-            className="w-full h-full"
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-
-        <Text className="text-center text-[#030B19] font-Roboto-SemiBold text-lg">
-          Provider Services
-        </Text>
-
-        <View className="absolute right-4">
-          <View className="relative">
-            <Ionicons name="notifications-outline" size={24} color="#030B19" />
-            <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
-              <Text className="text-white text-xs font-bold">4</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+      <Header title="Services" showBackButton={true} notificationsCount={0} />
 
       {/* Services List */}
-      <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2  flex-1">
+      <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2 flex-1">
         <FlatList
           data={services}
           keyExtractor={(item) => item._id}
@@ -111,7 +88,7 @@ const ProviderServices = () => {
                 <View className="flex-row items-center justify-between">
                   <View className="flex-row items-center gap-1">
                     <Text className="text-sm text-[#030B19] mr-1">
-                      {item.rating_average}
+                      {item.rating_average.toFixed(2)}
                     </Text>
                     <Rating
                       readonly

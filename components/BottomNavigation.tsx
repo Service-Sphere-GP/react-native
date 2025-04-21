@@ -102,8 +102,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     paddingVertical: 12,
     paddingHorizontal: 0, // Changed from 16 to 0
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
     position: 'absolute',
     bottom: 0,
     left: 0,

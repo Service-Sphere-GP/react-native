@@ -140,7 +140,7 @@ const AllServices = () => {
                     <View className="flex-row items-center justify-between">
                       <View className="flex-row items-center gap-1">
                         <Text className="text-sm text-[#030B19] mr-1">
-                          {item.rating_average}
+                          {item.rating_average.toFixed(2)}
                         </Text>
                         <Rating
                           readonly

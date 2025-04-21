@@ -12,6 +12,7 @@ const ProfileComponent = () => {
     full_name: string;
     role: string;
     rating_average: number;
+    profile_image: string;
   }
 
   const [user, setUser] = useState<User | null>(null);
@@ -60,8 +61,8 @@ const ProfileComponent = () => {
     router.push('/profile/my-services');
   };
 
-  const navigateToMyReviws = () => {
-    router.push('/profile/myReviews');
+  const navigateToMyReviews = () => {
+    router.push('/profile/my-reviews');
   };
   const logoutHandler = async () => {
     try {
@@ -87,6 +88,7 @@ const ProfileComponent = () => {
             <ProfileHeader
               fullName={user.full_name}
               rating={user.rating_average}
+              imageUrl={user.profile_image}
             />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
@@ -96,19 +98,22 @@ const ProfileComponent = () => {
                 onPress={navigateToPerosnalData}
               />
               {user.role === 'service_provider' && (
-                <ProfileDetail
-                  title="Services"
-                  description="Manage your services"
-                  image={require('@/assets/images/services.png')}
-                  onPress={navigateToMyServices}
-                />
+                <>
+                  <ProfileDetail
+                    title="Services"
+                    description="Manage your services"
+                    image={require('@/assets/images/services.png')}
+                    onPress={navigateToMyServices}
+                  />
+                  <ProfileDetail
+                    title="Reviews"
+                    description="What people are saying about you"
+                    image={require('@/assets/images/reviews.png')}
+                    onPress={navigateToMyReviews}
+                  />
+                </>
               )}
-              <ProfileDetail
-                title="Reviews"
-                description="What people are saying about you"
-                image={require('@/assets/images/reviews.png')}
-                onPress={navigateToMyReviws}
-              />
+
               <ProfileDetail
                 title="Log out"
                 description="logging out will clear your session"

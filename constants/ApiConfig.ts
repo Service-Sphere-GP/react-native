@@ -25,8 +25,14 @@ const API_ENDPOINTS = {
   BOOK_SERVICE: '/bookings/:serviceId',
   GET_CUSTOMER_BOOKINGS: '/bookings',
   GET_PROVIDER_BOOKINGS: '/bookings/provider',
-  COMPELETE_BOOKING: '/bookings/:id/status',
+  CHANGE_BOOKING_STATUS: '/bookings/:id/status',
   SEND_FEEDBACK: '/feedback',
+  GET_MY_FEEDBACKS: '/feedback/provider',
+  GET_CUSTOMER_FEEDBACKS: '/feedback/customer/:id',
+  GET_PROVIDER_FEEDBACKS: '/feedback/provider/:id',
+  GET_SERVICE_FEEDBACKS: '/feedback/service/:id',
+  GET_CATEGORIES: '/categories',
+  UPDATE_SERVICE: '/services/:id',
   // Add more endpoints as needed
 };
 
