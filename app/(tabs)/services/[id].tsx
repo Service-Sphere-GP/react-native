@@ -280,8 +280,11 @@ const ServiceDetailsPage = () => {
           </View>
           <View className="flex-row justify-center xs:justify-between items-end sticky bottom-0 w-full">
             <TouchableOpacity
-              className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-t-md w-full`}
-              disabled={service?.status !== 'active'}
+              className={`${service?.status === 'active' || service?.service_provider.full_name === user?.full_name ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-t-md w-full`}
+              disabled={
+                service?.service_provider.full_name !== user?.full_name &&
+                service?.status !== 'active'
+              }
               onPress={() => {
                 if (service?.service_provider._id === user?._id) {
                   router.push(`/profile/edit-service/${service?._id}`);

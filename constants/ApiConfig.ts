@@ -31,6 +31,8 @@ const API_ENDPOINTS = {
   GET_CUSTOMER_FEEDBACKS: '/feedback/customer/:id',
   GET_PROVIDER_FEEDBACKS: '/feedback/provider/:id',
   GET_SERVICE_FEEDBACKS: '/feedback/service/:id',
+  GET_CATEGORIES: '/categories',
+  UPDATE_SERVICE: '/services/:id',
   // Add more endpoints as needed
 };
 

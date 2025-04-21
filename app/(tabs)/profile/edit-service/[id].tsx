@@ -8,37 +8,38 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
-import { useLocalSearchParams } from 'expo-router';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { CheckBox } from '@rneui/themed';
 
 interface ServiceData {
   service_name: string;
   description: string;
   base_price: string;
-  category: string;
+  categories: (string | number)[];
   images: string[];
   status: string;
   service_attributes: {
     availability: string;
   };
 }
+
 const EditService = () => {
-  const params = useLocalSearchParams();
-
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
-
   const router = useRouter();
+  const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
+  const [loadingService, setLoadingService] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const [service, setService] = useState<ServiceData>({
     service_name: '',
     description: '',
     base_price: '',
-    category: '',
+    categories: [],
     images: [],
     status: 'active',
     service_attributes: {
@@ -46,26 +47,99 @@ const EditService = () => {
     },
   });
 
+  const [categories, setCategories] = useState<any[]>([]);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [categoryValue, setCategoryValue] = useState<number | null>(null);
+  const [categoryItems, setCategoryItems] = useState<
+    { label: string; value: number }[]
+  >([]);
+
+  // Fetch user data and categories
   useEffect(() => {
-    const getService = async () => {
+    const checkUser = async () => {
       try {
-        setLoading(true);
-        const response: any = await ApiService.get(
-          API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
-        );
-        setService(response.data.data);
-        console.log('Service data:', response.data.data);
-        setImages(response.data.data.images);
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          if (parsedUser.role === 'customer') {
+            router.push('/profile/me');
+            return;
+          }
+
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_CATEGORIES,
+          );
+          setCategories(response.data.data);
+        } else {
+          router.push('/(otp)/customer/login');
+          return;
+        }
+        setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user data', error);
         router.push('/(otp)/customer/login');
-      } finally {
-        setLoading(false);
       }
     };
 
-    getService();
-  }, [router, id]);
+    checkUser();
+  }, [router]);
+
+  // Fetch service details
+  useEffect(() => {
+    const fetchServiceDetails = async () => {
+      if (!loading && id) {
+        try {
+          setLoadingService(true);
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_SERVICE_DETAILS.replace(':id', id as string),
+          );
+
+          const serviceData = response.data.data;
+          setService({
+            service_name: serviceData.service_name,
+            description: serviceData.description,
+            base_price: serviceData.base_price.toString(),
+            categories: serviceData.categories.map((cat: any) => cat._id),
+            images: serviceData.images,
+            status: serviceData.status,
+            service_attributes: serviceData.service_attributes,
+          });
+
+          setImages(serviceData.images);
+
+          // Set category value from existing service
+          if (serviceData.categories && serviceData.categories.length > 0) {
+            setCategoryValue(serviceData.categories[0]._id);
+          }
+
+          setLoadingService(false);
+        } catch (error) {
+          console.error('Failed to fetch service details', error);
+          setLoadingService(false);
+        }
+      }
+    };
+
+    fetchServiceDetails();
+  }, [id, loading]);
+
+  // Update category items when categories change
+  useEffect(() => {
+    setCategoryItems(
+      categories.map((cat) => ({
+        label: cat.name,
+        value: cat._id,
+      })),
+    );
+  }, [categories]);
+
+  // Update service categories when category value changes
+  useEffect(() => {
+    setService((prev) => ({
+      ...prev,
+      categories: categoryValue ? [categoryValue] : [],
+    }));
+  }, [categoryValue]);
 
   const addImagesHandler = async () => {
     const permissionResult =
@@ -104,10 +178,8 @@ const EditService = () => {
     }));
   };
 
-  const editNewServiceHandler = async () => {
+  const updateServiceHandler = async () => {
     try {
-      console.log('Images array before sending:', images);
-
       // Create a new FormData instance
       const formData = new FormData();
 
@@ -115,14 +187,14 @@ const EditService = () => {
       formData.append('service_name', service.service_name);
       formData.append('description', service.description);
       formData.append('base_price', service.base_price);
-      formData.append('category', service.category);
+      formData.append('categories', JSON.stringify(service.categories));
       formData.append('status', service.status);
       formData.append(
         'service_attributes',
         JSON.stringify(service.service_attributes),
       );
 
-      // Convert images to blobs and append to FormData
+      // Add new image files
       await Promise.all(
         images.map(async (uri, index) => {
           try {
@@ -130,7 +202,7 @@ const EditService = () => {
             const response = await fetch(uri);
             const blob = await response.blob();
 
-            // Append blob to FormData with appropriate filename and type
+            // Append the blob to FormData images
             formData.append('images', blob, `image_${index}.jpg`);
           } catch (error) {
             console.error(`Failed to process image ${index}:`, error);
@@ -139,8 +211,8 @@ const EditService = () => {
       );
 
       // Send FormData to server with proper configuration
-      const response = await ApiService.post(
-        API_ENDPOINTS.CREATE_SERVICE,
+      await ApiService.patch(
+        API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
         formData,
         {
           headers: {
@@ -150,12 +222,11 @@ const EditService = () => {
           transformRequest: (data) => data, // Don't transform FormData
         },
       );
-      console.log('Response:', response);
 
       router.push('/profile/me');
     } catch (err: any) {
       console.error(
-        'Error creating service:',
+        'Error updating service:',
         err.response?.data || err.message || err,
       );
     }
@@ -163,23 +234,24 @@ const EditService = () => {
 
   return (
     <>
-      {loading ? (
+      {loading || loadingService ? (
         <View className="flex items-center justify-center h-screen">
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="bg-white px-4 h-full justify-between">
+        <View className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
             <Header
               title="Edit Service"
               showBackButton={true}
-              notificationsCount={0}
+              notificationsCount={4}
             />
             <View>
               <Text className="font-Roboto-Medium text-lg">Name</Text>
               <TextInput
-                placeholder={service.service_name}
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                placeholder="Enter service name"
+                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                value={service.service_name}
                 onChangeText={(text) =>
                   setService({ ...service, service_name: text })
                 }
@@ -223,43 +295,76 @@ const EditService = () => {
             <View>
               <Text className="font-Roboto-Medium text-lg">Description</Text>
               <TextInput
-                placeholder={service.description}
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 "
+                placeholder="Enter service description"
+                className="border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 "
                 multiline={true}
+                value={service.description}
                 onChangeText={(text) =>
                   setService({ ...service, description: text })
                 }
               />
             </View>
 
-            <View>
+            <View style={{ zIndex: 1000 }}>
               <Text className="font-Roboto-Medium text-lg">Category</Text>
-              <TextInput
-                placeholder={service.category}
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
-                onChangeText={(text) =>
-                  setService({ ...service, category: text })
-                }
+              <DropDownPicker
+                open={openCategory}
+                value={categoryValue}
+                items={categoryItems}
+                setOpen={setOpenCategory}
+                setValue={setCategoryValue}
+                setItems={setCategoryItems}
+                placeholder="Select category"
+                zIndex={1000}
+                zIndexInverse={2000}
+                style={{
+                  backgroundColor: '#fff',
+                  borderColor: '#ccc',
+                  marginBottom: 12,
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#fff',
+                  borderColor: '#ccc',
+                }}
               />
             </View>
 
             <View>
               <Text className="font-Roboto-Medium text-lg">Price</Text>
               <TextInput
-                placeholder={service.base_price}
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                placeholder="Enter service price"
+                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                value={service.base_price}
                 onChangeText={(text) =>
                   setService({ ...service, base_price: text })
                 }
               />
             </View>
+
+            <View className="flex-row items-center">
+              <Text className="font-Roboto-Medium text-lg">Status</Text>
+              <CheckBox
+                checked={service.status === 'active'}
+                onPress={() =>
+                  setService((prev) => ({
+                    ...prev,
+                    status: prev.status === 'active' ? 'inactive' : 'active',
+                  }))
+                }
+                containerStyle={{
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                }}
+                textStyle={{ fontWeight: 'normal' }}
+              />
+            </View>
           </View>
           <TouchableOpacity
             className="flex-row items-center justify-end"
-            onPress={editNewServiceHandler}
+            onPress={updateServiceHandler}
           >
-            <Text className="text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3 mb-4">
-              Confirm Editing
+            <Text className="text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3">
+              Update service
             </Text>
           </TouchableOpacity>
         </View>

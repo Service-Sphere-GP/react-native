@@ -14,12 +14,13 @@ import * as ImagePicker from 'expo-image-picker';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 interface ServiceData {
   service_name: string;
   description: string;
   base_price: string;
-  category: string;
+  categories: (string | number)[];
   images: string[];
   status: string;
   service_attributes: {
@@ -34,13 +35,20 @@ const NewService = () => {
     service_name: '',
     description: '',
     base_price: '',
-    category: '',
+    categories: [],
     images: [],
     status: 'active',
     service_attributes: {
       availability: '24/7',
     },
   });
+
+  const [categories, setCategories] = useState<any[]>([]);
+  const [openCategory, setOpenCategory] = useState(false);
+  const [categoryValue, setCategoryValue] = useState<number | null>(null);
+  const [categoryItems, setCategoryItems] = useState<
+    { label: string; value: number }[] // Update value type to number
+  >([]);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -50,24 +58,42 @@ const NewService = () => {
           const parsedUser = JSON.parse(userData);
           if (parsedUser.role === 'customer') {
             router.push('/profile/me');
-            return; // Don't set loading to false, we're redirecting
+            return;
           }
+
+          const response: any = await ApiService.get(
+            API_ENDPOINTS.GET_CATEGORIES,
+          );
+          setCategories(response.data.data);
         } else {
           router.push('/(otp)/customer/login');
-          return; // Don't set loading to false, we're redirecting
+          return;
         }
-
-        // Only set loading to false if we're not redirecting
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user data', error);
         router.push('/(otp)/customer/login');
-        // Don't set loading to false, we're redirecting
       }
     };
 
     checkUser();
   }, [router]);
+
+  useEffect(() => {
+    setCategoryItems(
+      categories.map((cat) => ({
+        label: cat.name,
+        value: cat._id,
+      })),
+    );
+  }, [categories]);
+
+  useEffect(() => {
+    setService((prev) => ({
+      ...prev,
+      categories: categoryValue ? [categoryValue] : [],
+    }));
+  }, [categoryValue]);
 
   const addImagesHandler = async () => {
     const permissionResult =
@@ -117,7 +143,7 @@ const NewService = () => {
       formData.append('service_name', service.service_name);
       formData.append('description', service.description);
       formData.append('base_price', service.base_price);
-      formData.append('category', service.category);
+      formData.append('categories', JSON.stringify(service.categories));
       formData.append('status', service.status);
       formData.append(
         'service_attributes',
@@ -181,7 +207,7 @@ const NewService = () => {
               <Text className="font-Roboto-Medium text-lg">Name</Text>
               <TextInput
                 placeholder="Enter service name"
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
                 onChangeText={(text) =>
                   setService({ ...service, service_name: text })
                 }
@@ -226,7 +252,7 @@ const NewService = () => {
               <Text className="font-Roboto-Medium text-lg">Description</Text>
               <TextInput
                 placeholder="Enter service description"
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 "
+                className="border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 "
                 multiline={true}
                 onChangeText={(text) =>
                   setService({ ...service, description: text })
@@ -234,14 +260,27 @@ const NewService = () => {
               />
             </View>
 
-            <View>
+            <View style={{ zIndex: 1000 }}>
               <Text className="font-Roboto-Medium text-lg">Category</Text>
-              <TextInput
-                placeholder="Enter service category"
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
-                onChangeText={(text) =>
-                  setService({ ...service, category: text })
-                }
+              <DropDownPicker
+                open={openCategory}
+                value={categoryValue}
+                items={categoryItems}
+                setOpen={setOpenCategory}
+                setValue={setCategoryValue}
+                setItems={setCategoryItems}
+                placeholder="Select category"
+                zIndex={1000}
+                zIndexInverse={2000}
+                style={{
+                  backgroundColor: '#fff',
+                  borderColor: '#ccc',
+                  marginBottom: 12,
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#fff',
+                  borderColor: '#ccc',
+                }}
               />
             </View>
 
@@ -249,7 +288,7 @@ const NewService = () => {
               <Text className="font-Roboto-Medium text-lg">Price</Text>
               <TextInput
                 placeholder="Enter service price"
-                className="border text-[#666B73] border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
                 onChangeText={(text) =>
                   setService({ ...service, base_price: text })
                 }
