@@ -9,7 +9,8 @@ import { useFontFamily, getTextStyle } from '@/src/utils/fontUtils';
 const Dashboard = () => {
   const { t } = useTranslation(['home', 'common']);
   const { isRTL } = useLanguage();
-  const fonts = useFontFamily();
+  const fontFamily = useFontFamily();
+  const textStyle = getTextStyle(isRTL);
 
   const quickChats = [
     {
@@ -55,7 +56,10 @@ const Dashboard = () => {
             style={{ width: 53, height: 53 }}
           />
           <View className={`flex-row items-center ${isRTL ? 'mr-3 flex-row-reverse' : 'ml-3'}`}>
-            <Text className={`text-white text-lg ${isRTL ? 'ml-2' : 'mr-2'} ${getTextStyle(isRTL, 'medium')}`}>
+            <Text 
+              className={`text-white text-lg font-medium ${isRTL ? 'ml-2' : 'mr-2'} ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {t('home:hi')} John
             </Text>
             <Image
@@ -74,14 +78,23 @@ const Dashboard = () => {
 
       {/* Feedback Insights */}
       <View className="bg-white rounded-2xl mx-4 p-4 -mt-20 shadow-sm">
-        <Text className={`text-base ${getTextStyle(isRTL, 'medium')} text-[#030B19]`}>
+        <Text 
+          className={`text-base font-medium text-[#030B19] ${textStyle.className}`}
+          style={textStyle.style}
+        >
           {t('home:feedbackInsights')}
         </Text>
-        <Text className={`text-sm text-[#363E4C] ${getTextStyle(isRTL)}`}>
+        <Text 
+          className={`text-sm text-[#363E4C] ${textStyle.className}`}
+          style={textStyle.style}
+        >
           {t('home:feedbackExample')}
         </Text>
       </View>
-      <Text className={`text-lg ${getTextStyle(isRTL, 'medium')} text-[#030B19] mx-4 mt-4`}>
+      <Text 
+        className={`text-lg font-medium text-[#030B19] mx-4 mt-4 ${textStyle.className}`}
+        style={textStyle.style}
+      >
         {t('home:quickChats')}
       </Text>
       <View className="h-24">
@@ -105,7 +118,7 @@ const Dashboard = () => {
           )}
         />
       </View>
-      <Text className={`text-lg ${getTextStyle(isRTL, 'medium')} text-[#030B19] mx-4 mt-4`}>
+      <Text className={`text-lg ${getTextStyle(isRTL)} text-[#030B19] mx-4 mt-4`}>
         {t('home:performanceOverview')}
       </Text>
 
@@ -116,7 +129,7 @@ const Dashboard = () => {
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL, 'semiBold')} text-[#030B19] mt-2`}>
+            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
               32
             </Text>
             <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
@@ -132,7 +145,7 @@ const Dashboard = () => {
               style={{ width: 24, height: 24 }}
               resizeMode="contain"
             />
-            <Text className={`text-xl ${getTextStyle(isRTL, 'semiBold')} text-[#030B19] mt-2`}>
+            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
               6
             </Text>
             <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
@@ -147,7 +160,7 @@ const Dashboard = () => {
               source={require('@/assets/images/st.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL, 'semiBold')} text-[#030B19] mt-2`}>
+            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
               4.2
             </Text>
             <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
@@ -162,7 +175,7 @@ const Dashboard = () => {
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL, 'semiBold')} text-[#030B19] mt-2`}>
+            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
               90%
             </Text>
             <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
