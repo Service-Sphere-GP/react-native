@@ -16,7 +16,13 @@
     "numbersAndDates": "Numbers and Dates",
     "dateFormat": "Date Format",
     "currencyFormat": "Currency Format",
-    "approved": "Approved"
+    "approved": "Approved",
+    "serviceTitle": "Service",
+    "sphereTitle": "Sphere",
+    "slogan": "Connecting you to the people you need",
+    "welcomeMessage": "Welcome! Are you looking for a service or offering one? Let us know below. Choose how you'd like to get started.",
+    "customerButton": "Customer",
+    "providerButton": "Service Provider"
   },
   "auth": {
     "login": "Login",

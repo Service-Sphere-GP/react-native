@@ -17,6 +17,10 @@ export type FontWeight =
 /**
  * Maps font weight to font family name for both English (Roboto) and Arabic (Montserrat Arabic)
  */
+
+// all ar should be Montserrat-Arabic and all en should be Roboto
+// Montserrat-Arabic is used for Arabic text, while Roboto is used for English text
+// that bold or thin or etc is handlded with the font weight classes in the app
 const fontFamilyMap: Record<string, Record<FontWeight, string>> = {
   en: {
     thin: 'Roboto-Thin',
@@ -29,14 +33,14 @@ const fontFamilyMap: Record<string, Record<FontWeight, string>> = {
     extraBold: 'Roboto-ExtraBold',
   },
   ar: {
-    thin: 'Montserrat-Arabic-Thin-250',
-    extraLight: 'Montserrat-Arabic-ExtraLight-275',
-    light: 'Montserrat-Arabic-Light-300',
-    regular: 'Montserrat-Arabic-Regular-400',
-    medium: 'Montserrat-Arabic-Medium-500',
-    semiBold: 'Montserrat-Arabic-SemiBold-600',
-    bold: 'Montserrat-Arabic-Bold-700',
-    extraBold: 'Montserrat-Arabic-ExtraBold-800',
+    thin: 'Montserrat-Arabic',
+    extraLight: 'Montserrat-Arabic',
+    light: 'Montserrat-Arabic',
+    regular: 'Montserrat-Arabic',
+    medium: 'Montserrat-Arabic',
+    semiBold: 'Montserrat-Arabic',
+    bold: 'Montserrat-Arabic',
+    extraBold: 'Montserrat-Arabic',
   },
 };
 

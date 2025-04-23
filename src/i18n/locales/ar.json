@@ -16,7 +16,13 @@
     "numbersAndDates": "الأرقام والتواريخ",
     "dateFormat": "تنسيق التاريخ",
     "currencyFormat": "تنسيق العملة",
-    "approved": "معتمد"
+    "approved": "معتمد",
+    "serviceTitle": "سيرفس",
+    "sphereTitle": "سفير",
+    "slogan": "نوصلك بالأشخاص الذين تحتاجهم",
+    "welcomeMessage": "مرحبا! هل تبحث عن خدمة أو تقدم خدمة؟ أخبرنا أدناه. اختر كيف ترغب في البدء.",
+    "customerButton": "عميل",
+    "providerButton": "مقدم خدمة"
   },
   "auth": {
     "login": "تسجيل الدخول",

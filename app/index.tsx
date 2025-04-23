@@ -11,13 +11,23 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from '@/components/CustomButton';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const App = () => {
   const router = useRouter();
   const landingImage = require('@/assets/images/LandingImage.png');
+  const { t } = useTranslation(['common']);
+  const { isRTL } = useLanguage();
 
   const { height } = useWindowDimensions();
   const responsiveHeight = height * 0.5;
+
+  // Get text styles with appropriate font family and alignment
+  const titleStyle = getTextStyle(isRTL, 'semiBold');
+  const subtitleStyle = getTextStyle(isRTL, 'semiBold');
+  const regularStyle = getTextStyle(isRTL, 'regular');
 
   return (
     <ScrollView
@@ -31,9 +41,9 @@ const App = () => {
             entering={FadeInDown.delay(300)}
             className="w-full mt-2"
           >
-            <Text className="text-[40px] font-Roboto-SemiBold text-left">
-              <Text className="text-[#FFCE4C]">Service </Text>
-              <Text className="text-[#147E93]">Sphere</Text>
+            <Text className={`text-[40px] font-Roboto-SemiBold ltr:text-left rtl:text-right`}>
+              <Text className="text-[#FFCE4C]" style={titleStyle.style}>{t('common:serviceTitle')} </Text>
+              <Text className="text-[#147E93]" style={titleStyle.style}>{t('common:sphereTitle')}</Text>
             </Text>
           </Animated.View>
 
@@ -41,8 +51,11 @@ const App = () => {
           <View className="w-full" style={{ marginTop: 15 }}>
             {/* Subtitle */}
             <Animated.View entering={FadeInDown.delay(400)}>
-              <Text className="text-[#030B19] text-[22px] font-Roboto-SemiBold text-left leading-tight">
-                Connecting you to the people you need
+              <Text 
+                className={`text-[#030B19] text-[22px] leading-tight ${subtitleStyle.className}`}
+                style={subtitleStyle.style}
+              >
+                {t('common:slogan')}
               </Text>
             </Animated.View>
 
@@ -51,9 +64,11 @@ const App = () => {
               entering={FadeInDown.delay(500)}
               style={{ marginTop: 15 }}
             >
-              <Text className="text-[#030B19] text-[16px] font-Roboto text-left">
-                Welcome! Are you looking for a service or offering one? Let us
-                know below. Choose how you'd like to get started.
+              <Text 
+                className={`text-[#030B19] text-[16px] ${regularStyle.className}`}
+                style={regularStyle.style}
+              >
+                {t('common:welcomeMessage')}
               </Text>
             </Animated.View>
 
@@ -68,6 +83,7 @@ const App = () => {
                 style={{
                   width: '100%',
                   height: responsiveHeight,
+                  transform: [{ scaleX: isRTL ? -1 : 1 }], // Flip image horizontally if RTL
                 }}
               />
             </Animated.View>
@@ -81,13 +97,13 @@ const App = () => {
         >
           <CustomButton
             onPress={() => router.push('/(otp)/customer/register')}
-            title="Customer"
+            title={t('common:customerButton')}
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-white font-Roboto-SemiBold"
           />
           <CustomButton
             onPress={() => router.push('/(otp)/provider/register')}
-            title="Service Provider"
+            title={t('common:providerButton')}
             containerStyles="bg-white rounded-[10px] shadow-md p-2"
             textStyles="text-[20px] text-[#147E93] font-Roboto-SemiBold"
           />
