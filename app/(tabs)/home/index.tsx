@@ -111,14 +111,20 @@ const Dashboard = () => {
                 source={item.image}
                 className="w-[50px] h-[50px] rounded-full"
               />
-              <Text className={`text-xs text-gray-900 mt-1.5 text-center ${getTextStyle(isRTL)}`}>
+              <Text 
+                className={`text-xs text-gray-900 mt-1.5 text-center ${textStyle.className}`}
+                style={textStyle.style}
+              >
                 {item.name}
               </Text>
             </View>
           )}
         />
       </View>
-      <Text className={`text-lg ${getTextStyle(isRTL)} text-[#030B19] mx-4 mt-4`}>
+      <Text 
+        className={`text-lg font-medium text-[#030B19] mx-4 mt-4 ${textStyle.className}`}
+        style={textStyle.style}
+      >
         {t('home:performanceOverview')}
       </Text>
 
@@ -129,10 +135,16 @@ const Dashboard = () => {
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
+            <Text 
+              className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               32
             </Text>
-            <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
+            <Text 
+              className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {t('home:completedSessions')}
             </Text>
           </View>
@@ -145,10 +157,16 @@ const Dashboard = () => {
               style={{ width: 24, height: 24 }}
               resizeMode="contain"
             />
-            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
+            <Text 
+              className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               6
             </Text>
-            <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
+            <Text 
+              className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {t('home:openedSessions')}
             </Text>
           </View>
@@ -160,10 +178,16 @@ const Dashboard = () => {
               source={require('@/assets/images/st.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
+            <Text 
+              className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               4.2
             </Text>
-            <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
+            <Text 
+              className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {t('home:rating')}
             </Text>
           </View>
@@ -175,10 +199,16 @@ const Dashboard = () => {
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text className={`text-xl ${getTextStyle(isRTL)} text-[#030B19] mt-2`}>
+            <Text 
+              className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               90%
             </Text>
-            <Text className={`text-sm text-[#676B73] text-center mt-1 ${getTextStyle(isRTL)}`}>
+            <Text 
+              className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {t('home:completionRate')}
             </Text>
           </View>

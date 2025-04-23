@@ -234,7 +234,7 @@ const Register = () => {
             isRTL={isRTL}
           />
         </View>
-        <View className={`flex-row items-center ${isRTL ? 'justify-end' : 'justify-start'} w-full`}>
+        <View className={`items-center ${isRTL ? 'flex-row-reverse' : 'justify-start flex-row'} w-full`}>
           <CheckBox
             checked={checked}
             containerStyle={{ marginLeft: 0, marginRight: 0 }}

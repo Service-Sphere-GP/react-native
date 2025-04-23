@@ -1,5 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState, useRef } from 'react';
+import { getTextStyle } from '@/src/utils/fontUtils';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 const Input = ({
   label,
@@ -22,6 +24,10 @@ const Input = ({
 }) => {
   const isFocusedRef = useRef(false);
   const [, forceUpdate] = useState(false);
+  // If isRTL is not provided, use the value from context
+  const { isRTL: contextRTL } = useLanguage();
+  const isRightToLeft = isRTL !== undefined ? isRTL : contextRTL;
+  const textStyle = getTextStyle(isRightToLeft);
 
   const handleFocus = () => {
     isFocusedRef.current = true;
@@ -35,7 +41,10 @@ const Input = ({
 
   return (
     <View className="w-full mt-2">
-      <Text className={`text-[#363E4C]  text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+      <Text 
+        className={`text-[#363E4C] text-lg ${textStyle.className}`}
+        style={textStyle.style}
+      >
         {label}
       </Text>
       <TextInput
@@ -47,12 +56,16 @@ const Input = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         style={[
-          isRTL ? styles.rtlInput : styles.ltrInput
+          isRightToLeft ? styles.rtlInput : styles.ltrInput,
+          textStyle.style
         ]}
       />
       {error && !isFocusedRef.current && (
-        <View className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
-          <Text className={`text-[#FF5757] text-base ${isRTL ? 'text-right' : 'text-left'}`}>
+        <View className={`flex-row items-center mt-2 ${isRightToLeft ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+          <Text 
+            className={`text-[#FF5757] text-base ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {errorMessage}
           </Text>
         </View>

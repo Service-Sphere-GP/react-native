@@ -11,7 +11,7 @@ export default function SplashScreen() {
   const { isRTL } = useLanguage();
 
   // Get the text styling
-  const titleStyle = getTextStyle(isRTL);
+  const textStyle = getTextStyle(isRTL);
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,14 +28,14 @@ export default function SplashScreen() {
         />
         <View className={`${isRTL ? 'mr-1' : 'ml-1'} mt-10`}>
           <Text 
-            className={`text-5xl text-[#147e93] font-semibold ${titleStyle.className}`}
-            style={titleStyle.style}
+            className={`text-5xl text-[#147e93] font-semibold ${textStyle.className}`}
+            style={textStyle.style}
           >
             {t('common:appName').split(' ')[0]}
           </Text>
           <Text 
-            className={`text-5xl text-[#147e93] font-semibold ${titleStyle.className}`}
-            style={titleStyle.style}
+            className={`text-5xl text-[#147e93] font-semibold ${textStyle.className}`}
+            style={textStyle.style}
           >
             {t('common:appName').split(' ')[1]}
           </Text>
