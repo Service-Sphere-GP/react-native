@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Service Sphere",
+    "welcome": "Welcome!",
+    "loading": "Loading...",
+    "language": "Language",
+    "languageDescription": "Choose your preferred language from the options below. The app will automatically adjust its content and layout according to your selection.",
+    "languageNote": "Note: Changing the language may require a restart to fully apply all changes."
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "forgotPassword": "Forget your password?",
+    "resetPassword": "Reset it",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "loginSuccess": "Login Successful",
+    "welcomeBack": "Welcome back!"
+  },
+  "home": {
+    "hi": "Hi",
+    "performanceOverview": "Performance Overview",
+    "rating": "Rating",
+    "completionRate": "Completion Rate"
+  },
+  "services": {
+    "allServices": "Services",
+    "search": "Search...",
+    "newService": "New Service",
+    "name": "Name",
+    "images": "Images",
+    "description": "Description",
+    "category": "Category",
+    "price": "Price",
+    "addService": "Add new service",
+    "serviceProvider": "Service Provider",
+    "reviews": "Reviews"
+  },
+  "bookings": {
+    "title": "Bookings",
+    "noBookings": "There are no current Bookings",
+    "manageAppointments": "Manage your appointments here.",
+    "feedback": "Feedback",
+    "leaveFeedback": "Leave Feedback",
+    "rateService": "Rate the service:",
+    "tellExperience": "Tell us about your experience...",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "rejected": "Rejected",
+    "completed": "Completed"
+  },
+  "profile": {
+    "title": "Profile",
+    "myServices": "My Services",
+    "myReviews": "My Reviews",
+    "noServices": "No services found",
+    "settings": "Settings",
+    "editProfile": "Edit Profile",
+    "logout": "Log out",
+    "loggingOut": "logging out will clear your session",
+    "helpSupport": "Help & Support",
+    "aboutApp": "About App",
+    "adminPanel": "Admin Panel",
+    "adminAccess": "Access administration dashboard",
+    "deleteAccount": "Delete Account",
+    "joined": "Joined"
+  },
+  "chat": {
+    "typeMessage": "Type a message",
+    "send": "Send"
+  },
+  "validation": {
+    "required": "{{field}} is required",
+    "passwordMatch": "Passwords do not match",
+    "invalidEmail": "Invalid email format"
+  }
+}
