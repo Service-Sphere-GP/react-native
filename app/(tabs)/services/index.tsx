@@ -18,6 +18,7 @@ import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface Service {
   service_name: string;
@@ -40,6 +41,7 @@ const AllServices = () => {
   const { width: screenWidth } = useWindowDimensions();
   const { t } = useTranslation(['services', 'common']);
   const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   // Calculate image size based on screen width
   const imageSize = screenWidth < 375 ? 45 : screenWidth < 768 ? 60 : 75;
@@ -72,7 +74,12 @@ const AllServices = () => {
       {loading ? (
         <View className="flex items-center justify-center h-screen">
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text className="mt-2 text-gray-600">{t('common:loading')}</Text>
+          <Text 
+            className={`mt-2 text-gray-600 ${textStyle.className}`}
+            style={textStyle.style}
+          >
+            {t('common:loading')}
+          </Text>
         </View>
       ) : (
         <SafeAreaView className="flex-1 bg-[#F4F4F4]">
@@ -96,7 +103,7 @@ const AllServices = () => {
                 <TextInput
                   placeholder={t('services:search')}
                   clearButtonMode="always"
-                  className={`flex-1 text-base text-[#666B73] ${isRTL ? 'text-right' : 'text-left'}`}
+                  className="flex-1 text-base text-[#666B73]"
                   placeholderTextColor="#666B73"
                   style={{
                     paddingHorizontal: 5,
@@ -104,6 +111,7 @@ const AllServices = () => {
                     borderWidth: 0,
                     textAlign: isRTL ? 'right' : 'left',
                     writingDirection: isRTL ? 'rtl' : 'ltr',
+                    fontFamily: textStyle.style.fontFamily
                   }}
                 />
               </SafeAreaView>
@@ -130,11 +138,17 @@ const AllServices = () => {
                     resizeMode="cover"
                   />
                   <View className="flex-1">
-                    <Text className={`text-[#030B19] font-bold text-sm xs:text-base ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <Text 
+                      className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
+                      style={textStyle.style}
+                    >
                       {item.service_name}
                     </Text>
                     <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <Text className={`text-gray-600 text-xs xs:text-sm flex-1 ${isRTL ? 'pl-2 text-right' : 'pr-2 text-left'}`}>
+                      <Text 
+                        className={`text-gray-600 text-xs xs:text-sm flex-1 ${isRTL ? 'pl-2' : 'pr-2'} ${textStyle.className}`}
+                        style={textStyle.style}
+                      >
                         {item.service_provider.full_name}
                       </Text>
                       <Ionicons
@@ -146,7 +160,10 @@ const AllServices = () => {
 
                     <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <Text className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'}`}>
+                        <Text 
+                          className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
+                          style={textStyle.style}
+                        >
                           {item.rating_average.toFixed(2)}
                         </Text>
                         <Rating
@@ -155,7 +172,10 @@ const AllServices = () => {
                           imageSize={10}
                         />
                       </View>
-                      <Text className="text-[#030B19] font-semibold text-xs xs:text-sm">
+                      <Text 
+                        className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
+                        style={textStyle.style}
+                      >
                         {item.base_price} {t('services:currency')}
                       </Text>
                     </View>

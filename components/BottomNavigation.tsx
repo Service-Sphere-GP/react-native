@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 // Import icons
 import HomeIcon from '../assets/icons/HomeIcon';
@@ -22,6 +23,7 @@ const BottomNavigation: React.FC = () => {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   const [activeSection, setActiveSection] = useState<string>('home');
 
@@ -97,7 +99,15 @@ const BottomNavigation: React.FC = () => {
           activeOpacity={0.7}
         >
           {item.icon({ color: getColor(item.section) })}
-          <Text style={[styles.tabText, { color: getColor(item.section) }]}>
+          <Text 
+            style={[
+              styles.tabText, 
+              { 
+                color: getColor(item.section),
+                fontFamily: textStyle.style.fontFamily 
+              }
+            ]}
+          >
             {t(item.nameKey)}
           </Text>
         </TouchableOpacity>
@@ -136,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
     fontWeight: '500',
+    // fontFamily will be added dynamically
   },
 });
 

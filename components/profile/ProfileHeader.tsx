@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Rating } from 'react-native-ratings';
 import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const ProfileHeader = ({
   fullName,
@@ -16,10 +17,11 @@ const ProfileHeader = ({
   imageUrl?: string | undefined;
 }) => {
   const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   return (
     <TouchableOpacity
-      className="bg-[#147E93] w-full p-5 rounded-3xl shadow-md flex-row items-center justify-between"
+      className="bg-[#147E93] w-full p-5 rounded-3xl shadow-md justify-between"
       onPress={onPress}
       style={isRTL ? styles.containerRTL : {}}
     >
@@ -34,16 +36,27 @@ const ProfileHeader = ({
           }}
         />
         <View>
-          <Text className={`font-Roboto-Medium text-lg text-white ${isRTL ? 'text-right' : 'text-left'}`}>
+          <Text 
+            className={`text-lg text-white font-medium ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {fullName}
           </Text>
           {role && (
-            <Text className={`font-Roboto-Light text-[#D9DEE4] text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+            <Text 
+              className={`text-[#D9DEE4] text-sm font-light ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {role}
             </Text>
           )}
           <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Text className="text-[#D9DEE4]">{rating?.toFixed(2)}</Text>
+            <Text 
+              className={`text-[#D9DEE4] ${textStyle.className}`}
+              style={textStyle.style}
+            >
+              {rating?.toFixed(2)}
+            </Text>
             <Rating
               readonly
               startingValue={rating}

@@ -17,6 +17,9 @@ import Rating from '@/components/ui/Rating';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '@/components/Header';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface Service {
   service_name: string;
@@ -53,6 +56,10 @@ interface Feedback {
 
 const ServiceDetailsPage = () => {
   const router = useRouter();
+  const { t } = useTranslation(['services', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
+  
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
@@ -106,20 +113,26 @@ const ServiceDetailsPage = () => {
 
   const renderReviewItem = ({ item }: { item: Feedback }) => (
     <View className="bg-white pb-4 pt-3 border-b items-start gap-2 border-gray-200">
-      <View className="flex-row">
+      <View className={`flex-row ${isRTL ? 'flex-row-reverse' : ''}`}>
         <Image
           source={{ uri: item.user.profile_image }}
-          className="w-12 h-12 rounded-full mt-1"
+          className={`w-12 h-12 rounded-full mt-1 ${isRTL ? 'ml-4' : 'mr-4'}`}
           resizeMode="cover"
         />
 
         {/* Review Details */}
-        <View className="ml-4 flex-1">
-          <Text className="text-lg font-Roboto-Medium text-[#030B19]">
+        <View className="flex-1">
+          <Text 
+            className={`text-lg font-medium text-[#030B19] ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {item.user.first_name} {item.user.last_name}
           </Text>
 
-          <Text className="text-sm text-[#676B73]">
+          <Text 
+            className={`text-sm text-[#676B73] ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {new Date(item.createdAt).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -131,7 +144,10 @@ const ServiceDetailsPage = () => {
 
       <Rating value={item.rating} />
 
-      <Text className="text-sm font-Roboto text-[#363E4C] mt-2">
+      <Text 
+        className={`text-sm text-[#363E4C] mt-2 ${textStyle.className}`}
+        style={textStyle.style}
+      >
         {item.message}
       </Text>
     </View>
@@ -172,12 +188,16 @@ const ServiceDetailsPage = () => {
               notificationsCount={4}
             />
 
-            <View className="flex-row justify-between my-4 items-center">
-              <Text className="font-Roboto-Medium text-lg">
-                Service Provider
+            <View className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Text 
+                className={`font-medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:serviceProvider')}
               </Text>
               <Text
-                className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-Roboto-Medium py-1 px-3 rounded-xl text-base`}
+                className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base ${textStyle.className}`}
+                style={textStyle.style}
               >
                 {service?.status}
               </Text>
@@ -191,14 +211,19 @@ const ServiceDetailsPage = () => {
             />
 
             <View className="mt-6">
-              <Text className="font-Roboto-Medium text-lg">Images</Text>
+              <Text 
+                className={`font-medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:images')}
+              </Text>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 className="mt-3"
               >
                 {service?.images.map((image, index) => (
-                  <View key={index} className="mr-3">
+                  <View key={index} className={`${isRTL ? 'ml-3' : 'mr-3'}`}>
                     <Image
                       source={{ uri: image }}
                       style={{ width: 130, height: 108, borderRadius: 10 }}
@@ -208,63 +233,95 @@ const ServiceDetailsPage = () => {
               </ScrollView>
             </View>
 
-            <Text className="font-Roboto text-xs text-[#666B73] mt-5">
+            <Text 
+              className={`text-xs text-[#666B73] mt-5 ${textStyle.className}`}
+              style={textStyle.style}
+            >
               {service?.description}
             </Text>
 
-            <Text className="font-Roboto-Medium text-lg mt-5">
-              EGP {service?.base_price.toFixed(2)}
+            <Text 
+              className={`font-medium text-lg mt-5 ${textStyle.className}`}
+              style={textStyle.style}
+            >
+              {t('services:currency')} {service?.base_price.toFixed(2)}
             </Text>
           </View>
           <View className="bg-white px-6 py-2">
-            <Text className="text-2xl font-Roboto-SemiBold border-b border-gray-200 py-2 mb-4">
-              Service Ratings & Reviews
+            <Text 
+              className={`text-2xl font-semibold border-b border-gray-200 py-2 mb-4 ${textStyle.className}`}
+              style={textStyle.style}
+            >
+              {t('services:ratingsAndReviews')}
             </Text>
             <View className="items-start gap-3 border-b border-gray-200 mb-4 pb-4">
-              <Text className="text-xl font-Roboto-Medium">Overall Rating</Text>
-              <Text className="text-2xl font-Roboto-Bold">
+              <Text 
+                className={`text-xl font-medium ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:overallRating')}
+              </Text>
+              <Text 
+                className={`text-2xl font-bold ${textStyle.className}`}
+                style={textStyle.style}
+              >
                 {service?.rating_average.toFixed(2)}
               </Text>
               <Rating value={service?.rating_average} />
               <View className="border-t border-gray-200 py-4">
-                <Text className="text-2xl font-Roboto-SemiBold text-[#147E93] mb-3">
-                  ✨ How to write a helpful review
+                <Text 
+                  className={`text-2xl font-semibold text-[#147E93] mb-3 ${textStyle.className}`}
+                  style={textStyle.style}
+                >
+                  ✨ {t('services:howToWriteReview')}
                 </Text>
 
                 <View className="space-y-3">
-                  <View className="flex-row items-start">
+                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Ionicons
                       name="megaphone-outline"
                       size={20}
                       color="#147E93"
                     />
-                    <Text className="ml-2 text-sm text-[#363E4C]">
-                      Be specific about what you liked or didn’t like.
+                    <Text 
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
+                      style={textStyle.style}
+                    >
+                      {t('services:reviewTip1')}
                     </Text>
                   </View>
 
-                  <View className="flex-row items-start">
+                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Ionicons
                       name="chatbox-ellipses-outline"
                       size={20}
                       color="#147E93"
                     />
-                    <Text className="ml-2 text-sm text-[#363E4C]">
-                      Mention the quality of service and communication.
+                    <Text 
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
+                      style={textStyle.style}
+                    >
+                      {t('services:reviewTip2')}
                     </Text>
                   </View>
 
-                  <View className="flex-row items-start">
+                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Ionicons name="trophy-outline" size={20} color="#147E93" />
-                    <Text className="ml-2 text-sm text-[#363E4C]">
-                      Share if the service met or exceeded expectations.
+                    <Text 
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
+                      style={textStyle.style}
+                    >
+                      {t('services:reviewTip3')}
                     </Text>
                   </View>
 
-                  <View className="flex-row items-start">
+                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Ionicons name="bulb-outline" size={20} color="#147E93" />
-                    <Text className="ml-2 text-sm text-[#363E4C]">
-                      Suggest improvements or highlight standout aspects.
+                    <Text 
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
+                      style={textStyle.style}
+                    >
+                      {t('services:reviewTip4')}
                     </Text>
                   </View>
                 </View>
@@ -293,10 +350,13 @@ const ServiceDetailsPage = () => {
                 }
               }}
             >
-              <Text className="font-Roboto-Medium text-lg text-center">
+              <Text 
+                className={`font-medium text-lg text-center ${textStyle.className}`}
+                style={textStyle.style}
+              >
                 {service?.service_provider.full_name === user?.full_name
-                  ? 'Edit your Service'
-                  : `Open Chat with ${service?.service_provider.full_name}`}
+                  ? t('services:editYourService')
+                  : t('services:openChatWith', { name: service?.service_provider.full_name })}
               </Text>
             </TouchableOpacity>
           </View>
