@@ -20,7 +20,7 @@ export type FontWeight =
  * Font weights are handled separately with font-weight classes in the app
  */
 const fontFamilyMap: Record<string, string> = {
-  en: 'Roboto',
+  en: 'Roboto-Regular',
   ar: 'Montserrat-Arabic',
 };
 
