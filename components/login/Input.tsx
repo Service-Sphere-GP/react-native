@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState, useRef } from 'react';
 
 const Input = ({
@@ -9,6 +9,7 @@ const Input = ({
   onChangeText,
   error,
   errorMessage,
+  isRTL,
 }: {
   label: string;
   placeholder: string;
@@ -17,6 +18,7 @@ const Input = ({
   onChangeText: (text: string) => void;
   error: boolean;
   errorMessage: string;
+  isRTL?: boolean;
 }) => {
   const isFocusedRef = useRef(false);
   const [, forceUpdate] = useState(false);
@@ -33,7 +35,9 @@ const Input = ({
 
   return (
     <View className="w-full mt-2">
-      <Text className="text-[#363E4C] font-Roboto-Medium text-lg">{label}</Text>
+      <Text className={`text-[#363E4C] font-Roboto-Medium text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+        {label}
+      </Text>
       <TextInput
         className={`p-4 border-2 ${error && !isFocusedRef.current ? 'border-[#FF5757]' : 'border-[#EDEDED]'} rounded-lg font-Roboto-Thin focus:outline-[#147E93] placeholder:text-[#363E4C]`}
         placeholder={placeholder}
@@ -42,14 +46,28 @@ const Input = ({
         value={value}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        style={[
+          isRTL ? styles.rtlInput : styles.ltrInput
+        ]}
       />
       {error && !isFocusedRef.current && (
-        <Text className="text-[#FF5757] text-left font-Roboto-Medium text-base mt-2">
+        <Text className={`text-[#FF5757] font-Roboto-Medium text-base mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>
           {errorMessage}
         </Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  ltrInput: {
+    textAlign: 'left',
+    writingDirection: 'ltr',
+  },
+  rtlInput: {
+    textAlign: 'right',
+    writingDirection: 'rtl',
+  }
+});
 
 export default Input;

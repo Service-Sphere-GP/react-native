@@ -6,7 +6,17 @@
     "language": "Language",
     "languageDescription": "Choose your preferred language from the options below. The app will automatically adjust its content and layout according to your selection.",
     "languageNote": "Note: Changing the language may require a restart to fully apply all changes.",
-    "preview": "Preview"
+    "preview": "Preview",
+    "edit": "Edit",
+    "textAlignment": "Text Alignment",
+    "demoText": "This text demonstrates how content is automatically aligned based on the selected language. English text is aligned to the left, while Arabic text is aligned to the right.",
+    "layoutDirection": "Layout Direction",
+    "formElements": "Form Elements",
+    "iconsAndImages": "Icons and Images",
+    "numbersAndDates": "Numbers and Dates",
+    "dateFormat": "Date Format",
+    "currencyFormat": "Currency Format",
+    "approved": "Approved"
   },
   "auth": {
     "login": "Login",

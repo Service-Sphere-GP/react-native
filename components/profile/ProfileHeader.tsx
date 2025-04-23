@@ -1,5 +1,6 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Rating } from 'react-native-ratings';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 const ProfileHeader = ({
   fullName,
@@ -14,12 +15,15 @@ const ProfileHeader = ({
   onPress?: () => void;
   imageUrl?: string | undefined;
 }) => {
+  const { isRTL } = useLanguage();
+
   return (
     <TouchableOpacity
       className="bg-[#147E93] w-full p-5 rounded-3xl shadow-md flex-row items-center justify-between"
       onPress={onPress}
+      style={isRTL ? styles.containerRTL : {}}
     >
-      <View className="flex-row items-center gap-2">
+      <View className={`flex-row items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
         <Image
           source={{ uri: imageUrl }}
           style={{
@@ -30,15 +34,15 @@ const ProfileHeader = ({
           }}
         />
         <View>
-          <Text className="font-Roboto-Medium text-lg text-white">
+          <Text className={`font-Roboto-Medium text-lg text-white ${isRTL ? 'text-right' : 'text-left'}`}>
             {fullName}
           </Text>
           {role && (
-            <Text className="font-Roboto-Light text-[#D9DEE4] text-sm">
+            <Text className={`font-Roboto-Light text-[#D9DEE4] text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
               {role}
             </Text>
           )}
-          <View className="flex-row items-center gap-1">
+          <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Text className="text-[#D9DEE4]">{rating?.toFixed(2)}</Text>
             <Rating
               readonly
@@ -50,10 +54,22 @@ const ProfileHeader = ({
         </View>
       </View>
       {onPress && (
-        <Image source={require('@/assets/images/RightWhiteArrow.png')} />
+        <Image 
+          source={require('@/assets/images/whiteArrow.png')} 
+          style={isRTL ? styles.flippedImage : {}}
+        />
       )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  containerRTL: {
+    flexDirection: 'row-reverse',
+  },
+  flippedImage: {
+    transform: [{ scaleX: -1 }] // Horizontally flip the image
+  }
+});
 
 export default ProfileHeader;
