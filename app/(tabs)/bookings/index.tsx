@@ -293,11 +293,7 @@ const Booking = () => {
       ) : (
         <View className="flex-1 bg-gray-100">
           {/* Header */}
-          <Header
-            title="Bookings"
-            showBackButton={false}
-            notificationsCount={4}
-          />
+          <Header title="Bookings" showBackButton={false} />
 
           {/* Bookings List */}
           <View

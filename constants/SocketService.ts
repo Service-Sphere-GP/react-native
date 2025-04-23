@@ -88,6 +88,41 @@ class SocketService {
       console.error('Socket not connected');
     }
   }
+
+  // Subscribe to notifications
+  public subscribeToNotifications(): void {
+    if (this.socket) {
+      this.socket.emit('subscribeToNotifications');
+    } else {
+      console.error('Socket not connected');
+    }
+  }
+
+  // Register notification event handlers
+  public onNotification(callback: (notification: any) => void): void {
+    if (this.socket) {
+      this.socket.on('notification', callback);
+    } else {
+      console.error('Socket not connected');
+    }
+  }
+
+  // Listen for unread notifications sent on connection
+  public onUnreadNotifications(callback: (notifications: any[]) => void): void {
+    if (this.socket) {
+      this.socket.on('unreadNotifications', callback);
+    } else {
+      console.error('Socket not connected');
+    }
+  }
+
+  // Remove notification event listeners
+  public offNotification(): void {
+    if (this.socket) {
+      this.socket.off('notification');
+      this.socket.off('unreadNotifications');
+    }
+  }
 }
 
 export default SocketService.getInstance();

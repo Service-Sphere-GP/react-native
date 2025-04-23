@@ -72,11 +72,7 @@ const AllServices = () => {
       ) : (
         <SafeAreaView className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <Header
-            title="Services"
-            showBackButton={false}
-            notificationsCount={0}
-          />
+          <Header title="Services" showBackButton={false} />
 
           {/* Search & Filter */}
           <View className="px-4 py-2 flex-row items-center justify-between mb-2">
