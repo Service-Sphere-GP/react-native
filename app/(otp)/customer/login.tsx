@@ -9,10 +9,13 @@ import { useRouter } from 'expo-router';
 import ToastService from '../../../constants/ToastService';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const Login = () => {
   const { t } = useTranslation(['auth', 'common']);
   const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -79,12 +82,15 @@ const Login = () => {
     <ScrollView className="bg-white h-full" style={containerStyle}>
       <Header />
       <View className="px-3">
-        <Text className={`text-3xl font-Roboto-Medium mt-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <Text 
+          className={`text-3xl font-medium mt-3 ${textStyle.className}`}
+          style={textStyle.style}
+        >
           {t('auth:login')}
         </Text>
         <Text
-          className={`font-Roboto-Light text-black/70 text-base my-5 ${isRTL ? 'text-right' : 'text-left'}`}
-          style={{ lineHeight: 20 }}
+          className={`text-black/70 text-base my-5 font-light ${textStyle.className}`}
+          style={{...textStyle.style, lineHeight: 20}}
         >
           {t('auth:welcomeBack')}
         </Text>
@@ -108,9 +114,15 @@ const Login = () => {
           errorMessage={errorMessages.password ? errorMessages.password : ''}
           isRTL={isRTL}
         />
-        <Text className={`font-Roboto-Light text-black/70 text-base mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <Text 
+          className={`text-black/70 text-base mt-2 font-light ${textStyle.className}`}
+          style={textStyle.style}
+        >
           {t('auth:forgotPassword')}{' '}
-          <Text className="text-[#147E93] underline font-Roboto-Medium">
+          <Text 
+            className="text-[#147E93] underline font-medium"
+            style={textStyle.style}
+          >
             {t('auth:resetPassword')}
           </Text>
         </Text>
@@ -123,12 +135,16 @@ const Login = () => {
           disabled={loading}
         />
 
-        <View className="flex-row items-center justify-center my-5">
-          <Text className="font-Roboto-Light text-black/70 text-base">
+        <View className={`flex-row items-center justify-center my-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <Text 
+            className={`text-black/70 text-base font-light ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {t('auth:noAccount')}{' '}
             <Link
               href="/(otp)/customer/register"
-              className="text-[#147E93] underline font-Roboto-Medium"
+              className="text-[#147E93] underline"
+              style={{...textStyle.style, fontWeight: '500'}}
             >
               {t('auth:register')}
             </Link>
