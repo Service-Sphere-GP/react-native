@@ -11,7 +11,7 @@ import { applyRTLConditional } from '../../../src/i18n/rtlUtils';
 const LanguageSettings = () => {
   const { t } = useTranslation(['common', 'profile']);
   const { isRTL } = useLanguage();
-  const router = useRouter();
+  console.log('isRTL', isRTL);
 
   return (
     <ScrollView 
@@ -26,6 +26,8 @@ const LanguageSettings = () => {
         showBackButton={true}
         notificationsCount={0}
       />
+      
+      <p>{isRTL}</p>
 
       <View style={applyRTLConditional(styles.section, styles.sectionRTL)}>
         <Text style={applyRTLConditional(styles.description, styles.descriptionRTL)}>

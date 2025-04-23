@@ -8,15 +8,20 @@ import 'react-native-reanimated';
 import '../assets/styles/global.css';
 import Toast from 'react-native-toast-message';
 // Import our language provider
-import { LanguageProvider } from '../src/i18n/LanguageContext';
+import { LanguageProvider, useLanguage } from '../src/i18n/LanguageContext';
 // Import i18n instance to initialize it
 import '../src/i18n/i18n';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+// Root layout without language context - needed because we need to wrap the app with LanguageProvider
+function RootLayoutWithoutContext() {
+  const { language, isRTL } = useLanguage();
+  
+  // Load appropriate font set based on language
   const [loaded] = useFonts({
+    // English/Default fonts
     'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
     'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
     'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
@@ -26,6 +31,17 @@ export default function RootLayout() {
     'Roboto-ExtraBold': require('../assets/fonts/Roboto-ExtraBold.ttf'),
     'Roboto-ExtraLight': require('../assets/fonts/Roboto-ExtraLight.ttf'),
     'Pacifico-Regular': require('../assets/fonts/Pacifico-Regular.ttf'),
+    
+    // Arabic fonts
+    'Montserrat-Arabic-Bold-700': require('../assets/fonts/Montserrat-Arabic Bold 700.otf'),
+    'Montserrat-Arabic-Medium-500': require('../assets/fonts/Montserrat-Arabic Medium 500.otf'),
+    'Montserrat-Arabic-Regular-400': require('../assets/fonts/Montserrat-Arabic Regular 400.otf'),
+    'Montserrat-Arabic-Light-300': require('../assets/fonts/Montserrat-Arabic Light 300.otf'),
+    'Montserrat-Arabic-Thin-250': require('../assets/fonts/Montserrat-Arabic Thin 250.otf'),
+    'Montserrat-Arabic-SemiBold-600': require('../assets/fonts/Montserrat-Arabic SemiBold 600.otf'),
+    'Montserrat-Arabic-ExtraBold-800': require('../assets/fonts/Montserrat-Arabic ExtraBold 800.otf'),
+    'Montserrat-Arabic-ExtraLight-275': require('../assets/fonts/Montserrat-Arabic ExtraLight 275.otf'),
+    'Montserrat-Arabic-Black-900': require('../assets/fonts/Montserrat-Arabic Black 900.otf'),
   });
 
   useEffect(() => {
@@ -39,16 +55,23 @@ export default function RootLayout() {
   }
 
   return (
+    <ThemeProvider value={DefaultTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+        <Stack.Screen name="admin" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+      <Toast />
+    </ThemeProvider>
+  );
+}
+
+// Main root layout component with language provider
+export default function RootLayout() {
+  return (
     <LanguageProvider>
-      <ThemeProvider value={DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-          <Stack.Screen name="admin" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        <Toast />
-      </ThemeProvider>
+      <RootLayoutWithoutContext />
     </LanguageProvider>
   );
 }

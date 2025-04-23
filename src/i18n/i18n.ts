@@ -52,22 +52,16 @@ i18next.use(initReactI18next).init({
   },
 });
 
-// Handle RTL setup when language changes
+// Handle language change without RTL logic (moved to LanguageContext)
 export const changeLanguage = async (language: string) => {
-  // Check if the language is RTL
-  const isRTL = LANGUAGES[language as keyof typeof LANGUAGES]?.dir === 'rtl';
-
-  // Update the RTL status in React Native
-  if (I18nManager.isRTL !== isRTL) {
-    I18nManager.forceRTL(isRTL);
-    // Note: In a real app, you might want to restart the app
-    // to apply RTL changes consistently across all screens
-  }
-
   // Change the i18next language
   await i18next.changeLanguage(language);
-
   return language;
+};
+
+// Helper function to determine if a language is RTL
+export const isRTLLanguage = (language: string): boolean => {
+  return LANGUAGES[language as keyof typeof LANGUAGES]?.dir === 'rtl';
 };
 
 export default i18next;

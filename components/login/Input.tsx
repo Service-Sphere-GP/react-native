@@ -51,9 +51,11 @@ const Input = ({
         ]}
       />
       {error && !isFocusedRef.current && (
-        <Text className={`text-[#FF5757] font-Roboto-Medium text-base mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-          {errorMessage}
-        </Text>
+        <View className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+          <Text className={`text-[#FF5757] font-Roboto-Medium text-base ${isRTL ? 'text-right' : 'text-left'}`}>
+            {errorMessage}
+          </Text>
+        </View>
       )}
     </View>
   );

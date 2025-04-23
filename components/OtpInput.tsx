@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 interface OtpInputProps {
   length?: number;
@@ -9,7 +10,8 @@ interface OtpInputProps {
 const OtpInput: React.FC<OtpInputProps> = ({ length = 6, onComplete }) => {
   const [otp, setOtp] = useState<string[]>(Array(length).fill(''));
   const inputRefs = useRef<TextInput[]>([]);
-
+  const { isRTL } = useLanguage();
+  
   const handleChange = (text: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = text;
@@ -30,8 +32,10 @@ const OtpInput: React.FC<OtpInputProps> = ({ length = 6, onComplete }) => {
     }
   };
 
+  // For OTP inputs, we don't reverse the order of the digits,
+  // but we can still apply RTL styling to the container
   return (
-    <View className="flex-row justify-center items-center gap-2.5 ">
+    <View className={`flex-row justify-center items-center gap-2.5`}>
       {Array(length)
         .fill(0)
         .map((_, index) => (

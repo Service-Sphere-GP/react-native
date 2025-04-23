@@ -2,14 +2,22 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLanguage } from './LanguageContext';
 import { useTranslation } from 'react-i18next';
+import { useFontFamily, FontWeight } from '@/src/utils/fontUtils';
 
 const LanguageSelector: React.FC = () => {
   const { language, setLanguage, languages, isRTL } = useLanguage();
   const { t } = useTranslation();
+  const fonts = useFontFamily();
 
   return (
     <View style={[styles.container, isRTL && styles.containerRTL]}>
-      <Text style={[styles.title, isRTL && styles.titleRTL]}>
+      <Text 
+        style={[
+          styles.title, 
+          isRTL && styles.titleRTL,
+          { fontFamily: fonts.medium }
+        ]}
+      >
         {t('common:language')}
       </Text>
       
@@ -28,7 +36,12 @@ const LanguageSelector: React.FC = () => {
               style={[
                 styles.buttonText,
                 language === code && styles.activeButtonText,
-                isRTL && styles.buttonTextRTL
+                isRTL && styles.buttonTextRTL,
+                { 
+                  fontFamily: language === code 
+                    ? fonts.medium 
+                    : fonts.regular 
+                }
               ]}
             >
               {langInfo.nativeName}
@@ -50,8 +63,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily: 'Roboto-Medium',
     marginBottom: 12,
+    // fontFamily is now applied dynamically
   },
   titleRTL: {
     textAlign: 'right',
@@ -78,15 +91,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    fontFamily: 'Roboto-Regular',
     color: '#676B73',
+    // fontFamily is now applied dynamically
   },
   buttonTextRTL: {
     textAlign: 'right',
   },
   activeButtonText: {
     color: '#FFFFFF',
-    fontFamily: 'Roboto-Medium',
+    // fontFamily is now applied dynamically
   },
 });
 

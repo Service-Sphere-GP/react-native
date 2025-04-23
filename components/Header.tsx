@@ -29,25 +29,26 @@ const Header: React.FC<HeaderProps> = ({
           />
         </TouchableOpacity>
       )}
-
-      <Text className="text-center text-[#030B19] w-full font-Roboto-SemiBold text-2xl">
+      
+      <Text 
+        className={`text-xl font-Roboto-Bold text-[#030B19] ${showBackButton ? (isRTL ? 'mr-4' : 'ml-4') : ''} ${isRTL ? 'text-right' : 'text-left'}`}
+        style={{ flex: 1 }}
+      >
         {title}
       </Text>
-
-      <View>
-        <TouchableOpacity onPress={() => router.push('/profile/notification')}>
-          <View className="relative">
-            <NotificationIcon color="#030B19" />
-            {notificationsCount > 0 && (
-              <View className={`absolute -top-2 ${isRTL ? '-left-2' : '-right-2'} bg-red-500 rounded-full w-5 h-5 items-center justify-center`}>
-                <Text className="text-white text-xs font-bold">
-                  {notificationsCount}
-                </Text>
-              </View>
-            )}
-          </View>
-        </TouchableOpacity>
-      </View>
+      
+      <TouchableOpacity onPress={() => router.push('/notifications')}>
+        <View className="relative">
+          <NotificationIcon />
+          {notificationsCount > 0 && (
+            <View className="absolute top-0 right-0 bg-[#FF5757] rounded-full w-4 h-4 items-center justify-center">
+              <Text className="text-white text-xs font-bold">
+                {notificationsCount > 9 ? '9+' : notificationsCount}
+              </Text>
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
