@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../../src/i18n/LanguageContext';
 import Header from '../../../components/Header';
 import LanguageSelector from '../../../src/i18n/LanguageSelector';
+import LocalizationDemo from '../../../src/i18n/LocalizationDemo';
 import { applyRTLConditional } from '../../../src/i18n/rtlUtils';
 
 const LanguageSettings = () => {
@@ -32,10 +33,14 @@ const LanguageSettings = () => {
         </Text>
         
         <LanguageSelector />
-        
-        <Text style={applyRTLConditional(styles.note, styles.noteRTL)}>
-          {t('common:languageNote')}
+      </View>
+      
+      <View style={styles.demoContainer}>
+        <Text style={applyRTLConditional(styles.sectionTitle, styles.sectionTitleRTL)}>
+          {t('common:preview')}
         </Text>
+        
+        <LocalizationDemo />
       </View>
     </ScrollView>
   );
@@ -73,14 +78,18 @@ const styles = StyleSheet.create({
   descriptionRTL: {
     textAlign: 'right',
   },
-  note: {
-    marginTop: 20,
-    fontFamily: 'Roboto-Light',
-    fontSize: 14,
-    color: '#676B73',
+  demoContainer: {
+    marginTop: 24,
+    marginHorizontal: 16,
+  },
+  sectionTitle: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18,
+    color: '#333',
+    marginBottom: 8,
     textAlign: 'left',
   },
-  noteRTL: {
+  sectionTitleRTL: {
     textAlign: 'right',
   },
 });

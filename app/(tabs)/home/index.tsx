@@ -1,8 +1,14 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, FlatList } from 'react-native';
 import NotificationIcon from '@/assets/icons/Notification';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { applyRTLConditional } from '@/src/i18n/rtlUtils';
 
 const Dashboard = () => {
+  const { t } = useTranslation(['home', 'common']);
+  const { isRTL } = useLanguage();
+
   const quickChats = [
     {
       id: '1',
@@ -40,15 +46,15 @@ const Dashboard = () => {
     <ScrollView className="flex-1">
       {/* Header */}
       <View className="flex-row items-center justify-between bg-[#2C8394] px-4 py-3 h-44">
-        <View className="flex-row items-center mb-12">
+        <View className={`flex-row items-center mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <Image
             source={require('@/assets/images/Profile.png')}
-            className="rounded-full border-2  border-white"
+            className="rounded-full border-2 border-white"
             style={{ width: 53, height: 53 }}
           />
-          <View className="flex-row items-center ml-3">
-            <Text className="text-white text-lg font-Roboto-Medium mr-2">
-              Hi John
+          <View className={`flex-row items-center ${isRTL ? 'mr-3 flex-row-reverse' : 'ml-3'}`}>
+            <Text className={`text-white text-lg font-Roboto-Medium ${isRTL ? 'ml-2' : 'mr-2'}`}>
+              {t('home:hi')} John
             </Text>
             <Image
               source={require('@/assets/images/whiteverifyed.png')}
@@ -58,24 +64,23 @@ const Dashboard = () => {
         </View>
         <View className="relative mb-12">
           <NotificationIcon color="#FFFFFF" />
-          <View className="absolute -top-1 -right-1 bg-amber-500 w-5 h-5 rounded-full items-center justify-center">
+          <View className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-amber-500 w-5 h-5 rounded-full items-center justify-center`}>
             <Text className="text-white text-xs font-bold">4</Text>
           </View>
         </View>
       </View>
 
       {/* Feedback Insights */}
-      <View className="bg-white rounded-2xl mx-4 p-4 -mt-20 shadow-sm ">
-        <Text className="text-base font-Roboto-Medium text-[#030B19]">
-          Feedback Insights
+      <View className="bg-white rounded-2xl mx-4 p-4 -mt-20 shadow-sm">
+        <Text className={`text-base font-Roboto-Medium text-[#030B19] ${isRTL ? 'text-right' : 'text-left'}`}>
+          {t('home:feedbackInsights')}
         </Text>
-        <Text className="text-sm text-[#363E4C]">
-          "Try to communicate more clearly and provide detailed responses to
-          enhance collaboration"
+        <Text className={`text-sm text-[#363E4C] ${isRTL ? 'text-right' : 'text-left'}`}>
+          {t('home:feedbackExample')}
         </Text>
       </View>
-      <Text className="text-lg font-Roboto-Medium text-[#030B19] mx-4 mt-4">
-        Quick Chats
+      <Text className={`text-lg font-Roboto-Medium text-[#030B19] mx-4 mt-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+        {t('home:quickChats')}
       </Text>
       <View className="h-24">
         <FlatList
@@ -98,8 +103,8 @@ const Dashboard = () => {
           )}
         />
       </View>
-      <Text className="text-lg font-Roboto-Medium text-[#030B19] mx-4 mt-4">
-        Performance Overview
+      <Text className={`text-lg font-Roboto-Medium text-[#030B19] mx-4 mt-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+        {t('home:performanceOverview')}
       </Text>
 
       <View className="flex-row justify-between mt-2 mx-4 mb-6">
@@ -113,7 +118,7 @@ const Dashboard = () => {
               32
             </Text>
             <Text className="text-sm text-[#676B73] text-center mt-1">
-              Completed Sessions
+              {t('home:completedSessions')}
             </Text>
           </View>
 
@@ -129,7 +134,7 @@ const Dashboard = () => {
               6
             </Text>
             <Text className="text-sm text-[#676B73] text-center mt-1">
-              Opened Sessions
+              {t('home:openedSessions')}
             </Text>
           </View>
         </View>
@@ -144,7 +149,7 @@ const Dashboard = () => {
               4.2
             </Text>
             <Text className="text-sm text-[#676B73] text-center mt-1">
-              Rating
+              {t('home:rating')}
             </Text>
           </View>
 
@@ -159,7 +164,7 @@ const Dashboard = () => {
               90%
             </Text>
             <Text className="text-sm text-[#676B73] text-center mt-1">
-              Completion Rate
+              {t('home:completionRate')}
             </Text>
           </View>
         </View>

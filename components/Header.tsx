@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import NotificationIcon from '@/assets/icons/Notification';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 interface HeaderProps {
   title?: string | undefined;
@@ -15,13 +16,14 @@ const Header: React.FC<HeaderProps> = ({
   showBackButton = true,
 }) => {
   const router = useRouter();
+  const { isRTL } = useLanguage();
 
   return (
-    <View className="flex-row items-center justify-between px-4 py-4 relative mt-6">
+    <View className={`flex-row items-center justify-between px-4 py-4 relative mt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
       {showBackButton && (
         <TouchableOpacity onPress={() => router.back()}>
           <Image
-            source={require('@/assets/images/leftArrow.png')}
+            source={isRTL ? require('@/assets/images/rightArrow.png') : require('@/assets/images/leftArrow.png')}
             className="w-full h-full"
             resizeMode="contain"
           />
@@ -37,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({
           <View className="relative">
             <NotificationIcon color="#030B19" />
             {notificationsCount > 0 && (
-              <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
+              <View className={`absolute -top-2 ${isRTL ? '-left-2' : '-right-2'} bg-red-500 rounded-full w-5 h-5 items-center justify-center`}>
                 <Text className="text-white text-xs font-bold">
                   {notificationsCount}
                 </Text>

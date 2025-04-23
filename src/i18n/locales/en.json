@@ -5,7 +5,8 @@
     "loading": "Loading...",
     "language": "Language",
     "languageDescription": "Choose your preferred language from the options below. The app will automatically adjust its content and layout according to your selection.",
-    "languageNote": "Note: Changing the language may require a restart to fully apply all changes."
+    "languageNote": "Note: Changing the language may require a restart to fully apply all changes.",
+    "preview": "Preview"
   },
   "auth": {
     "login": "Login",
@@ -22,13 +23,25 @@
     "emailRequired": "Email is required",
     "passwordRequired": "Password is required",
     "loginSuccess": "Login Successful",
-    "welcomeBack": "Welcome back!"
+    "welcomeBack": "Welcome back!",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "signUpSuccess": "Sign up Successful",
+    "validationError": "Validation Error",
+    "loginFailed": "Login Failed",
+    "checkCredentials": "Please check your credentials and try again"
   },
   "home": {
+    "title": "Home",
     "hi": "Hi",
     "performanceOverview": "Performance Overview",
     "rating": "Rating",
-    "completionRate": "Completion Rate"
+    "completionRate": "Completion Rate",
+    "feedbackInsights": "Feedback Insights",
+    "feedbackExample": "\"Try to communicate more clearly and provide detailed responses to enhance collaboration\"",
+    "quickChats": "Quick Chats", 
+    "completedSessions": "Completed Sessions",
+    "openedSessions": "Opened Sessions"
   },
   "services": {
     "allServices": "Services",
@@ -41,7 +54,8 @@
     "price": "Price",
     "addService": "Add new service",
     "serviceProvider": "Service Provider",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "currency": "EGP"
   },
   "bookings": {
     "title": "Bookings",

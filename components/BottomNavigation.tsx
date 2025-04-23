@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 // Import icons
 import HomeIcon from '../assets/icons/HomeIcon';
@@ -9,7 +11,7 @@ import BookingsIcon from '../assets/icons/BookingsIcon';
 import ProfileIcon from '../assets/icons/ProfileIcon';
 
 interface NavigationItem {
-  name: string;
+  nameKey: string;
   icon: (props: { color: string }) => React.ReactNode;
   href: string;
   section: string; // Added to identify which section a path belongs to
@@ -18,31 +20,33 @@ interface NavigationItem {
 const BottomNavigation: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation();
+  const { isRTL } = useLanguage();
 
   const [activeSection, setActiveSection] = useState<string>('home');
 
   // Navigation items configuration with specific destination pages
   const navigationItems: NavigationItem[] = [
     {
-      name: 'Home',
+      nameKey: 'home:title',
       icon: ({ color }) => <HomeIcon color={color} />,
       href: '/(tabs)/home',
       section: 'home',
     },
     {
-      name: 'Services',
+      nameKey: 'services:allServices',
       icon: ({ color }) => <ServicesIcon color={color} />,
       href: '/(tabs)/services', // Changed to all-services
       section: 'services',
     },
     {
-      name: 'Bookings',
+      nameKey: 'bookings:title',
       icon: ({ color }) => <BookingsIcon color={color} />,
       href: '/(tabs)/bookings',
       section: 'bookings'
     },
     {
-      name: 'Profile',
+      nameKey: 'profile:title',
       icon: ({ color }) => <ProfileIcon color={color} />,
       href: '/(tabs)/profile/me', // Changed to me.tsx
       section: 'profile',
@@ -75,18 +79,26 @@ const BottomNavigation: React.FC = () => {
     return activeSection === section ? '#FFB800' : '#030B19';
   };
 
+  // Create a localized copy of navigation items to respect RTL order if needed
+  const localizedNavItems = [...navigationItems];
+  
+  // Reverse the navigation items if RTL
+  if (isRTL) {
+    localizedNavItems.reverse();
+  }
+
   return (
-    <View style={styles.container}>
-      {navigationItems.map((item) => (
+    <View style={[styles.container, isRTL && styles.containerRTL]}>
+      {localizedNavItems.map((item) => (
         <TouchableOpacity
-          key={item.name}
+          key={item.nameKey}
           style={styles.tabItem}
           onPress={() => handleNavigation(item.href, item.section)}
           activeOpacity={0.7}
         >
           {item.icon({ color: getColor(item.section) })}
           <Text style={[styles.tabText, { color: getColor(item.section) }]}>
-            {item.name}
+            {t(item.nameKey)}
           </Text>
         </TouchableOpacity>
       ))}
@@ -111,6 +123,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
+  },
+  containerRTL: {
+    flexDirection: 'row-reverse',
   },
   tabItem: {
     alignItems: 'center',

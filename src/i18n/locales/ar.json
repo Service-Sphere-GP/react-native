@@ -5,7 +5,8 @@
     "loading": "جاري التحميل...",
     "language": "اللغة",
     "languageDescription": "اختر لغتك المفضلة من الخيارات أدناه. سيقوم التطبيق تلقائيًا بضبط المحتوى والتخطيط وفقًا لاختيارك.",
-    "languageNote": "ملاحظة: قد يتطلب تغيير اللغة إعادة تشغيل التطبيق لتطبيق جميع التغييرات بشكل كامل."
+    "languageNote": "ملاحظة: قد يتطلب تغيير اللغة إعادة تشغيل التطبيق لتطبيق جميع التغييرات بشكل كامل.",
+    "preview": "معاينة"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -22,13 +23,25 @@
     "emailRequired": "البريد الإلكتروني مطلوب",
     "passwordRequired": "كلمة المرور مطلوبة",
     "loginSuccess": "تم تسجيل الدخول بنجاح",
-    "welcomeBack": "مرحبا بعودتك!"
+    "welcomeBack": "مرحبا بعودتك!",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "enterPassword": "أدخل كلمة المرور",
+    "signUpSuccess": "تم التسجيل بنجاح",
+    "validationError": "خطأ في التحقق",
+    "loginFailed": "فشل تسجيل الدخول",
+    "checkCredentials": "يرجى التحقق من بيانات الاعتماد الخاصة بك والمحاولة مرة أخرى"
   },
   "home": {
+    "title": "الرئيسية",
     "hi": "مرحباً",
     "performanceOverview": "نظرة عامة على الأداء",
     "rating": "التقييم",
-    "completionRate": "معدل الإنجاز"
+    "completionRate": "معدل الإنجاز",
+    "feedbackInsights": "آراء وتقييمات",
+    "feedbackExample": "\"حاول التواصل بشكل أوضح وتقديم إجابات مفصلة لتعزيز التعاون\"",
+    "quickChats": "محادثات سريعة",
+    "completedSessions": "الجلسات المكتملة",
+    "openedSessions": "الجلسات المفتوحة"
   },
   "services": {
     "allServices": "الخدمات",
@@ -41,7 +54,8 @@
     "price": "السعر",
     "addService": "إضافة خدمة جديدة",
     "serviceProvider": "مزود الخدمة",
-    "reviews": "التقييمات"
+    "reviews": "التقييمات",
+    "currency": "ج.م"
   },
   "bookings": {
     "title": "الحجوزات",

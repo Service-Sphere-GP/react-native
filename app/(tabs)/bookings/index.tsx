@@ -16,6 +16,8 @@ import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BookingText from '@/components/BookingText';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 interface BookingItem {
   _id: string;
@@ -36,6 +38,9 @@ interface BookingItem {
 }
 
 const Booking = () => {
+  const { t } = useTranslation(['bookings', 'common', 'services']);
+  const { isRTL } = useLanguage();
+
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<string | null>(null);
@@ -202,9 +207,9 @@ const Booking = () => {
         onPress={() => router.push('/bookings/Chat/ChatRoomScreen')}
       >
         <View
-          className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3`}
+          className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
-          <View className="flex-row items-center">
+          <View className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Image
               source={{
                 uri: role === 'customer' ? providerImage : customerImage,
@@ -212,20 +217,20 @@ const Booking = () => {
               className="w-10 h-10 rounded-full"
               resizeMode="cover"
             />
-            <View className="ml-3">
-              <Text className="text-sm font-Roboto-Medium text-gray-900">
+            <View className={`${isRTL ? 'mr-3 items-end' : 'ml-3'}`}>
+              <Text className={`text-sm font-Roboto-Medium text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {role === 'customer' ? `${providerName}` : `${customerName}`}
               </Text>
-              <Text className="text-sm text-gray-500">{serviceName}</Text>
+              <Text className={`text-sm text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`}>{serviceName}</Text>
             </View>
           </View>
 
           <View className="items-end flex-col-reverse gap-1">
             <Text className="text-xs font-Roboto text-gray-900">
-              {servicePrice} EGP
+              {servicePrice} {t('services:currency')}
             </Text>
             {role === 'service_provider' && bookingStatus === 'pending' ? (
-              <View className="flex-row gap-2">
+              <View className={`flex-row gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <TouchableOpacity
                   onPress={() => {
                     confirmBookingHandler(item);
@@ -262,13 +267,13 @@ const Booking = () => {
                 }`}
               >
                 {bookingStatus === 'pending'
-                  ? 'Pending'
+                  ? t('bookings:pending')
                   : bookingStatus === 'confirmed'
-                    ? 'Confirmed'
+                    ? t('bookings:confirmed')
                     : bookingStatus === 'cancelled'
-                      ? 'Rejected'
+                      ? t('bookings:rejected')
                       : bookingStatus === 'completed'
-                        ? 'Completed'
+                        ? t('bookings:completed')
                         : ''}
               </Text>
             )}
@@ -282,6 +287,7 @@ const Booking = () => {
     return (
       <View className="flex items-center justify-center h-screen">
         <ActivityIndicator size="large" color="#0000ff" />
+        <Text className="mt-2 text-gray-600">{t('common:loading')}</Text>
       </View>
     );
   }
@@ -296,7 +302,7 @@ const Booking = () => {
         <View className="flex-1 bg-gray-100">
           {/* Header */}
           <Header
-            title="Bookings"
+            title={t('bookings:title')}
             showBackButton={false}
             notificationsCount={4}
           />
@@ -321,7 +327,7 @@ const Booking = () => {
           {role === 'customer' ? (
             <TouchableOpacity
               onPress={() => router.push('/bookings')}
-              className="bg-[#147E93] h-14 w-14 rounded-full items-center justify-center shadow-lg mb-4 mr-4 self-end"
+              className={`bg-[#147E93] h-14 w-14 rounded-full items-center justify-center shadow-lg mb-4 ${isRTL ? 'ml-4 self-start' : 'mr-4 self-end'}`}
             >
               <Ionicons name="add" size={28} color="#FFFFFF" />
             </TouchableOpacity>
@@ -338,33 +344,39 @@ const Booking = () => {
       >
         <View className="flex-1 justify-center items-center bg-black/50">
           <View className="w-80 bg-white rounded-2xl p-6 shadow-lg">
-            <Text className="text-xl text-center font-bold text-[#147E93] mb-4">
-              Leave Feedback
+            <Text className={`text-xl text-center font-bold text-[#147E93] mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('bookings:leaveFeedback')}
             </Text>
 
-            <Text className="text-base mb-3 text-gray-700 self-start">
-              Rate the service:
+            <Text className={`text-base mb-3 text-gray-700 self-start ${isRTL ? 'self-end text-right' : 'self-start text-left'}`}>
+              {t('bookings:rateService')}
             </Text>
 
-            <View className="flex-row justify-center mb-5 space-x-2">
+            <View className={`flex-row justify-center mb-5 space-x-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               {renderStars()}
             </View>
 
             <TextInput
-              className="w-full border border-gray-300 rounded-lg p-3 h-24"
-              placeholder="Tell us about your experience..."
+              className={`w-full border border-gray-300 rounded-lg p-3 h-24 ${isRTL ? 'text-right' : 'text-left'}`}
+              placeholder={t('bookings:tellExperience')}
               multiline
               textAlignVertical="top"
               value={feedback}
               onChangeText={setFeedback}
+              style={{
+                textAlign: isRTL ? 'right' : 'left',
+                writingDirection: isRTL ? 'rtl' : 'ltr',
+              }}
             />
 
-            <View className="flex-row justify-between w-full mt-6 space-x-4">
+            <View className={`flex-row justify-between w-full mt-6 space-x-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <TouchableOpacity
                 className="px-4 py-2 rounded-lg bg-gray-200 flex-1 items-center"
                 onPress={handleCloseFeedbackModal}
               >
-                <Text className="text-gray-700 font-semibold">Cancel</Text>
+                <Text className="text-gray-700 font-semibold">
+                  {t('bookings:cancel')}
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -372,7 +384,9 @@ const Booking = () => {
                 onPress={handleSubmitFeedback}
                 disabled={rating === 0}
               >
-                <Text className="text-white font-semibold">Submit</Text>
+                <Text className="text-white font-semibold">
+                  {t('bookings:submit')}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
