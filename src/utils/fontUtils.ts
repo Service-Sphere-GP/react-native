@@ -15,64 +15,40 @@ export type FontWeight =
   | 'extraBold';
 
 /**
- * Maps font weight to font family name for both English (Roboto) and Arabic (Montserrat Arabic)
+ * Maps language to base font family name
+ * Montserrat-Arabic is used for Arabic text, while Roboto is used for English text
+ * Font weights are handled separately with font-weight classes in the app
  */
-
-// all ar should be Montserrat-Arabic and all en should be Roboto
-// Montserrat-Arabic is used for Arabic text, while Roboto is used for English text
-// that bold or thin or etc is handlded with the font weight classes in the app
-const fontFamilyMap: Record<string, Record<FontWeight, string>> = {
-  en: {
-    thin: 'Roboto-Thin',
-    extraLight: 'Roboto-ExtraLight',
-    light: 'Roboto-Light',
-    regular: 'Roboto-Regular',
-    medium: 'Roboto-Medium',
-    semiBold: 'Roboto-SemiBold',
-    bold: 'Roboto-Bold',
-    extraBold: 'Roboto-ExtraBold',
-  },
-  ar: {
-    thin: 'Montserrat-Arabic',
-    extraLight: 'Montserrat-Arabic',
-    light: 'Montserrat-Arabic',
-    regular: 'Montserrat-Arabic',
-    medium: 'Montserrat-Arabic',
-    semiBold: 'Montserrat-Arabic',
-    bold: 'Montserrat-Arabic',
-    extraBold: 'Montserrat-Arabic',
-  },
+const fontFamilyMap: Record<string, string> = {
+  en: 'Roboto',
+  ar: 'Montserrat-Arabic',
 };
 
 /**
- * Hook that returns the font families based on the current language
- * @returns Font family map for the current language
+ * Hook that returns the font family based on the current language
+ * @returns Font family name for the current language
  */
 export function useFontFamily() {
   const { language } = useLanguage();
 
   return useMemo(() => {
-    // Default to English fonts if the language is not supported
-    const languageKey = fontFamilyMap[language] ? language : 'en';
-    return fontFamilyMap[languageKey];
+    // Default to English font if the language is not supported
+    return fontFamilyMap[language] || fontFamilyMap.en;
   }, [language]);
 }
 
 /**
- * Helper function to get the appropriate text style class based on RTL and font weight
+ * Helper function to get the appropriate text style class based on RTL
  * This is useful for applying dynamic font styles in a consistent way
  *
  * @param isRTL Whether the current layout is RTL
- * @param weight Font weight to use
  * @returns A string to be used in className for styling and an object for style prop
  */
-export function getTextStyle(
-  isRTL: boolean,
-  weight: FontWeight = 'regular',
-): { className: string; style: { fontFamily: string } } {
-  const fontFamily = isRTL
-    ? fontFamilyMap.ar[weight]
-    : fontFamilyMap.en[weight];
+export function getTextStyle(isRTL: boolean): {
+  className: string;
+  style: { fontFamily: string };
+} {
+  const fontFamily = isRTL ? fontFamilyMap.ar : fontFamilyMap.en;
   const textAlign = isRTL ? 'text-right' : 'text-left';
 
   // Return both className for alignment and style object for font family
@@ -87,19 +63,14 @@ export function getTextStyle(
  * This should be used when dynamic styling based on language is needed
  *
  * @param language Current language code
- * @param weight Font weight to use
  * @returns Font family name
  */
-export function getFontFamily(
-  language: string,
-  weight: FontWeight = 'regular',
-): string {
-  const languageKey = fontFamilyMap[language] ? language : 'en';
-  return fontFamilyMap[languageKey][weight];
+export function getFontFamily(language: string): string {
+  return fontFamilyMap[language] || fontFamilyMap.en;
 }
 
 /**
- * Helper to check if a font is available in the current language
+ * Helper to check if a font is available for the given language
  *
  * @param language Language code to check
  * @returns Boolean indicating if fonts are available

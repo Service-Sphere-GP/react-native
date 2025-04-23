@@ -45,7 +45,22 @@
     "signUpSuccess": "تم التسجيل بنجاح",
     "validationError": "خطأ في التحقق",
     "loginFailed": "فشل تسجيل الدخول",
-    "checkCredentials": "يرجى التحقق من بيانات الاعتماد الخاصة بك والمحاولة مرة أخرى"
+    "checkCredentials": "يرجى التحقق من بيانات الاعتماد الخاصة بك والمحاولة مرة أخرى",
+    
+    "enterFirstName": "أدخل اسمك الأول",
+    "enterLastName": "أدخل اسم العائلة",
+    "reEnterPassword": "أعد إدخال كلمة المرور",
+    "passwordLengthError": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+    "agreeToThe": "أوافق على",
+    "privacyPolicy": "سياسة الخصوصية",
+    "continue": "متابعة",
+    
+    "businessName": "اسم الشركة",
+    "businessAddress": "عنوان الشركة",
+    "taxId": "الرقم الضريبي",
+    "enterBusinessName": "أدخل اسم الشركة",
+    "enterBusinessAddress": "أدخل عنوان الشركة",
+    "enterTaxId": "أدخل الرقم الضريبي"
   },
   "home": {
     "title": "الرئيسية",

@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLanguage } from './LanguageContext';
 import { useTranslation } from 'react-i18next';
-import { useFontFamily, FontWeight } from '@/src/utils/fontUtils';
+import { useFontFamily } from '@/src/utils/fontUtils';
 
 const LanguageSelector: React.FC = () => {
   const { language, setLanguage, languages, isRTL } = useLanguage();
   const { t } = useTranslation();
-  const fonts = useFontFamily();
+  const fontFamily = useFontFamily();
 
   return (
     <View style={[styles.container, isRTL && styles.containerRTL]}>
@@ -15,7 +15,7 @@ const LanguageSelector: React.FC = () => {
         style={[
           styles.title, 
           isRTL && styles.titleRTL,
-          { fontFamily: fonts.medium }
+          { fontFamily, fontWeight: '500' }
         ]}
       >
         {t('common:language')}
@@ -38,9 +38,8 @@ const LanguageSelector: React.FC = () => {
                 language === code && styles.activeButtonText,
                 isRTL && styles.buttonTextRTL,
                 { 
-                  fontFamily: language === code 
-                    ? fonts.medium 
-                    : fonts.regular 
+                  fontFamily,
+                  fontWeight: language === code ? '500' : '400'
                 }
               ]}
             >

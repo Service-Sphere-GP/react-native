@@ -25,9 +25,7 @@ const App = () => {
   const responsiveHeight = height * 0.5;
 
   // Get text styles with appropriate font family and alignment
-  const titleStyle = getTextStyle(isRTL, 'semiBold');
-  const subtitleStyle = getTextStyle(isRTL, 'semiBold');
-  const regularStyle = getTextStyle(isRTL, 'regular');
+  const textStyle = getTextStyle(isRTL);
 
   return (
     <ScrollView
@@ -41,9 +39,9 @@ const App = () => {
             entering={FadeInDown.delay(300)}
             className="w-full mt-2"
           >
-            <Text className={`text-[40px] font-Roboto-SemiBold ltr:text-left rtl:text-right`}>
-              <Text className="text-[#FFCE4C]" style={titleStyle.style}>{t('common:serviceTitle')} </Text>
-              <Text className="text-[#147E93]" style={titleStyle.style}>{t('common:sphereTitle')}</Text>
+            <Text className={`text-[40px] font-semibold ${textStyle.className}`}>
+              <Text className="text-[#FFCE4C]" style={textStyle.style}>{t('common:serviceTitle')} </Text>
+              <Text className="text-[#147E93]" style={textStyle.style}>{t('common:sphereTitle')}</Text>
             </Text>
           </Animated.View>
 
@@ -52,8 +50,8 @@ const App = () => {
             {/* Subtitle */}
             <Animated.View entering={FadeInDown.delay(400)}>
               <Text 
-                className={`text-[#030B19] text-[22px] leading-tight ${subtitleStyle.className}`}
-                style={subtitleStyle.style}
+                className={`text-[#030B19] text-[22px] leading-tight font-semibold ${textStyle.className}`}
+                style={textStyle.style}
               >
                 {t('common:slogan')}
               </Text>
@@ -65,8 +63,8 @@ const App = () => {
               style={{ marginTop: 15 }}
             >
               <Text 
-                className={`text-[#030B19] text-[16px] ${regularStyle.className}`}
-                style={regularStyle.style}
+                className={`text-[#030B19] text-[16px] ${textStyle.className}`}
+                style={textStyle.style}
               >
                 {t('common:welcomeMessage')}
               </Text>
@@ -99,13 +97,13 @@ const App = () => {
             onPress={() => router.push('/(otp)/customer/register')}
             title={t('common:customerButton')}
             containerStyles="bg-[#147E93] rounded-[10px] shadow-md p-2"
-            textStyles="text-[20px] text-white font-Roboto-SemiBold"
+            textStyles="text-[20px] text-white font-semibold"
           />
           <CustomButton
             onPress={() => router.push('/(otp)/provider/register')}
             title={t('common:providerButton')}
             containerStyles="bg-white rounded-[10px] shadow-md p-2"
-            textStyles="text-[20px] text-[#147E93] font-Roboto-SemiBold"
+            textStyles="text-[20px] text-[#147E93] font-semibold"
           />
         </Animated.View>
 

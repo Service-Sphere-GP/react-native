@@ -7,9 +7,17 @@ import { useState } from 'react';
 import useRegister from '@/hooks/useRegister';
 import Input from '@/components/login/Input';
 import { Customer } from '@/types/Customer';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
+  const { t } = useTranslation(['auth', 'validation']);
+  const { isRTL } = useLanguage();
+
+  // Get text styles with appropriate font family and alignment
+  const textStyle = getTextStyle(isRTL);
 
   const [customer, setCustomer] = useState({
     email: '',
@@ -39,25 +47,25 @@ const Register = () => {
     };
 
     if (!customer.email) {
-      errors.email = 'Email is required';
+      errors.email = t('validation:required', { field: t('auth:email') });
     }
 
     if (!customer.password || customer.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters';
+      errors.password = t('auth:passwordLengthError');
     }
 
     if (!customer.confirmPassword) {
-      errors.confirmPassword = 'Confirm Password is required';
+      errors.confirmPassword = t('validation:required', { field: t('auth:confirmPassword') });
     } else if (customer.password !== customer.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
+      errors.confirmPassword = t('validation:passwordMatch');
     }
 
     if (!customer.firstName) {
-      errors.firstName = 'First Name is required';
+      errors.firstName = t('validation:required', { field: t('auth:firstName') });
     }
 
     if (!customer.lastName) {
-      errors.lastName = 'Last Name is required';
+      errors.lastName = t('validation:required', { field: t('auth:lastName') });
     }
 
     return errors;
@@ -81,8 +89,6 @@ const Register = () => {
         customer.confirmPassword,
       );
 
-      console.log('success', success);
-
       if (success) {
         router.push('/(otp)/Verification');
       }
@@ -94,12 +100,17 @@ const Register = () => {
   return (
     <ScrollView className="bg-white h-full">
       <Header />
-      <View className="px-3">
-        <Text className="text-3xl font-Roboto-Medium mt-3">Sign Up</Text>
-        <View className="flex flex-col items-center mt-5">
+      <View className={`px-3 ${isRTL ? 'items-end' : 'items-start'}`}>
+        <Text 
+          className={`text-3xl mt-3 font-medium ${textStyle.className}`}
+          style={textStyle.style}
+        >
+          {t('auth:register')}
+        </Text>
+        <View className="flex flex-col items-center mt-5 w-full">
           <Input
-            label="First Name"
-            placeholder="Enter your first name"
+            label={t('auth:firstName')}
+            placeholder={t('auth:enterFirstName')}
             isPassword={false}
             value={customer.firstName}
             onChangeText={(text) =>
@@ -109,10 +120,11 @@ const Register = () => {
             errorMessage={
               errorMessages.firstName ? errorMessages.firstName : ''
             }
+            isRTL={isRTL}
           />
           <Input
-            label="Last Name"
-            placeholder="Enter your last name"
+            label={t('auth:lastName')}
+            placeholder={t('auth:enterLastName')}
             isPassword={false}
             value={customer.lastName}
             onChangeText={(text) =>
@@ -120,19 +132,21 @@ const Register = () => {
             }
             error={errorMessages.lastName ? true : false}
             errorMessage={errorMessages.lastName ? errorMessages.lastName : ''}
+            isRTL={isRTL}
           />
           <Input
-            label="Email"
-            placeholder="Enter your email"
+            label={t('auth:email')}
+            placeholder={t('auth:enterEmail')}
             isPassword={false}
             value={customer.email}
             onChangeText={(text) => setCustomer({ ...customer, email: text })}
             error={errorMessages.email ? true : false}
             errorMessage={errorMessages.email ? errorMessages.email : ''}
+            isRTL={isRTL}
           />
           <Input
-            label="Password"
-            placeholder="Enter your password"
+            label={t('auth:password')}
+            placeholder={t('auth:enterPassword')}
             isPassword={true}
             value={customer.password}
             onChangeText={(text) =>
@@ -140,10 +154,11 @@ const Register = () => {
             }
             error={errorMessages.password ? true : false}
             errorMessage={errorMessages.password ? errorMessages.password : ''}
+            isRTL={isRTL}
           />
           <Input
-            label="Confirm Password"
-            placeholder="Re-enter your password"
+            label={t('auth:confirmPassword')}
+            placeholder={t('auth:reEnterPassword')}
             isPassword={true}
             value={customer.confirmPassword}
             onChangeText={(text) =>
@@ -153,44 +168,58 @@ const Register = () => {
             errorMessage={
               errorMessages.confirmPassword ? errorMessages.confirmPassword : ''
             }
+            isRTL={isRTL}
           />
         </View>
-        <View className="flex-row items-center">
+        <View className={`flex-row items-center ${isRTL ? 'justify-end' : 'justify-start'} w-full`}>
           <CheckBox
             checked={checked}
             containerStyle={{ marginLeft: 0, marginRight: 0 }}
             onPress={() => setChecked(!checked)}
           />
-          <Text className="font-Roboto-Light text-black/70 text-base">
-            I agree to the{' '}
-            <Text className="text-[#147E93] underline font-Roboto-Medium">
-              Privacy policy
+          <Text 
+            className="text-black/70 text-base font-light"
+            style={textStyle.style}
+          >
+            {t('auth:agreeToThe')}{' '}
+            <Text 
+              className="text-[#147E93] underline font-medium"
+              style={textStyle.style}
+            >
+              {t('auth:privacyPolicy')}
             </Text>
           </Text>
         </View>
 
         {error && (
-          <Text className="text-[#FF5757] text-center font-Roboto-Medium text-base mt-3 -mb-3">
+          <Text 
+            className={`text-[#FF5757] text-center text-base mt-3 -mb-3 w-full font-medium ${textStyle.className}`}
+            style={textStyle.style}
+          >
             {error}
           </Text>
         )}
 
         <CustomButton
-          title="Continue"
+          title={t('auth:continue')}
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"
           textStyles="font-medium text-[21px]"
           onPress={handleRegister}
           disabled={loading || !checked}
         />
 
-        <View className="flex-row items-center justify-center my-5">
-          <Text className="font-Roboto-Light text-black/70 text-base">
-            Already have an account?{' '}
+        <View className={`flex-row items-center justify-center my-5 w-full ${textStyle.className}`}>
+          <Text 
+            className="text-black/70 text-base font-light"
+            style={textStyle.style}
+          >
+            {t('auth:hasAccount')}{' '}
             <Link
               href="/(otp)/customer/login"
-              className="text-[#147E93] underline font-Roboto-Medium"
+              className="text-[#147E93] underline font-medium"
+              style={textStyle.style}
             >
-              Login
+              {t('auth:login')}
             </Link>
           </Text>
         </View>

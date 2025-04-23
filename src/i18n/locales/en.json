@@ -45,7 +45,22 @@
     "signUpSuccess": "Sign up Successful",
     "validationError": "Validation Error",
     "loginFailed": "Login Failed",
-    "checkCredentials": "Please check your credentials and try again"
+    "checkCredentials": "Please check your credentials and try again",
+    
+    "enterFirstName": "Enter your first name",
+    "enterLastName": "Enter your last name",
+    "reEnterPassword": "Re-enter your password",
+    "passwordLengthError": "Password must be at least 8 characters",
+    "agreeToThe": "I agree to the",
+    "privacyPolicy": "Privacy policy",
+    "continue": "Continue",
+    
+    "businessName": "Business Name",
+    "businessAddress": "Business Address",
+    "taxId": "Tax ID",
+    "enterBusinessName": "Enter your business name",
+    "enterBusinessAddress": "Enter your business address",
+    "enterTaxId": "Enter your tax ID"
   },
   "home": {
     "title": "Home",

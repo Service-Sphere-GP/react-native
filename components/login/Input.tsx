@@ -35,11 +35,11 @@ const Input = ({
 
   return (
     <View className="w-full mt-2">
-      <Text className={`text-[#363E4C] font-Roboto-Medium text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+      <Text className={`text-[#363E4C]  text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
         {label}
       </Text>
       <TextInput
-        className={`p-4 border-2 ${error && !isFocusedRef.current ? 'border-[#FF5757]' : 'border-[#EDEDED]'} rounded-lg font-Roboto-Thin focus:outline-[#147E93] placeholder:text-[#363E4C]`}
+        className={`p-4 border-2 ${error && !isFocusedRef.current ? 'border-[#FF5757]' : 'border-[#EDEDED]'} rounded-lg focus:outline-[#147E93] placeholder:text-[#363E4C]`}
         placeholder={placeholder}
         secureTextEntry={isPassword}
         onChangeText={onChangeText}
@@ -52,7 +52,7 @@ const Input = ({
       />
       {error && !isFocusedRef.current && (
         <View className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
-          <Text className={`text-[#FF5757] font-Roboto-Medium text-base ${isRTL ? 'text-right' : 'text-left'}`}>
+          <Text className={`text-[#FF5757] text-base ${isRTL ? 'text-right' : 'text-left'}`}>
             {errorMessage}
           </Text>
         </View>
