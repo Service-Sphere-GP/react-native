@@ -60,7 +60,19 @@
     "taxId": "Tax ID",
     "enterBusinessName": "Enter your business name",
     "enterBusinessAddress": "Enter your business address",
-    "enterTaxId": "Enter your tax ID"
+    "enterTaxId": "Enter your tax ID",
+    
+    "confirmCode": "Confirm Code",
+    "enterCodeSentTo": "Please enter the verification code sent to",
+    "incorrectCode": "The verification code you entered is incorrect.",
+    "tryAgainOrResend": "Please try again or request a new code.",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend Code",
+    "registrationCompleted": "Registration Completed!",
+    "congratsRegistration": "Congratulations! Your registration has been successfully completed.",
+    "allSetToExplore": "You're all set to explore our services.",
+    "clickBelowForHomepage": "Click the button below to go to the homepage.",
+    "getStarted": "Get Started"
   },
   "home": {
     "title": "Home",
@@ -117,7 +129,20 @@
     "adminPanel": "Admin Panel",
     "adminAccess": "Access administration dashboard",
     "deleteAccount": "Delete Account",
-    "joined": "Joined"
+    "joined": "Joined",
+    
+    "notifications": "Notifications",
+    "noNotifications": "There are no notifications",
+    "markAllRead": "Mark all as read",
+    "clearAllNotifications": "Clear All Notifications"
+  },
+  "notifications": {
+    "success": "Success",
+    "error": "Error",
+    "allMarkedRead": "All notifications marked as read",
+    "failedToUpdate": "Failed to update notifications",
+    "allCleared": "All notifications cleared",
+    "failedToClear": "Failed to clear notifications"
   },
   "chat": {
     "typeMessage": "Type a message",

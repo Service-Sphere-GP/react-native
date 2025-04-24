@@ -60,7 +60,19 @@
     "taxId": "الرقم الضريبي",
     "enterBusinessName": "أدخل اسم الشركة",
     "enterBusinessAddress": "أدخل عنوان الشركة",
-    "enterTaxId": "أدخل الرقم الضريبي"
+    "enterTaxId": "أدخل الرقم الضريبي",
+    
+    "confirmCode": "تأكيد الرمز",
+    "enterCodeSentTo": "الرجاء إدخال رمز التحقق المرسل إلى",
+    "incorrectCode": "رمز التحقق الذي أدخلته غير صحيح.",
+    "tryAgainOrResend": "يرجى المحاولة مرة أخرى أو طلب رمز جديد.",
+    "didntReceiveCode": "لم تستلم الرمز؟",
+    "resendCode": "إعادة إرسال الرمز",
+    "registrationCompleted": "اكتمل التسجيل!",
+    "congratsRegistration": "تهانينا! تم إكمال تسجيلك بنجاح.",
+    "allSetToExplore": "أنت جاهز الآن لاستكشاف خدماتنا.",
+    "clickBelowForHomepage": "انقر على الزر أدناه للانتقال إلى الصفحة الرئيسية.",
+    "getStarted": "البدء الآن"
   },
   "home": {
     "title": "الرئيسية",
@@ -117,7 +129,20 @@
     "adminPanel": "لوحة الإدارة",
     "adminAccess": "الوصول إلى لوحة الإدارة",
     "deleteAccount": "حذف الحساب",
-    "joined": "انضم في"
+    "joined": "انضم في",
+    
+    "notifications": "الإشعارات",
+    "noNotifications": "لا توجد إشعارات",
+    "markAllRead": "تحديد الكل كمقروء",
+    "clearAllNotifications": "مسح جميع الإشعارات"
+  },
+  "notifications": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "allMarkedRead": "تم تحديد جميع الإشعارات كمقروءة",
+    "failedToUpdate": "فشل تحديث الإشعارات",
+    "allCleared": "تم مسح جميع الإشعارات",
+    "failedToClear": "فشل مسح الإشعارات"
   },
   "chat": {
     "typeMessage": "اكتب رسالة",
