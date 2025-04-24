@@ -239,7 +239,7 @@ const EditService = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="bg-white px-4 pb-12 h-full justify-between">
+        <ScrollView className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
             <Header title="Edit Service" showBackButton={true} />
             <View>
@@ -363,7 +363,7 @@ const EditService = () => {
               Update service
             </Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       )}
     </>
   );
