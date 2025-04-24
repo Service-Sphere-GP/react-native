@@ -68,11 +68,7 @@ const MyServices = () => {
       ) : (
         <View className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <Header
-            title="My Services"
-            showBackButton={true}
-            notificationsCount={0}
-          />
+          <Header title="My Services" showBackButton={true} />
 
           {/* Services List */}
           {services?.length ? (

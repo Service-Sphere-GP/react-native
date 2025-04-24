@@ -262,11 +262,7 @@ const Settings = () => {
       </Modal>
       {user ? (
         <View className="px-1 py-4 xs:px-4 gap-4">
-          <Header
-            title="Personal Data"
-            showBackButton={true}
-            notificationsCount={0}
-          />
+          <Header title="Personal Data" showBackButton={true} />
           <View>
             <Image
               source={

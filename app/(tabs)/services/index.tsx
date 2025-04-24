@@ -87,7 +87,6 @@ const AllServices = () => {
           <Header
             title={t('services:allServices')}
             showBackButton={false}
-            notificationsCount={0}
           />
 
           {/* Search & Filter */}

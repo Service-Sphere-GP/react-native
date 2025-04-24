@@ -182,11 +182,7 @@ const ServiceDetailsPage = () => {
       ) : (
         <ScrollView className="bg-[#F4F4F4]">
           <View className="bg-white px-2 py-2">
-            <Header
-              title={service?.service_name}
-              showBackButton={true}
-              notificationsCount={4}
-            />
+            <Header title={service?.service_name} showBackButton={true} />
 
             <View className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Text 

@@ -91,11 +91,7 @@ const MyReviews = () => {
         </View>
       ) : (
         <View className="bg-[#F4F4F4] flex-1 px-4">
-          <Header
-            title="My Reviews"
-            showBackButton={true}
-            notificationsCount={4}
-          />
+          <Header title="My Reviews" showBackButton={true} />
 
           <View className="bg-white flex-1 rounded-t-2xl">
             <FlatList

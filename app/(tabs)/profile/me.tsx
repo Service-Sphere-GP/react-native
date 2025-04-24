@@ -91,7 +91,6 @@ const ProfileComponent = () => {
           <Header
             title={t('profile:title')}
             showBackButton={false}
-            notificationsCount={0}
           />
 
           <View className="justify-center items-center p-2 gap-4">

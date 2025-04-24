@@ -4,21 +4,19 @@ import { useRouter } from 'expo-router';
 import NotificationIcon from '@/assets/icons/Notification';
 import { useLanguage } from '@/src/i18n/LanguageContext';
 import { getTextStyle } from '@/src/utils/fontUtils';
+import { useNotifications } from '@/constants/NotificationContext';
 
 interface HeaderProps {
   title?: string | undefined;
-  notificationsCount?: number | undefined;
   showBackButton?: boolean | undefined;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  title,
-  notificationsCount = 0,
-  showBackButton = true,
-}) => {
+const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) => {
   const router = useRouter();
   const { isRTL } = useLanguage();
   const textStyle = getTextStyle(isRTL);
+  // Use the notification context to get the unread count
+  const { unreadCount } = useNotifications();
 
   return (
     <View className={`flex-row items-center justify-between px-4 py-4 relative mt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -38,19 +36,21 @@ const Header: React.FC<HeaderProps> = ({
       >
         {title}
       </Text>
-      
-      <TouchableOpacity onPress={() => router.push('/notifications')}>
-        <View className="relative">
-          <NotificationIcon />
-          {notificationsCount > 0 && (
-            <View className="absolute top-0 right-0 bg-[#FF5757] rounded-full w-4 h-4 items-center justify-center">
-              <Text className="text-white text-xs font-bold">
-                {notificationsCount > 9 ? '9+' : notificationsCount}
-              </Text>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
+
+      <View>
+        <TouchableOpacity onPress={() => router.push('/profile/notification')}>
+          <View className="relative">
+            <NotificationIcon color="#030B19" />
+            {unreadCount > 0 && (
+              <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
+                <Text className="text-white text-xs font-bold">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </Text>
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
