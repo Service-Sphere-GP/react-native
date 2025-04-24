@@ -84,25 +84,29 @@ const ProviderServices = () => {
                 resizeMode="cover"
               />
               <View className="flex-1">
-                <View className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <Text 
+                <View
+                  className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <Text
                     className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
-                    style={textStyle.style}
                   >
                     {item.service_name}
                   </Text>
-                  <Ionicons 
-                    name={isRTL ? "chevron-back" : "chevron-forward"} 
-                    size={20} 
-                    color="#030B19" 
+                  <Ionicons
+                    name={isRTL ? 'chevron-back' : 'chevron-forward'}
+                    size={20}
+                    color="#030B19"
                   />
                 </View>
 
-                <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <Text 
+                <View
+                  className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <View
+                    className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
+                    <Text
                       className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
-                      style={textStyle.style}
                     >
                       {item.rating_average.toFixed(2)}
                     </Text>
@@ -112,9 +116,8 @@ const ProviderServices = () => {
                       imageSize={10}
                     />
                   </View>
-                  <Text 
+                  <Text
                     className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
-                    style={textStyle.style}
                   >
                     {item.base_price} {t('services:currency')}
                   </Text>

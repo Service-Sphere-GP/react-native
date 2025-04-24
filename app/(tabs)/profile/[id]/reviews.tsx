@@ -76,18 +76,16 @@ const MyReviews = () => {
         />
 
         <View>
-          <Text 
+          <Text
             className={`text-base font-Roboto-Medium text-[#030B19] ${textStyle.className}`}
-            style={textStyle.style}
           >
             {item.user.first_name} {item.user.last_name}
           </Text>
 
-          <View className={`flex-row items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Text 
-              className={`text-xs text-[#363E4C] ${textStyle.className}`}
-              style={textStyle.style}
-            >
+          <View
+            className={`flex-row items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            <Text className={`text-xs text-[#363E4C] ${textStyle.className}`}>
               {item.rating.toFixed(2)}
             </Text>
             <Rating
@@ -98,21 +96,20 @@ const MyReviews = () => {
               readonly
             />
           </View>
-          <Text 
-            className={`text-xs text-[#676B73] ${textStyle.className}`}
-            style={textStyle.style}
-          >
-            {new Date(item.createdAt).toLocaleDateString(isRTL ? 'ar-EG' : 'en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })}
+          <Text className={`text-xs text-[#676B73] ${textStyle.className}`}>
+            {new Date(item.createdAt).toLocaleDateString(
+              isRTL ? 'ar-EG' : 'en-US',
+              {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              },
+            )}
           </Text>
         </View>
       </View>
-      <Text 
+      <Text
         className={`text-xs font-Roboto text-[#363E4C] mt-2 ${textStyle.className}`}
-        style={textStyle.style}
       >
         {item.message}
       </Text>
@@ -127,9 +124,9 @@ const MyReviews = () => {
         </View>
       ) : (
         <View className="bg-[#F4F4F4] flex-1 px-4">
-          <Header 
-            title={t('profile:reviewsOf', { name: username })} 
-            showBackButton={true} 
+          <Header
+            title={t('profile:reviewsOf', { name: username })}
+            showBackButton={true}
           />
 
           <View className="bg-white flex-1 rounded-t-2xl">
@@ -148,9 +145,8 @@ const MyReviews = () => {
               />
             ) : (
               <View className="flex-1 items-center justify-center">
-                <Text 
+                <Text
                   className={`text-[#666B73] font-Roboto-Medium text-lg ${textStyle.className}`}
-                  style={textStyle.style}
                 >
                   {t('profile:noReviewsYet')}
                 </Text>

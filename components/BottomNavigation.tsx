@@ -3,9 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
-
-// Import icons
 import HomeIcon from '../assets/icons/HomeIcon';
 import ServicesIcon from '../assets/icons/ServicesIcon';
 import BookingsIcon from '../assets/icons/BookingsIcon';
@@ -23,7 +20,6 @@ const BottomNavigation: React.FC = () => {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { isRTL } = useLanguage();
-  const textStyle = getTextStyle(isRTL);
 
   const [activeSection, setActiveSection] = useState<string>('home');
 
@@ -45,7 +41,7 @@ const BottomNavigation: React.FC = () => {
       nameKey: 'bookings:title',
       icon: ({ color }) => <BookingsIcon color={color} />,
       href: '/(tabs)/bookings',
-      section: 'bookings'
+      section: 'bookings',
     },
     {
       nameKey: 'profile:title',
@@ -83,7 +79,7 @@ const BottomNavigation: React.FC = () => {
 
   // Create a localized copy of navigation items to respect RTL order if needed
   const localizedNavItems = [...navigationItems];
-  
+
   // Reverse the navigation items if RTL
   if (isRTL) {
     localizedNavItems.reverse();
@@ -99,13 +95,12 @@ const BottomNavigation: React.FC = () => {
           activeOpacity={0.7}
         >
           {item.icon({ color: getColor(item.section) })}
-          <Text 
+          <Text
             style={[
-              styles.tabText, 
-              { 
+              styles.tabText,
+              {
                 color: getColor(item.section),
-                fontFamily: textStyle.style.fontFamily 
-              }
+              },
             ]}
           >
             {t(item.nameKey)}
@@ -146,7 +141,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
     fontWeight: '500',
-    // fontFamily will be added dynamically
   },
 });
 

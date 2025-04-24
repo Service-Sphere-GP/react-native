@@ -2,7 +2,6 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface ProfileDetailProps {
   title: string;
@@ -19,33 +18,32 @@ const ProfileDetail = ({
 }: ProfileDetailProps) => {
   const { width } = useWindowDimensions();
   const { isRTL } = useLanguage();
-  const textStyle = getTextStyle(isRTL);
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View className={`flex-row justify-between p-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <View className={`flex-row gap-4 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <View
+        className={`flex-row justify-between p-4 items-center ${isRTL ? 'flex-row-reverse pl-6' : 'pr-6'}`}
+      >
+        <View
+          className={`flex-row items-center gap-4 w-full ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
           <Image source={image} style={{ width: 40, height: 40 }} />
-          <View className={`justify-center max-w-[90%] ${isRTL ? 'items-end' : 'items-start'}`}>
+          <View
+            className={`justify-center max-w-[90%] ${isRTL ? 'items-end' : 'items-start'}`}
+          >
             <Text
-              className={`text-base ${title === 'Log out' || title === 'تسجيل الخروج' ? 'text-red-500' : 'text-black'} font-medium ${textStyle.className}`}
-              style={textStyle.style}
+              className={`text-base ${title === 'Log out' || title === 'تسجيل الخروج' ? 'text-red-500' : 'text-black'} font-medium`}
             >
               {title}
             </Text>
             {description && (
-              <Text 
-                className={`text-[#666B73] text-sm max-w-[90%] ${textStyle.className}`}
-                style={textStyle.style}
-              >
-                {description}
-              </Text>
+              <Text className="text-[#666B73] text-sm">{description}</Text>
             )}
           </View>
         </View>
         {width > 375 && (
-          <Image 
-            source={require('@/assets/images/rightArrow.png')} 
+          <Image
+            source={require('@/assets/images/rightArrow.png')}
             style={isRTL ? styles.flippedArrow : {}}
           />
         )}
@@ -56,8 +54,8 @@ const ProfileDetail = ({
 
 const styles = StyleSheet.create({
   flippedArrow: {
-    transform: [{ scaleX: -1 }]
-  }
+    transform: [{ scaleX: -1 }],
+  },
 });
 
 export default ProfileDetail;

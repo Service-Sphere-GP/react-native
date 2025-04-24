@@ -16,7 +16,6 @@ import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface Service {
   service_name: string;
@@ -34,7 +33,6 @@ const MyServices = () => {
   const router = useRouter();
   const { t } = useTranslation(['services', 'common']);
   const { isRTL } = useLanguage();
-  const textStyle = getTextStyle(isRTL);
 
   const { width: screenWidth } = useWindowDimensions();
   const [services, setServices] = useState<Service[] | null>(null);
@@ -97,25 +95,29 @@ const MyServices = () => {
                       resizeMode="cover"
                     />
                     <View className="flex-1">
-                      <View className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <Text 
-                          className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
-                          style={textStyle.style}
+                      <View
+                        className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
+                        <Text
+                          className={`text-[#030B19] font-bold text-sm xs:text-base`}
                         >
                           {item.service_name}
                         </Text>
                         <Ionicons
-                          name={isRTL ? "chevron-back" : "chevron-forward"}
+                          name={isRTL ? 'chevron-back' : 'chevron-forward'}
                           size={20}
                           color="#030B19"
                         />
                       </View>
 
-                      <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Text 
-                            className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
-                            style={textStyle.style}
+                      <View
+                        className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
+                        <View
+                          className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                        >
+                          <Text
+                            className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'}`}
                           >
                             {item.rating_average.toFixed(2)}
                           </Text>
@@ -125,9 +127,8 @@ const MyServices = () => {
                             imageSize={10}
                           />
                         </View>
-                        <Text 
-                          className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
-                          style={textStyle.style}
+                        <Text
+                          className={`text-[#030B19] font-semibold text-xs xs:text-sm`}
                         >
                           {item.base_price} {t('services:currency')}
                         </Text>
@@ -140,10 +141,7 @@ const MyServices = () => {
             </View>
           ) : (
             <View className="flex-1 items-center justify-center">
-              <Text 
-                className={`text-[#666B73] font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`text-[#666B73] font-Roboto-Medium text-lg`}>
                 {t('services:noServicesFound')}
               </Text>
             </View>
@@ -155,10 +153,7 @@ const MyServices = () => {
               className={` items-center ${isRTL ? 'justify-start flex-row-reverse' : 'justify-end flex-row'}`}
               onPress={() => router.push('/profile/new-service')}
             >
-              <Text 
-                className={`text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
                 {t('services:addNewService')}
               </Text>
             </TouchableOpacity>

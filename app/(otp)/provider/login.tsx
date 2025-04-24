@@ -5,20 +5,18 @@ import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
 import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
-import ToastService from '../../../constants/ToastService';
 import { useRouter } from 'expo-router';
+import ToastService from '@/constants/ToastService';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
 
 const Login = () => {
-  const router = useRouter();
   const { t } = useTranslation(['auth', 'common']);
   const { isRTL } = useLanguage();
-  const textStyle = getTextStyle(isRTL);
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const [errorMessages, setErrorMessages] = useState({
     email: '',
@@ -34,11 +32,11 @@ const Login = () => {
     };
 
     if (!user.email) {
-      errors.email = 'Email is required';
+      errors.email = t('auth:emailRequired');
     }
 
     if (!user.password) {
-      errors.password = 'Password is required';
+      errors.password = t('auth:passwordRequired');
     }
 
     return errors;
@@ -57,41 +55,30 @@ const Login = () => {
       return;
     }
 
-    login(email, password)
-      .then((success) => {
-        if (success) {
-          ToastService.success('Login Successful', 'Welcome back!');
-          router.push('/services');
-        }
-      })
-      .catch((err) => {
-        console.error('Login error:', err);
-        ToastService.error(
-          'Login Failed',
-          'Please check your credentials and try again',
-        );
-      });
+    try {
+      const success = await login(email, password);
+
+      if (success) {
+        ToastService.success(t('auth:loginSuccess'), t('auth:welcomeBack'));
+        router.push('/services');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      ToastService.error(
+        'Login Failed',
+        'Please check your credentials and try again',
+      );
+    }
   };
 
-  const containerStyle = [
-    styles.container,
-    isRTL && styles.containerRTL
-  ];
+  const containerStyle = [styles.container, isRTL && styles.containerRTL];
 
   return (
     <ScrollView className="bg-white h-full" style={containerStyle}>
       <Header />
       <View className="px-3">
-        <Text 
-          className={`text-3xl font-medium mt-3 ${textStyle.className}`}
-          style={textStyle.style}
-        >
-          {t('auth:login')}
-        </Text>
-        <Text
-          className={`text-black/70 text-base my-5 font-light ${textStyle.className}`}
-          style={{...textStyle.style, lineHeight: 20}}
-        >
+        <Text className="text-3xl font-medium mt-3">{t('auth:login')}</Text>
+        <Text className="text-black text-base my-5">
           {t('auth:welcomeBack')}
         </Text>
         <Input
@@ -114,15 +101,9 @@ const Login = () => {
           errorMessage={errorMessages.password ? errorMessages.password : ''}
           isRTL={isRTL}
         />
-        <Text 
-          className={`text-black/70 text-base mt-2 font-light ${textStyle.className}`}
-          style={textStyle.style}
-        >
+        <Text className={`text-black text-base mt-2 font-medium`}>
           {t('auth:forgotPassword')}{' '}
-          <Text 
-            className="text-[#147E93] underline font-medium"
-            style={textStyle.style}
-          >
+          <Text className="text-[#147E93] underline">
             {t('auth:resetPassword')}
           </Text>
         </Text>
@@ -135,16 +116,14 @@ const Login = () => {
           disabled={loading}
         />
 
-        <View className={`flex-row items-center justify-center my-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <Text 
-            className={`text-black/70 text-base font-light ${textStyle.className}`}
-            style={textStyle.style}
-          >
+        <View
+          className={`flex-row items-center justify-center my-5 ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
+          <Text className={`text-black/70 text-base font-medium`}>
             {t('auth:noAccount')}{' '}
             <Link
               href="/(otp)/provider/register"
               className="text-[#147E93] underline"
-              style={{...textStyle.style, fontWeight: '500'}}
             >
               {t('auth:register')}
             </Link>
@@ -163,7 +142,7 @@ const styles = StyleSheet.create({
   containerRTL: {
     textAlign: 'right',
     direction: 'rtl',
-  }
+  },
 });
 
 export default Login;
