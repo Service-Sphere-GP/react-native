@@ -4,7 +4,7 @@
     "welcome": "Welcome!",
     "loading": "Loading...",
     "language": "Language",
-    "languageDescription": "Choose your preferred language from the options below. The app will automatically adjust its content and layout according to your selection.",
+    "languageDescription": "Choose your preferred language.",
     "languageNote": "Note: Changing the language may require a restart to fully apply all changes.",
     "preview": "Preview",
     "edit": "Edit",
@@ -46,7 +46,6 @@
     "validationError": "Validation Error",
     "loginFailed": "Login Failed",
     "checkCredentials": "Please check your credentials and try again",
-    
     "enterFirstName": "Enter your first name",
     "enterLastName": "Enter your last name",
     "reEnterPassword": "Re-enter your password",
@@ -54,14 +53,12 @@
     "agreeToThe": "I agree to the",
     "privacyPolicy": "Privacy policy",
     "continue": "Continue",
-    
     "businessName": "Business Name",
     "businessAddress": "Business Address",
     "taxId": "Tax ID",
     "enterBusinessName": "Enter your business name",
     "enterBusinessAddress": "Enter your business address",
     "enterTaxId": "Enter your tax ID",
-    
     "confirmCode": "Confirm Code",
     "enterCodeSentTo": "Please enter the verification code sent to",
     "incorrectCode": "The verification code you entered is incorrect.",
@@ -82,7 +79,7 @@
     "completionRate": "Completion Rate",
     "feedbackInsights": "Feedback Insights",
     "feedbackExample": "\"Try to communicate more clearly and provide detailed responses to enhance collaboration\"",
-    "quickChats": "Quick Chats", 
+    "quickChats": "Quick Chats",
     "completedSessions": "Completed Sessions",
     "openedSessions": "Opened Sessions"
   },
@@ -99,7 +96,6 @@
     "serviceProvider": "Service Provider",
     "reviews": "Reviews",
     "currency": "EGP",
-    
     "ratingsAndReviews": "Ratings & Reviews",
     "overallRating": "Overall Rating",
     "howToWriteReview": "How to write a good review",
@@ -114,7 +110,6 @@
     "reportReview": "Report review",
     "bookService": "Book Service",
     "editYourService": "Edit Your Service",
-    
     "editService": "Edit Service",
     "enterServiceName": "Enter service name",
     "enterServiceDescription": "Enter service description",
@@ -153,19 +148,16 @@
     "settings": "Settings",
     "editProfile": "Edit Profile",
     "logout": "Log out",
-    "loggingOut": "logging out will clear your session",
     "helpSupport": "Help & Support",
     "aboutApp": "About App",
     "adminPanel": "Admin Panel",
     "adminAccess": "Access administration dashboard",
     "deleteAccount": "Delete Account",
     "joined": "Joined",
-    
     "notifications": "Notifications",
     "noNotifications": "There are no notifications",
     "markAllRead": "Mark all as read",
     "clearAllNotifications": "Clear All Notifications",
-    
     "reviewsOf": "Reviews of {{name}}",
     "noReviewsYet": "No reviews yet",
     "reviewsLoading": "Loading reviews...",
