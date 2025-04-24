@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface MessageInputProps {
   onSend: (message: string) => void;
@@ -8,6 +11,9 @@ interface MessageInputProps {
 
 const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
   const [text, setText] = useState('');
+  const { t } = useTranslation(['chat']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   const handleSend = () => {
     onSend(text);
@@ -16,9 +22,9 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
 
   return (
     <View className="flex-row items-center bg-white px-4 py-3 border-t border-gray-300">
-      <View className="flex-row flex-1 items-center bg-[#E9ECEF] rounded-full px-4 py-2">
+      <View className={`flex-1 items-center bg-[#E9ECEF] rounded-full px-4 py-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
         <TextInput
-          placeholder="Type a message"
+          placeholder={t('chat:typeMessage')}
           placeholderTextColor="#6C757D"
           className="flex-1 text-[#030B19] text-sm outline-none"
           value={text}
@@ -27,6 +33,11 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
             if (e.nativeEvent.key === 'Enter') {
               handleSend();
             }
+          }}
+          style={{
+            textAlign: isRTL ? 'right' : 'left',
+            writingDirection: isRTL ? 'rtl' : 'ltr',
+            ...textStyle.style
           }}
         />
         <TouchableOpacity>

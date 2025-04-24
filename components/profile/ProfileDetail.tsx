@@ -24,7 +24,7 @@ const ProfileDetail = ({
   return (
     <TouchableOpacity onPress={onPress}>
       <View className={`flex-row justify-between p-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <View className={`flex-row gap-4 width-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <View className={`flex-row gap-4 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
           <Image source={image} style={{ width: 40, height: 40 }} />
           <View className={`justify-center max-w-[90%] ${isRTL ? 'items-end' : 'items-start'}`}>
             <Text
