@@ -11,7 +11,6 @@ import Toast from 'react-native-toast-message';
 import { LanguageProvider, useLanguage } from '../src/i18n/LanguageContext';
 // Import i18n instance to initialize it
 import '../src/i18n/i18n';
-import { NotificationProvider } from '../constants/NotificationContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -56,7 +55,6 @@ function RootLayoutWithoutContext() {
   }
 
   return (
-    <NotificationProvider>
       <ThemeProvider value={DefaultTheme}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(screens)" options={{ headerShown: false }} />
@@ -66,7 +64,6 @@ function RootLayoutWithoutContext() {
         <StatusBar style="auto" />
         <Toast />
       </ThemeProvider>
-    </NotificationProvider>
   );
 }
 

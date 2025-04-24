@@ -195,7 +195,10 @@ const ServiceDetailsPage = () => {
                 className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base ${textStyle.className}`}
                 style={textStyle.style}
               >
-                {service?.status}
+                {service?.status === 'active'
+                  ? t('services:active')
+                    : t('services:inactive')}
+                  
               </Text>
             </View>
             <ProfileHeader

@@ -125,7 +125,10 @@
     "inactive": "Inactive",
     "updateService": "Update service",
     "permissionDenied": "You've refused to allow this app to access your photos!",
-    "addImage": "Add image"
+    "addImage": "Add image",
+    "myServices": "My Services",
+    "addNewService": "Add new service",
+    "noServicesFound": "No services found"
   },
   "bookings": {
     "title": "Bookings",
