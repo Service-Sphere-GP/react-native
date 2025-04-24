@@ -34,6 +34,7 @@ const API_ENDPOINTS = {
   GET_SERVICE_FEEDBACKS: '/feedback/service/:id',
   GET_CATEGORIES: '/categories',
   UPDATE_SERVICE: '/services/:id',
+  ADVICE: '/advice/me'
   // Add more endpoints as needed
 };
 
