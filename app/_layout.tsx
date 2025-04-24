@@ -19,29 +19,30 @@ SplashScreen.preventAutoHideAsync();
 function RootLayoutWithoutContext() {
   const { language, isRTL } = useLanguage();
   
-  // Load appropriate font set based on language
+  // Load web fonts using Google Fonts CDN
   const [loaded] = useFonts({
-    // English/Default fonts
-    'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-    'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
-    'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-    'Roboto-Light': require('../assets/fonts/Roboto-Light.ttf'),
-    'Roboto-Thin': require('../assets/fonts/Roboto-Thin.ttf'),
-    'Roboto-SemiBold': require('../assets/fonts/Roboto-SemiBold.ttf'),
-    'Roboto-ExtraBold': require('../assets/fonts/Roboto-ExtraBold.ttf'),
-    'Roboto-ExtraLight': require('../assets/fonts/Roboto-ExtraLight.ttf'),
-    'Pacifico-Regular': require('../assets/fonts/Pacifico-Regular.ttf'),
+    // Using web fonts instead of local files
+    'Roboto-Regular': 'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
+    'Roboto-Medium': 'https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap',
+    'Roboto-Bold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap',
+    'Roboto-Light': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap',
+    'Roboto-Thin': 'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap',
+    'Roboto-SemiBold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap',
+    'Roboto-ExtraBold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@800&display=swap', 
+    'Roboto-ExtraLight': 'https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap',
+    'Pacifico-Regular': 'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
     
-    // Arabic fonts
-    'Montserrat-Arabic-Bold-700': require('../assets/fonts/Montserrat-Arabic Bold 700.otf'),
-    'Montserrat-Arabic-Medium-500': require('../assets/fonts/Montserrat-Arabic Medium 500.otf'),
-    'Montserrat-Arabic-Regular-400': require('../assets/fonts/Montserrat-Arabic.otf'),
-    'Montserrat-Arabic-Light-300': require('../assets/fonts/Montserrat-Arabic Light 300.otf'),
-    'Montserrat-Arabic-Thin-250': require('../assets/fonts/Montserrat-Arabic Thin 250.otf'),
-    'Montserrat-Arabic-SemiBold-600': require('../assets/fonts/Montserrat-Arabic SemiBold 600.otf'),
-    'Montserrat-Arabic-ExtraBold-800': require('../assets/fonts/Montserrat-Arabic ExtraBold 800.otf'),
-    'Montserrat-Arabic-ExtraLight-275': require('../assets/fonts/Montserrat-Arabic ExtraLight 275.otf'),
-    'Montserrat-Arabic-Black-900': require('../assets/fonts/Montserrat-Arabic Black 900.otf'),
+    // Arabic fonts - using Montserrat from CDN
+    'Montserrat-Arabic': 'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+    'Montserrat-Arabic-Bold-700': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap',
+    'Montserrat-Arabic-Medium-500': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap',
+    'Montserrat-Arabic-Regular-400': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap',
+    'Montserrat-Arabic-Light-300': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap',
+    'Montserrat-Arabic-Thin-250': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
+    'Montserrat-Arabic-SemiBold-600': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap', 
+    'Montserrat-Arabic-ExtraBold-800': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap',
+    'Montserrat-Arabic-ExtraLight-275': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
+    'Montserrat-Arabic-Black-900': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap',
   });
 
   useEffect(() => {
