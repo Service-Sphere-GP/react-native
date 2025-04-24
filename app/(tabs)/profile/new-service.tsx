@@ -200,10 +200,7 @@ const NewService = () => {
       {loading ? (
         <View className="flex items-center justify-center h-screen">
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text 
-            className={`mt-2 text-gray-600 ${textStyle.className}`}
-            style={textStyle.style}
-          >
+          <Text className={`mt-2 text-gray-600 ${textStyle.className}`}>
             {t('common:loading')}
           </Text>
         </View>
@@ -212,16 +209,12 @@ const NewService = () => {
           <View className="gap-4">
             <Header title={t('services:newService')} showBackButton={true} />
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:name')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServiceName')}
-                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full my-2 ${textStyle.className}`}
                 onChangeText={(text) =>
                   setService({ ...service, service_name: text })
                 }
@@ -229,11 +222,10 @@ const NewService = () => {
             </View>
 
             <View>
-              <View className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Text 
-                  className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                  style={textStyle.style}
-                >
+              <View
+                className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                <Text className={`font-semibold text-lg ${textStyle.className}`}>
                   {t('services:images')}
                 </Text>
                 <TouchableOpacity
@@ -251,7 +243,10 @@ const NewService = () => {
                 className="mt-3"
               >
                 {images.map((image, index) => (
-                  <View key={index} className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}>
+                  <View
+                    key={index}
+                    className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}
+                  >
                     <Image
                       source={{ uri: image }}
                       style={{ width: 130, height: 108, borderRadius: 10 }}
@@ -268,16 +263,12 @@ const NewService = () => {
               </ScrollView>
             </View>
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:description')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServiceDescription')}
-                className={`border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-5 h-16 w-full my-2 ${textStyle.className}`}
                 multiline={true}
                 onChangeText={(text) =>
                   setService({ ...service, description: text })
@@ -286,10 +277,7 @@ const NewService = () => {
             </View>
 
             <View style={{ zIndex: 1000 }}>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:category')}
               </Text>
               <DropDownPicker
@@ -305,30 +293,25 @@ const NewService = () => {
                 style={{
                   backgroundColor: '#fff',
                   borderColor: '#ccc',
-                  marginBottom: 12,
+                  marginVertical: 8,
                 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#fff',
                   borderColor: '#ccc',
                 }}
                 textStyle={{
-                  ...textStyle.style,
-                  textAlign: isRTL ? 'right' : 'left'
+                  textAlign: isRTL ? 'right' : 'left',
                 }}
               />
             </View>
 
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:price')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServicePrice')}
-                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full my-2 ${textStyle.className}`}
                 onChangeText={(text) =>
                   setService({ ...service, base_price: text })
                 }
@@ -336,13 +319,10 @@ const NewService = () => {
             </View>
           </View>
           <TouchableOpacity
-            className={`flex-row items-center ${isRTL ? 'justify-start' : 'justify-end'}`}
+            className="flex-row items-center w-fit mt-20"
             onPress={addNewServiceHandler}
           >
-            <Text 
-              className={`text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
-              style={textStyle.style}
-            >
+            <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
               {t('services:addNewService')}
             </Text>
           </TouchableOpacity>

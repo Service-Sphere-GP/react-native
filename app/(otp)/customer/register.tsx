@@ -9,15 +9,11 @@ import Input from '@/components/login/Input';
 import { Customer } from '@/types/Customer';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
 
 const Register = () => {
   const [checked, setChecked] = useState(false);
   const { t } = useTranslation(['auth', 'validation']);
   const { isRTL } = useLanguage();
-
-  // Get text styles with appropriate font family and alignment
-  const textStyle = getTextStyle(isRTL);
 
   const [customer, setCustomer] = useState({
     email: '',
@@ -55,13 +51,17 @@ const Register = () => {
     }
 
     if (!customer.confirmPassword) {
-      errors.confirmPassword = t('validation:required', { field: t('auth:confirmPassword') });
+      errors.confirmPassword = t('validation:required', {
+        field: t('auth:confirmPassword'),
+      });
     } else if (customer.password !== customer.confirmPassword) {
       errors.confirmPassword = t('validation:passwordMatch');
     }
 
     if (!customer.firstName) {
-      errors.firstName = t('validation:required', { field: t('auth:firstName') });
+      errors.firstName = t('validation:required', {
+        field: t('auth:firstName'),
+      });
     }
 
     if (!customer.lastName) {
@@ -101,12 +101,7 @@ const Register = () => {
     <ScrollView className="bg-white h-full">
       <Header />
       <View className={`px-3 ${isRTL ? 'items-end' : 'items-start'}`}>
-        <Text 
-          className={`text-3xl mt-3 font-medium ${textStyle.className}`}
-          style={textStyle.style}
-        >
-          {t('auth:register')}
-        </Text>
+        <Text className="text-3xl mt-3 font-medium">{t('auth:register')}</Text>
         <View className="flex flex-col items-center mt-5 w-full">
           <Input
             label={t('auth:firstName')}
@@ -171,31 +166,24 @@ const Register = () => {
             isRTL={isRTL}
           />
         </View>
-        <View className={`items-center ${isRTL ? 'flex-row-reverse' : 'justify-start flex-row'} w-full`}>
+        <View
+          className={`items-center ${isRTL ? 'flex-row-reverse' : 'justify-start flex-row'} w-full`}
+        >
           <CheckBox
             checked={checked}
             containerStyle={{ marginLeft: 0, marginRight: 0 }}
             onPress={() => setChecked(!checked)}
           />
-          <Text 
-            className="text-black/70 text-base font-light"
-            style={textStyle.style}
-          >
+          <Text className="text-black text-base font-medium">
             {t('auth:agreeToThe')}{' '}
-            <Text 
-              className="text-[#147E93] underline font-medium"
-              style={textStyle.style}
-            >
+            <Text className="text-[#147E93] underline">
               {t('auth:privacyPolicy')}
             </Text>
           </Text>
         </View>
 
         {error && (
-          <Text 
-            className={`text-[#FF5757] text-center text-base mt-3 -mb-3 w-full font-medium ${textStyle.className}`}
-            style={textStyle.style}
-          >
+          <Text className="text-[#FF5757] text-center text-base mt-3 -mb-3 w-full font-medium">
             {error}
           </Text>
         )}
@@ -208,16 +196,12 @@ const Register = () => {
           disabled={loading || !checked}
         />
 
-        <View className={`flex-row items-center justify-center my-5 w-full ${textStyle.className}`}>
-          <Text 
-            className="text-black/70 text-base font-light"
-            style={textStyle.style}
-          >
+        <View className="flex-row items-center justify-center my-5 w-full">
+          <Text className="text-black text-base font-medium">
             {t('auth:hasAccount')}{' '}
             <Link
               href="/(otp)/customer/login"
-              className="text-[#147E93] underline font-medium"
-              style={textStyle.style}
+              className="text-[#147E93] underline"
             >
               {t('auth:login')}
             </Link>

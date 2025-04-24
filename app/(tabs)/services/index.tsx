@@ -74,20 +74,11 @@ const AllServices = () => {
       {loading ? (
         <View className="flex items-center justify-center h-screen">
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text 
-            className={`mt-2 text-gray-600 ${textStyle.className}`}
-            style={textStyle.style}
-          >
-            {t('common:loading')}
-          </Text>
         </View>
       ) : (
         <SafeAreaView className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <Header
-            title={t('services:allServices')}
-            showBackButton={false}
-          />
+          <Header title={t('services:allServices')} showBackButton={false} />
 
           {/* Search & Filter */}
           <View className="px-4 py-2 flex-row items-center justify-between mb-2">
@@ -110,7 +101,7 @@ const AllServices = () => {
                     borderWidth: 0,
                     textAlign: isRTL ? 'right' : 'left',
                     writingDirection: isRTL ? 'rtl' : 'ltr',
-                    fontFamily: textStyle.style.fontFamily
+                    fontFamily: textStyle.style.fontFamily,
                   }}
                 />
               </SafeAreaView>
@@ -137,31 +128,34 @@ const AllServices = () => {
                     resizeMode="cover"
                   />
                   <View className="flex-1">
-                    <Text 
+                    <Text
                       className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
-                      style={textStyle.style}
                     >
                       {item.service_name}
                     </Text>
-                    <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <Text 
+                    <View
+                      className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <Text
                         className={`text-gray-600 text-xs xs:text-sm flex-1 ${isRTL ? 'pl-2' : 'pr-2'} ${textStyle.className}`}
-                        style={textStyle.style}
                       >
                         {item.service_provider.full_name}
                       </Text>
                       <Ionicons
-                        name={isRTL ? "chevron-back" : "chevron-forward"}
+                        name={isRTL ? 'chevron-back' : 'chevron-forward'}
                         size={20}
                         color="#030B19"
                       />
                     </View>
 
-                    <View className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <Text 
+                    <View
+                      className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <View
+                        className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
+                        <Text
                           className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
-                          style={textStyle.style}
                         >
                           {item.rating_average.toFixed(2)}
                         </Text>
@@ -171,9 +165,8 @@ const AllServices = () => {
                           imageSize={10}
                         />
                       </View>
-                      <Text 
+                      <Text
                         className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
-                        style={textStyle.style}
                       >
                         {item.base_price} {t('services:currency')}
                       </Text>

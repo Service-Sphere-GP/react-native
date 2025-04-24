@@ -44,7 +44,6 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
         />
         <Text 
           className={`${isRTL ? 'mr-2' : 'ml-2'} text-lg font-Roboto-Medium text-[#030B19]`}
-          style={textStyle.style}
         >
           {receiverName}
         </Text>

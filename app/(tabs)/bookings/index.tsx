@@ -165,8 +165,10 @@ const Booking = () => {
             </View>
           </View>
 
-          <View className="items-end flex-col-reverse gap-1">
-            <Text className="text-xs font-Roboto text-gray-900">
+          <View
+            className={`flex-col-reverse ${isRTL ? 'items-start' : 'items-end'} gap-1`}
+          >
+            <Text className="text-xs text-gray-900">
               {servicePrice} {t('services:currency')}
             </Text>
             {role === 'service_provider' && bookingStatus === 'pending' ? (

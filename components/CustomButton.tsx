@@ -1,6 +1,11 @@
-import { Text, TouchableOpacity, ViewStyle, TextStyle, View } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+  View,
+} from 'react-native';
 import { useLanguage } from '@/src/i18n/LanguageContext';
-import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface CustomButtonProps {
   onPress: () => void;
@@ -26,8 +31,7 @@ const CustomButton = ({
   iconRight,
 }: CustomButtonProps) => {
   const { isRTL } = useLanguage();
-  const textStyleWithFont = getTextStyle(isRTL);
-  
+
   // Swap icons if RTL
   const leftIcon = isRTL ? iconRight : iconLeft;
   const rightIcon = isRTL ? iconLeft : iconRight;
@@ -40,15 +44,16 @@ const CustomButton = ({
       style={style}
       disabled={disabled}
     >
-      <View className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-        {leftIcon && <View className={`${isRTL ? 'ml-2' : 'mr-2'}`}>{leftIcon}</View>}
-        <Text 
-          className={`font-semibold ${textStyles} ${textStyleWithFont.className}`} 
-          style={[textStyleWithFont.style, textStyle]}
-        >
-          {title}
-        </Text>
-        {rightIcon && <View className={`${isRTL ? 'mr-2' : 'ml-2'}`}>{rightIcon}</View>}
+      <View
+        className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+      >
+        {leftIcon && (
+          <View className={`${isRTL ? 'ml-2' : 'mr-2'}`}>{leftIcon}</View>
+        )}
+        <Text className={`font-semibold ${textStyles}`}>{title}</Text>
+        {rightIcon && (
+          <View className={`${isRTL ? 'mr-2' : 'ml-2'}`}>{rightIcon}</View>
+        )}
       </View>
     </TouchableOpacity>
   );

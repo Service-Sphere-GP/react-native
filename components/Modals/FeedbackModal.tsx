@@ -173,9 +173,7 @@ const FeedbackModal = ({ isVisible, onClose, booking }: FeedbackModalProps) => {
             }}
           />
 
-          <View
-            className={`flex-row justify-between w-full mt-6 space-x-4`}
-          >
+          <View className="flex-row justify-between w-full mt-6 space-x-4">
             <TouchableOpacity
               className="px-4 py-2 rounded-lg bg-gray-200 flex-1 items-center"
               onPress={onClose}

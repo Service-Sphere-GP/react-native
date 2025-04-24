@@ -1,4 +1,10 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { useState, useRef } from 'react';
 import { getTextStyle } from '@/src/utils/fontUtils';
 import { useLanguage } from '@/src/i18n/LanguageContext';
@@ -47,12 +53,7 @@ const Input = ({
 
   return (
     <View className="w-full mt-2">
-      <Text 
-        className={`text-[#363E4C] text-lg ${textStyle.className}`}
-        style={textStyle.style}
-      >
-        {label}
-      </Text>
+      <Text className={`text-black text-lg py-2 font-medium`}>{label}</Text>
       <View className="relative">
         <TextInput
           className={`p-4 border-2 ${error && !isFocusedRef.current ? 'border-[#FF5757]' : 'border-[#EDEDED]'} rounded-lg focus:outline-[#147E93] placeholder:text-[#363E4C]`}
@@ -64,29 +65,30 @@ const Input = ({
           onBlur={handleBlur}
           style={[
             isRightToLeft ? styles.rtlInput : styles.ltrInput,
-            textStyle.style,
-            { 
+            {
               paddingRight: isPassword && !isRightToLeft ? 50 : 16,
-              paddingLeft: isPassword && isRightToLeft ? 50 : 16 
-            }
+              paddingLeft: isPassword && isRightToLeft ? 50 : 16,
+            },
           ]}
         />
         {isPassword && (
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={togglePasswordVisibility}
             className={`absolute ${isRightToLeft ? 'left-4' : 'right-4'} top-0 bottom-0 justify-center`}
           >
-            <Ionicons 
-              name={passwordVisible ? "eye-off" : "eye"} 
-              size={22} 
-              color="#676B73" 
+            <Ionicons
+              name={passwordVisible ? 'eye-off' : 'eye'}
+              size={22}
+              color="#676B73"
             />
           </TouchableOpacity>
         )}
       </View>
       {error && !isFocusedRef.current && (
-        <View className={`flex-row items-center mt-2 ${isRightToLeft ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
-          <Text 
+        <View
+          className={`flex-row items-center mt-2 ${isRightToLeft ? 'flex-row-reverse justify-end' : 'justify-start'}`}
+        >
+          <Text
             className={`text-[#FF5757] text-base ${textStyle.className}`}
             style={textStyle.style}
           >
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
   rtlInput: {
     textAlign: 'right',
     writingDirection: 'rtl',
-  }
+  },
 });
 
 export default Input;

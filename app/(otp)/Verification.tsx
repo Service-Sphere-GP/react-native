@@ -120,7 +120,6 @@ const Verification = () => {
 
         <Text 
           className={`text-center mt-8 text-2xl text-[#030B19] font-semibold`}
-          style={textStyle.style}
         >
           {t('auth:verification')}
         </Text>
@@ -128,12 +127,10 @@ const Verification = () => {
         <View className="mt-6 px-6">
           <Text 
             className={`text-center text-base text-[#363E4C] `}
-            style={textStyle.style}
           >
             {t('auth:enterCodeSentTo')} {'\n'}
             <Text 
               className={`text-base text-[#3A3A3A] font-bold`}
-              style={textStyle.style}
             >
               {email}
             </Text>
@@ -153,7 +150,6 @@ const Verification = () => {
             />
             <Text 
               className={`text-red-500 text-sm`}
-              style={textStyle.style}
             >
               {t('auth:incorrectCode')}{'\n'}{t('auth:tryAgainOrResend')}
             </Text>
@@ -163,15 +159,11 @@ const Verification = () => {
         <View className="mt-4">
           <Text 
             className={`text-center text-sm `}
-            style={textStyle.style}
           >
-            <Text className={`text-[#3A3A3A]`} style={textStyle.style}>
-              {t('auth:didntReceiveCode')}{' '}
-            </Text>
+            <Text className={`text-[#3A3A3A]`}>{t('auth:didntReceiveCode')}{' '}</Text>
             <Text 
               className={`text-[#147E93] underline`}
               onPress={handleResend}
-              style={textStyle.style}
             >
               {t('auth:resendCode')}
             </Text>

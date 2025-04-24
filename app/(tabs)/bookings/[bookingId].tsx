@@ -317,13 +317,11 @@ const ChatRoomScreen = () => {
       >
         {loading ? (
           <View className="flex-1 items-center justify-center">
-            <Text style={textStyle.style}>{t('common:loading')}</Text>
+            <Text>{t('common:loading')}</Text>
           </View>
         ) : messages.length === 0 ? (
           <View className="flex-1 items-center justify-center">
-            <Text className="text-gray-500" style={textStyle.style}>
-              {t('chat:noMessages')}
-            </Text>
+            <Text className="text-gray-500">{t('chat:noMessages')}</Text>
           </View>
         ) : (
           messages.map((message) => (
@@ -336,10 +334,7 @@ const ChatRoomScreen = () => {
                 <View
                   className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  <Text
-                    className="text-sm text-[#6C757D]"
-                    style={textStyle.style}
-                  >
+                  <Text className="text-sm text-[#6C757D]">
                     {message.sender}
                   </Text>
                 </View>
@@ -374,7 +369,6 @@ const ChatRoomScreen = () => {
                   className={`text-xs ${
                     message.isMe ? 'text-[#6C757D] mb-6' : 'text-[#6C757D] mb-2'
                   }`}
-                  style={textStyle.style}
                 >
                   {message.time}
                 </Text>
