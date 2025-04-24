@@ -138,7 +138,13 @@
     "pending": "قيد الانتظار",
     "confirmed": "مؤكد",
     "rejected": "مرفوض",
-    "completed": "مكتمل"
+    "completed": "مكتمل",
+    "serviceProvider": "مقدم الخدمة",
+    "service": "الخدمة",
+    "ratingRequired": "التقييم مطلوب",
+    "pleaseSelectRating": "يرجى اختيار تقييم",
+    "feedbackSubmitted": "تم إرسال التعليق بنجاح",
+    "thanksForFeedback": "شكراً لتعليقك!"
   },
   "profile": {
     "title": "الملف الشخصي",

@@ -6,8 +6,6 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Modal,
-  TextInput,
 } from 'react-native';
 import { router } from 'expo-router';
 import Header from '@/components/Header';
@@ -44,12 +42,6 @@ const Booking = () => {
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<string | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<BookingItem>(
-    {} as BookingItem,
-  );
-  const [feedback, setFeedback] = useState('');
-  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     // Fetch bookings data from the API
@@ -124,68 +116,6 @@ const Booking = () => {
     }
   };
 
-  const handleCloseFeedbackModal = () => {
-    setModalVisible(false);
-    setSelectedBooking({} as BookingItem);
-    setFeedback('');
-    setRating(0);
-  };
-
-  const handleSubmitFeedback = async () => {
-    // Here you would implement the API call to submit feedback
-    const changeStatusResponse = await ApiService.patch(
-      API_ENDPOINTS.CHANGE_BOOKING_STATUS.replace(':id', selectedBooking._id),
-      {
-        status: 'completed',
-      },
-    );
-
-    console.log('changeStatusResponse', changeStatusResponse);
-
-    if (
-      changeStatusResponse.status === 200 ||
-      changeStatusResponse.status === 201
-    ) {
-      const feedbackResponse = await ApiService.post(
-        API_ENDPOINTS.SEND_FEEDBACK,
-        {
-          rating,
-          message: feedback,
-          service: selectedBooking.service._id,
-          booking: selectedBooking._id,
-        },
-      );
-
-      if (feedbackResponse.status === 200 || feedbackResponse.status === 201) {
-        console.log(feedbackResponse.data);
-        console.log('Feedback submitted successfully');
-      } else {
-        console.error('Failed to submit feedback');
-      }
-    } else {
-      console.error('Failed to submit feedback');
-    }
-    // For now, just close the modal
-    handleCloseFeedbackModal();
-  };
-
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <TouchableOpacity key={i} onPress={() => setRating(i)}>
-          <Ionicons
-            name={i <= rating ? 'star' : 'star-outline'}
-            size={30}
-            color={i <= rating ? '#FFD700' : '#C4C4C4'}
-            style={{ marginHorizontal: 5 }}
-          />
-        </TouchableOpacity>,
-      );
-    }
-    return stars;
-  };
-
   const renderBookingItem = ({
     item,
     index,
@@ -203,11 +133,17 @@ const Booking = () => {
     const bookingStatus = item.status;
 
     return (
-      <TouchableOpacity onPress={() => router.push(`/bookings/${item._id}`)}>
+      <TouchableOpacity
+        onPress={() => router.push(`/bookings/${item._id}`)}
+        disabled={bookingStatus === 'pending' || bookingStatus === 'cancelled'}
+      >
+        {/* Booking Item */}
         <View
           className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
-          <View className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <View
+            className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
             <Image
               source={{
                 uri: role === 'customer' ? providerImage : customerImage,
@@ -216,10 +152,16 @@ const Booking = () => {
               resizeMode="cover"
             />
             <View className={`${isRTL ? 'mr-3 items-end' : 'ml-3'}`}>
-              <Text className={`text-sm font-Roboto-Medium text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <Text
+                className={`text-sm font-Roboto-Medium text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}
+              >
                 {role === 'customer' ? `${providerName}` : `${customerName}`}
               </Text>
-              <Text className={`text-sm text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`}>{serviceName}</Text>
+              <Text
+                className={`text-sm text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`}
+              >
+                {serviceName}
+              </Text>
             </View>
           </View>
 
@@ -228,7 +170,9 @@ const Booking = () => {
               {servicePrice} {t('services:currency')}
             </Text>
             {role === 'service_provider' && bookingStatus === 'pending' ? (
-              <View className={`flex-row gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <View
+                className={`flex-row gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     confirmBookingHandler(item);
@@ -299,10 +243,7 @@ const Booking = () => {
       ) : (
         <View className="flex-1 bg-gray-100">
           {/* Header */}
-          <Header
-            title={t('bookings:title')}
-            showBackButton={false}
-          />
+          <Header title={t('bookings:title')} showBackButton={false} />
 
           {/* Bookings List */}
           <View
@@ -331,64 +272,6 @@ const Booking = () => {
           ) : null}
         </View>
       )}
-
-      {/* Feedback Modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleCloseFeedbackModal}
-      >
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="w-80 bg-white rounded-2xl p-6 shadow-lg">
-            <Text className={`text-xl text-center font-bold text-[#147E93] mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-              {t('bookings:leaveFeedback')}
-            </Text>
-
-            <Text className={`text-base mb-3 text-gray-700 self-start ${isRTL ? 'self-end text-right' : 'self-start text-left'}`}>
-              {t('bookings:rateService')}
-            </Text>
-
-            <View className={`flex-row justify-center mb-5 space-x-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              {renderStars()}
-            </View>
-
-            <TextInput
-              className={`w-full border border-gray-300 rounded-lg p-3 h-24 ${isRTL ? 'text-right' : 'text-left'}`}
-              placeholder={t('bookings:tellExperience')}
-              multiline
-              textAlignVertical="top"
-              value={feedback}
-              onChangeText={setFeedback}
-              style={{
-                textAlign: isRTL ? 'right' : 'left',
-                writingDirection: isRTL ? 'rtl' : 'ltr',
-              }}
-            />
-
-            <View className={`flex-row justify-between w-full mt-6 space-x-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <TouchableOpacity
-                className="px-4 py-2 rounded-lg bg-gray-200 flex-1 items-center"
-                onPress={handleCloseFeedbackModal}
-              >
-                <Text className="text-gray-700 font-semibold">
-                  {t('bookings:cancel')}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                className="px-4 py-2 rounded-lg bg-[#147E93] flex-1 items-center disabled:opacity-50"
-                onPress={handleSubmitFeedback}
-                disabled={rating === 0}
-              >
-                <Text className="text-white font-semibold">
-                  {t('bookings:submit')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </>
   );
 };

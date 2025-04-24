@@ -138,7 +138,13 @@
     "pending": "Pending",
     "confirmed": "Confirmed",
     "rejected": "Rejected",
-    "completed": "Completed"
+    "completed": "Completed",
+    "serviceProvider": "Service Provider",
+    "service": "Service",
+    "pleaseSelectRating": "Please select a rating",
+    "ratingRequired": "Rating is required",
+    "feedbackSubmitted": "Feedback submitted successfully",
+    "thanksForFeedback": "Thank you for your feedback!"
   },
   "profile": {
     "title": "Profile",

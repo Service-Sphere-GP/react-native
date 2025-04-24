@@ -9,11 +9,13 @@ import { getTextStyle } from '@/src/utils/fontUtils';
 interface ChatHeaderProps {
   receiverName?: string;
   receiverImage?: string;
+  onOpenFeedbackModal?: () => void;  // Added prop for feedback modal
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
   receiverName = 'Chat',
   receiverImage,
+  onOpenFeedbackModal,
 }) => {
   const router = useRouter();
   const { t } = useTranslation(['chat']);
@@ -50,7 +52,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
       {/* Icons */}
       <View className="flex-row items-center space-x-4">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onOpenFeedbackModal}>
           <Ionicons name="checkmark-circle" size={24} color="#147E93" />
         </TouchableOpacity>
       </View>
