@@ -11,7 +11,6 @@ import Toast from 'react-native-toast-message';
 import { LanguageProvider, useLanguage } from '../src/i18n/LanguageContext';
 // Import i18n instance to initialize it
 import '../src/i18n/i18n';
-import { NotificationProvider } from '../constants/NotificationContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -19,7 +18,7 @@ SplashScreen.preventAutoHideAsync();
 // Root layout without language context - needed because we need to wrap the app with LanguageProvider
 function RootLayoutWithoutContext() {
   const { language, isRTL } = useLanguage();
-  
+
   // Load appropriate font set based on language
   const [loaded] = useFonts({
     // English/Default fonts
@@ -32,7 +31,7 @@ function RootLayoutWithoutContext() {
     'Roboto-ExtraBold': require('../assets/fonts/Roboto-ExtraBold.ttf'),
     'Roboto-ExtraLight': require('../assets/fonts/Roboto-ExtraLight.ttf'),
     'Pacifico-Regular': require('../assets/fonts/Pacifico-Regular.ttf'),
-    
+
     // Arabic fonts
     'Montserrat-Arabic-Bold-700': require('../assets/fonts/Montserrat-Arabic Bold 700.otf'),
     'Montserrat-Arabic-Medium-500': require('../assets/fonts/Montserrat-Arabic Medium 500.otf'),
@@ -56,17 +55,15 @@ function RootLayoutWithoutContext() {
   }
 
   return (
-    <NotificationProvider>
-      <ThemeProvider value={DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-          <Stack.Screen name="admin" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        <Toast />
-      </ThemeProvider>
-    </NotificationProvider>
+    <ThemeProvider value={DefaultTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+        <Stack.Screen name="admin" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+      <Toast />
+    </ThemeProvider>
   );
 }
 
