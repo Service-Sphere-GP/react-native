@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import NotificationIcon from '@/assets/icons/Notification';
 import { Ionicons } from '@expo/vector-icons';
 import { useNotifications } from '@/constants/NotificationContext';
@@ -7,12 +14,12 @@ import { useNotifications } from '@/constants/NotificationContext';
 const notification = () => {
   const [loading, setLoading] = useState(false);
   // Use our notification context to get all notification data and methods
-  const { 
-    notifications, 
-    markAsRead, 
-    markAllAsRead, 
+  const {
+    notifications,
+    markAsRead,
+    markAllAsRead,
     clearAllNotifications,
-    refreshNotifications
+    refreshNotifications,
   } = useNotifications();
 
   // Get appropriate avatar based on notification type
@@ -113,9 +120,9 @@ const notification = () => {
       </View>
 
       {/* Footer Buttons */}
-      <View className="flex-row px-4 py-4 justify-between">
+      <View className="flex-row px-4 py-4 justify-between gap-2">
         <TouchableOpacity
-          className="bg-[#F9F9F9] px-6 py-3 rounded-lg shadow-md w-1/2 mr-2"
+          className="bg-[#F9F9F9] px-6 py-3 rounded-lg shadow-md w-1/2"
           onPress={markAllAsRead}
         >
           <Text className="text-[#030B19] text-sm font-Roboto text-center">
@@ -123,7 +130,7 @@ const notification = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="bg-[#FF3B30] px-6 py-3 rounded-lg shadow-md w-1/2 ml-2"
+          className="bg-[#FF3B30] px-6 py-3 rounded-lg shadow-md w-1/2"
           onPress={clearAllNotifications}
         >
           <Text className="text-[#FFFFFF] text-sm font-Roboto text-center">
