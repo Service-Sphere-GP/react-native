@@ -5,9 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import SocketService from './SocketService';
-import ToastService from './ToastService';
 import ApiService from './ApiService';
 import { useTranslation } from 'react-i18next';
 
@@ -68,10 +66,8 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         prev.map((notification) => ({ ...notification, read: true })),
       );
       setUnreadCount(0);
-      ToastService.success(t('notifications:success'), t('notifications:allMarkedRead'));
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
-      ToastService.error(t('notifications:error'), t('notifications:failedToUpdate'));
     }
   };
 
@@ -102,10 +98,8 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       );
       setNotifications([]);
       setUnreadCount(0);
-      ToastService.success(t('notifications:success'), t('notifications:allCleared'));
     } catch (error) {
       console.error('Failed to clear notifications:', error);
-      ToastService.error(t('notifications:error'), t('notifications:failedToClear'));
     }
   };
 
@@ -127,21 +121,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
           // Increment unread count
           setUnreadCount((prev) => prev + 1);
-
-          // Show a toast notification
-          ToastService.info(newNotification.title, newNotification.message);
-        });
-
-        // Handle unread notifications on initial connection
-        socket.on('unreadNotifications', (unreadNotifications) => {
-          if (unreadNotifications && unreadNotifications.length > 0) {
-            // We don't need to update the count here as it's already handled in refreshNotifications
-            // But we might want to show a toast for the most recent unread notification
-            if (unreadNotifications.length > 0) {
-              const latest = unreadNotifications[0];
-              ToastService.info(latest.title, latest.message);
-            }
-          }
         });
       } catch (error) {
         console.error('Failed to setup socket connection:', error);
