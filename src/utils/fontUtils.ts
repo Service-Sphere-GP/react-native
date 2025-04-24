@@ -16,12 +16,11 @@ export type FontWeight =
 
 /**
  * Maps language to base font family name
- * Montserrat-Arabic is used for Arabic text, while Roboto is used for English text
- * Font weights are handled separately with font-weight classes in the app
+ * Montserrat is used for Arabic text, while Roboto is used for English text
  */
 const fontFamilyMap: Record<string, string> = {
-  en: 'Roboto-Regular',
-  ar: 'Montserrat-Arabic',
+  en: 'Roboto, sans-serif',
+  ar: 'Montserrat-Arabic, sans-serif',
 };
 
 /**

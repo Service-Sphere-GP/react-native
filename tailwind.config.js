@@ -6,15 +6,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Roboto: ['Roboto-Regular', 'sans-serif'],
-        'Roboto-Bold': ['Roboto-Bold', 'sans-serif'],
-        'Roboto-Medium': ['Roboto-Medium', 'sans-serif'],
-        'Roboto-Light': ['Roboto-Light', 'sans-serif'],
-        'Roboto-Thin': ['Roboto-Thin', 'sans-serif'],
-        'Roboto-SemiBold': ['Roboto-SemiBold', 'sans-serif'],
-        'Roboto-ExtraBold': ['Roboto-ExtraBold', 'sans-serif'],
-        'Roboto-ExtraLight': ['Roboto-ExtraLight', 'sans-serif'],
-        'Pacifico-Regular': ['Pacifico-Regular', 'cursive'],
+        // Using web font names that work across platforms
+        Roboto: ['Roboto', 'sans-serif'],
+        'Roboto-Bold': ['Roboto-Bold', 'Roboto', 'sans-serif'],
+        'Roboto-Medium': ['Roboto-Medium', 'Roboto', 'sans-serif'],
+        'Roboto-Light': ['Roboto-Light', 'Roboto', 'sans-serif'],
+        'Roboto-Thin': ['Roboto-Thin', 'Roboto', 'sans-serif'],
+        'Roboto-SemiBold': ['Roboto-SemiBold', 'Roboto', 'sans-serif'],
+        'Roboto-ExtraBold': ['Roboto-ExtraBold', 'Roboto', 'sans-serif'],
+        'Roboto-ExtraLight': ['Roboto-ExtraLight', 'Roboto', 'sans-serif'],
+        'Pacifico-Regular': ['Pacifico', 'cursive'],
       },
       screens: {
         '2xl': '1536px',
