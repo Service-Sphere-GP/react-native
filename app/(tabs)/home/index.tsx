@@ -5,12 +5,15 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
 import { getFlexDirection, getTextAlignment } from '@/src/i18n/rtlUtils';
 import { useFontFamily, getTextStyle } from '@/src/utils/fontUtils';
+import { useNotifications } from '@/constants/NotificationContext';
 
 const Dashboard = () => {
   const { t } = useTranslation(['home', 'common']);
   const { isRTL } = useLanguage();
   const fontFamily = useFontFamily();
   const textStyle = getTextStyle(isRTL);
+
+  const { unreadCount } = useNotifications();
 
   const quickChats = [
     {
@@ -43,20 +46,36 @@ const Dashboard = () => {
       name: 'John Doe',
       image: require('@/assets/images/Profile.png'),
     },
+    {
+      id: '7',
+      name: 'John Doe',
+      image: require('@/assets/images/Profile.png'),
+    },
+    {
+      id: '8',
+      name: 'John Doe',
+      image: require('@/assets/images/Profile.png'),
+    },
   ];
 
   return (
     <ScrollView className="flex-1">
       {/* Header */}
-      <View className="flex-row items-center justify-between bg-[#2C8394] px-4 py-3 h-44">
-        <View className={`flex-row items-center mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <View
+        className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} items-center justify-between bg-[#2C8394] px-4 py-3 h-44`}
+      >
+        <View
+          className={`flex-row items-center mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}
+        >
           <Image
             source={require('@/assets/images/Profile.png')}
             className="rounded-full border-2 border-white"
             style={{ width: 53, height: 53 }}
           />
-          <View className={`flex-row items-center ${isRTL ? 'mr-3 flex-row-reverse' : 'ml-3'}`}>
-            <Text 
+          <View
+            className={`flex-row items-center ${isRTL ? 'mr-3 flex-row-reverse' : 'ml-3'}`}
+          >
+            <Text
               className={`text-white text-lg font-medium ${isRTL ? 'ml-2' : 'mr-2'} ${textStyle.className}`}
               style={textStyle.style}
             >
@@ -70,28 +89,32 @@ const Dashboard = () => {
         </View>
         <View className="relative mb-12">
           <NotificationIcon color="#FFFFFF" />
-          <View className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-amber-500 w-5 h-5 rounded-full items-center justify-center`}>
-            <Text className="text-white text-xs font-bold">4</Text>
+          <View
+            className={`absolute -top-2 -right-2 bg-red-500 w-5 h-5 rounded-full items-center justify-center`}
+          >
+            <Text className="text-white text-xs font-bold">
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Text>
           </View>
         </View>
       </View>
 
       {/* Feedback Insights */}
       <View className="bg-white rounded-2xl mx-4 p-4 -mt-20 shadow-sm">
-        <Text 
+        <Text
           className={`text-base font-medium text-[#030B19] ${textStyle.className}`}
           style={textStyle.style}
         >
           {t('home:feedbackInsights')}
         </Text>
-        <Text 
+        <Text
           className={`text-sm text-[#363E4C] ${textStyle.className}`}
           style={textStyle.style}
         >
           {t('home:feedbackExample')}
         </Text>
       </View>
-      <Text 
+      <Text
         className={`text-lg font-medium text-[#030B19] mx-4 mt-4 ${textStyle.className}`}
         style={textStyle.style}
       >
@@ -102,16 +125,16 @@ const Dashboard = () => {
           data={quickChats}
           horizontal
           keyExtractor={(item) => item.id}
-          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={true}
           contentContainerStyle={{ paddingHorizontal: 16, marginTop: 10 }}
-          ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+          ItemSeparatorComponent={() => <View className="w-2" />}
           renderItem={({ item }) => (
             <View className="items-center mr-1">
               <Image
                 source={item.image}
                 className="w-[50px] h-[50px] rounded-full"
               />
-              <Text 
+              <Text
                 className={`text-xs text-gray-900 mt-1.5 text-center ${textStyle.className}`}
                 style={textStyle.style}
               >
@@ -121,27 +144,29 @@ const Dashboard = () => {
           )}
         />
       </View>
-      <Text 
+      <Text
         className={`text-lg font-medium text-[#030B19] mx-4 mt-4 ${textStyle.className}`}
         style={textStyle.style}
       >
         {t('home:performanceOverview')}
       </Text>
 
-      <View className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} justify-between mt-2 mx-4 mb-6`}>
+      <View
+        className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} justify-between mt-2 mx-4 mb-6`}
+      >
         <View className={`flex-1 ${isRTL ? 'ml-2' : 'mr-2'}`}>
           <View className="bg-white rounded-lg items-center justify-center shadow-sm p-4">
             <Image
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text 
+            <Text
               className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
               style={textStyle.style}
             >
               32
             </Text>
-            <Text 
+            <Text
               className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
               style={textStyle.style}
             >
@@ -157,13 +182,13 @@ const Dashboard = () => {
               style={{ width: 24, height: 24 }}
               resizeMode="contain"
             />
-            <Text 
+            <Text
               className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
               style={textStyle.style}
             >
               6
             </Text>
-            <Text 
+            <Text
               className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
               style={textStyle.style}
             >
@@ -178,13 +203,13 @@ const Dashboard = () => {
               source={require('@/assets/images/st.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text 
+            <Text
               className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
               style={textStyle.style}
             >
               4.2
             </Text>
-            <Text 
+            <Text
               className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
               style={textStyle.style}
             >
@@ -199,13 +224,13 @@ const Dashboard = () => {
               source={require('@/assets/images/verifyedgreen.png')}
               style={{ width: 24, height: 24 }}
             />
-            <Text 
+            <Text
               className={`text-xl font-semibold text-[#030B19] mt-2 ${textStyle.className}`}
               style={textStyle.style}
             >
               90%
             </Text>
-            <Text 
+            <Text
               className={`text-sm text-[#676B73] text-center mt-1 ${textStyle.className}`}
               style={textStyle.style}
             >
