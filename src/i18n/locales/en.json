@@ -81,7 +81,21 @@
     "feedbackExample": "\"Try to communicate more clearly and provide detailed responses to enhance collaboration\"",
     "quickChats": "Quick Chats",
     "completedSessions": "Completed Sessions",
-    "openedSessions": "Opened Sessions"
+    "openedSessions": "Opened Sessions",
+    "seeMore": "See More",
+    "showLess": "Show Less",
+    "noConfirmedBookings": "No confirmed bookings",
+    "loadingAdvice": "Loading advice...",
+    "welcomeMessage": "Welcome to ServiceSphere!",
+    "exploreServices": "Discover and book services from top-rated professionals in your area.",
+    "exploreNow": "Explore Now",
+    "categories": "Categories",
+    "noCategories": "No categories found",
+    "recommended": "Recommended Services",
+    "noRecommendations": "No recommended services found",
+    "recentBookings": "Recent Bookings",
+    "noRecentBookings": "You don't have any recent bookings",
+    "bookNow": "Book Now"
   },
   "services": {
     "allServices": "Services",
