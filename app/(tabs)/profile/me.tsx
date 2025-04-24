@@ -78,11 +78,7 @@ const ProfileComponent = () => {
     <ScrollView>
       {user ? (
         <View className="px-1 py-4 xs:px-4 gap-4">
-          <Header
-            title="Profile"
-            showBackButton={false}
-            notificationsCount={0}
-          />
+          <Header title="Profile" showBackButton={false} />
 
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader

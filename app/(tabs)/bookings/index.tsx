@@ -91,10 +91,10 @@ const Booking = () => {
         },
       );
       // update only this booking in state
-      setBookings(prev =>
-        prev.map(b =>
-          b._id === booking._id ? { ...b, status: 'confirmed' } : b
-        )
+      setBookings((prev) =>
+        prev.map((b) =>
+          b._id === booking._id ? { ...b, status: 'confirmed' } : b,
+        ),
       );
     } catch (error) {
       console.error(error);
@@ -109,10 +109,10 @@ const Booking = () => {
           status: 'cancelled',
         },
       );
-      setBookings(prev =>
-        prev.map(b =>
-          b._id === booking._id ? { ...b, status: 'cancelled' } : b
-        )
+      setBookings((prev) =>
+        prev.map((b) =>
+          b._id === booking._id ? { ...b, status: 'cancelled' } : b,
+        ),
       );
     } catch (error) {
       console.error(error);
@@ -198,9 +198,7 @@ const Booking = () => {
     const bookingStatus = item.status;
 
     return (
-      <TouchableOpacity
-        onPress={() => router.push('/bookings/Chat/ChatRoomScreen')}
-      >
+      <TouchableOpacity onPress={() => router.push(`/bookings/${item._id}`)}>
         <View
           className={`flex-row items-center justify-between ${index % 2 === 0 ? 'bg-white' : 'bg-[#F9F9F9]'} px-4 py-3`}
         >
@@ -295,11 +293,7 @@ const Booking = () => {
       ) : (
         <View className="flex-1 bg-gray-100">
           {/* Header */}
-          <Header
-            title="Bookings"
-            showBackButton={false}
-            notificationsCount={4}
-          />
+          <Header title="Bookings" showBackButton={false} />
 
           {/* Bookings List */}
           <View
@@ -308,7 +302,7 @@ const Booking = () => {
           >
             <FlatList
               data={bookings}
-              keyExtractor={(item, index) => item._id || `booking-${index}`}
+              keyExtractor={(item) => item._id}
               renderItem={renderBookingItem}
               contentContainerStyle={{ paddingBottom: 16 }}
               style={{

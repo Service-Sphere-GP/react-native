@@ -56,7 +56,7 @@ const ProviderServices = () => {
   return (
     <View className="flex-1 bg-[#F4F4F4]">
       {/* Header */}
-      <Header title="Services" showBackButton={true} notificationsCount={0} />
+      <Header title="Services" showBackButton={true} />
 
       {/* Services List */}
       <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2 flex-1">

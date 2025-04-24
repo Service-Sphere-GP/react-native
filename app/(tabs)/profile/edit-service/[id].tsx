@@ -241,11 +241,7 @@ const EditService = () => {
       ) : (
         <View className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
-            <Header
-              title="Edit Service"
-              showBackButton={true}
-              notificationsCount={4}
-            />
+            <Header title="Edit Service" showBackButton={true} />
             <View>
               <Text className="font-Roboto-Medium text-lg">Name</Text>
               <TextInput
