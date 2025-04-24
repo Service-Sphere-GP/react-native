@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
     fontWeight: '500',
-    // fontFamily will be added dynamically
   },
 });
 
