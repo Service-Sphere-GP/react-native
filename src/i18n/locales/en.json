@@ -113,7 +113,19 @@
     "helpful": "Helpful",
     "reportReview": "Report review",
     "bookService": "Book Service",
-    "editYourService": "Edit Your Service"
+    "editYourService": "Edit Your Service",
+    
+    "editService": "Edit Service",
+    "enterServiceName": "Enter service name",
+    "enterServiceDescription": "Enter service description",
+    "selectCategory": "Select category",
+    "enterServicePrice": "Enter service price",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "updateService": "Update service",
+    "permissionDenied": "You've refused to allow this app to access your photos!",
+    "addImage": "Add image"
   },
   "bookings": {
     "title": "Bookings",

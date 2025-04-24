@@ -61,12 +61,15 @@ const ProfileHeader = ({
             >
               {rating?.toFixed(2)}
             </Text>
-            <Rating
-              readonly
-              startingValue={rating}
-              imageSize={15}
-              tintColor="#147E93"
-            />
+            {
+              rating &&
+              <Rating
+                readonly
+                startingValue={rating}
+                imageSize={15}
+                tintColor="#147E93"
+              />
+            }
           </View>
         </View>
       </View>

@@ -113,7 +113,19 @@
     "helpful": "مفيد",
     "reportReview": "الإبلاغ عن المراجعة",
     "bookService": "حجز الخدمة",
-    "editYourService": "تعديل خدمتك"
+    "editYourService": "تعديل خدمتك",
+    
+    "editService": "تعديل الخدمة",
+    "enterServiceName": "أدخل اسم الخدمة",
+    "enterServiceDescription": "أدخل وصف الخدمة",
+    "selectCategory": "اختر الفئة",
+    "enterServicePrice": "أدخل سعر الخدمة",
+    "status": "الحالة",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "updateService": "تحديث الخدمة",
+    "permissionDenied": "لقد رفضت السماح لهذا التطبيق بالوصول إلى صورك!",
+    "addImage": "إضافة صورة"
   },
   "bookings": {
     "title": "الحجوزات",
