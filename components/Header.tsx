@@ -19,20 +19,25 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) => {
   const { unreadCount } = useNotifications();
 
   return (
-    <View className={`flex-row items-center justify-between px-4 py-4 relative mt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+    <View
+      className={`flex-row items-center justify-between px-4 py-4 relative mt-6 ${isRTL ? 'flex-row-reverse' : ''}`}
+    >
       {showBackButton && (
         <TouchableOpacity onPress={() => router.back()}>
           <Image
-            source={isRTL ? require('@/assets/images/rightArrow.png') : require('@/assets/images/leftArrow.png')}
+            source={
+              isRTL
+                ? require('@/assets/images/rightArrow.png')
+                : require('@/assets/images/leftArrow.png')
+            }
             className="w-full h-full"
             resizeMode="contain"
           />
         </TouchableOpacity>
       )}
-      
-      <Text 
-        className={`text-xl text-[#030B19] ${showBackButton ? (isRTL ? 'mr-4' : 'ml-4') : ''} ${isRTL ? 'text-right' : 'text-left'}`}
-        style={[textStyle.style, {flex: 1}]}
+
+      <Text
+        className={`flex-1 font-medium text-xl text-[#030B19] ${showBackButton ? (isRTL ? 'mr-4' : 'ml-4') : ''} ${isRTL ? 'text-right' : 'text-left'}`}
       >
         {title}
       </Text>

@@ -249,16 +249,12 @@ const EditService = () => {
           <View className="gap-4">
             <Header title={t('services:editService')} showBackButton={true} />
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:name')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServiceName')}
-                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full my-2 ${textStyle.className}`}
                 value={service.service_name}
                 onChangeText={(text) =>
                   setService({ ...service, service_name: text })
@@ -267,10 +263,11 @@ const EditService = () => {
             </View>
 
             <View>
-              <View className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Text 
-                  className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                  style={textStyle.style}
+              <View
+                className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                <Text
+                  className={`font-semibold text-lg ${textStyle.className}`}
                 >
                   {t('services:images')}
                 </Text>
@@ -289,7 +286,10 @@ const EditService = () => {
                 className="mt-3"
               >
                 {images.map((image, index) => (
-                  <View key={index} className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}>
+                  <View
+                    key={index}
+                    className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}
+                  >
                     <Image
                       source={{ uri: image }}
                       style={{ width: 130, height: 108, borderRadius: 10 }}
@@ -306,16 +306,12 @@ const EditService = () => {
               </ScrollView>
             </View>
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:description')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServiceDescription')}
-                className={`border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-5 h-16 w-full my-2 ${textStyle.className}`}
                 multiline={true}
                 value={service.description}
                 onChangeText={(text) =>
@@ -325,10 +321,7 @@ const EditService = () => {
             </View>
 
             <View style={{ zIndex: 1000 }}>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:category')}
               </Text>
               <DropDownPicker
@@ -344,30 +337,25 @@ const EditService = () => {
                 style={{
                   backgroundColor: '#fff',
                   borderColor: '#ccc',
-                  marginBottom: 12,
+                  marginVertical: 8,
                 }}
                 dropDownContainerStyle={{
                   backgroundColor: '#fff',
                   borderColor: '#ccc',
                 }}
                 textStyle={{
-                  ...textStyle.style,
-                  textAlign: isRTL ? 'right' : 'left'
+                  textAlign: isRTL ? 'right' : 'left',
                 }}
               />
             </View>
 
             <View>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:price')}
               </Text>
               <TextInput
                 placeholder={t('services:enterServicePrice')}
-                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
-                style={textStyle.style}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full my-2 ${textStyle.className}`}
                 value={service.base_price}
                 onChangeText={(text) =>
                   setService({ ...service, base_price: text })
@@ -375,40 +363,35 @@ const EditService = () => {
               />
             </View>
 
-            <View className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Text 
-                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+            <View
+              className={`items-center mb-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
+            >
+              <Text className={`font-semibold text-lg ${textStyle.className}`}>
                 {t('services:status')}
               </Text>
               <CheckBox
                 checked={service.status === 'active'}
-                title={t(service.status === 'active' ? 'services:active' : 'services:inactive')}
+                title={t(
+                  service.status === 'active'
+                    ? 'services:active'
+                    : 'services:inactive',
+                )}
                 onPress={() =>
                   setService((prev) => ({
                     ...prev,
                     status: prev.status === 'active' ? 'inactive' : 'active',
                   }))
                 }
-                containerStyle={{
-                  backgroundColor: 'transparent',
-                  borderWidth: 0,
-                }}
-                textStyle={{
-                  fontWeight: 'normal',
-                  ...textStyle.style,
-                }}
+                containerStyle={{ padding: 0 }}
               />
             </View>
           </View>
           <TouchableOpacity
-            className={`flex-row items-center ${isRTL ? 'justify-start' : 'justify-end'}`}
+            className="flex-row items-center w-fit"
             onPress={updateServiceHandler}
           >
-            <Text 
-              className={`text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
-              style={textStyle.style}
+            <Text
+              className={`text-center font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
             >
               {t('services:updateService')}
             </Text>

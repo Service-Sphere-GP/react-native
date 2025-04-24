@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatHeader from '@/components/Chat/chatHeader';
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import SocketService from '@/constants/SocketService';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import FeedbackModal from '@/components/Modals/FeedbackModal';
 // Import translation hooks
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
@@ -45,6 +46,27 @@ interface ReceiverDetails {
   profile_image?: string;
 }
 
+// Booking details interface
+interface BookingDetails {
+  _id: string;
+  customer: {
+    _id: string;
+    full_name: string;
+    profile_image: string;
+  };
+  status: string;
+  service: {
+    _id: string;
+    service_name: string;
+    base_price: string;
+    service_provider: {
+      _id: string;
+      full_name: string;
+      profile_image: string;
+    };
+  };
+}
+
 const ChatRoomScreen = () => {
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -58,13 +80,35 @@ const ChatRoomScreen = () => {
   const { isRTL } = useLanguage();
   const textStyle = getTextStyle(isRTL);
 
-  // Fetch receiver details
-  const fetchReceiverDetails = async (bookingId: string) => {
+  // Add state for feedback modal
+  const [isFeedbackModalVisible, setIsFeedbackModalVisible] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(
+    null,
+  );
+
+  // Fetch booking details
+  const fetchBookingDetails = async (bookingId: string) => {
     try {
       const response: any = await ApiService.get(
         `${API_ENDPOINTS.GET_BOOKING_DETAILS.replace(':id', bookingId)}`,
       );
-      const bookingData = response.data.data;
+
+      if (response.data && response.data.status === 'success') {
+        setBookingDetails(response.data.data);
+        return response.data.data;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching booking details:', error);
+      return null;
+    }
+  };
+
+  // Fetch receiver details
+  const fetchReceiverDetails = async (bookingId: string) => {
+    try {
+      const bookingData = await fetchBookingDetails(bookingId);
+      if (!bookingData) return null;
 
       // Get user data to determine if we're the customer or provider
       const userJson = await AsyncStorage.getItem('user');
@@ -95,6 +139,13 @@ const ChatRoomScreen = () => {
     } catch (error) {
       console.error('Error fetching receiver details:', error);
       return null;
+    }
+  };
+
+  // Open feedback modal
+  const handleOpenFeedbackModal = () => {
+    if (bookingDetails) {
+      setIsFeedbackModalVisible(true);
     }
   };
 
@@ -255,6 +306,7 @@ const ChatRoomScreen = () => {
       <ChatHeader
         receiverName={receiverDetails?.full_name || 'Chat'}
         receiverImage={receiverDetails?.profile_image}
+        onOpenFeedbackModal={handleOpenFeedbackModal}
       />
 
       {/* Messages */}
@@ -265,16 +317,11 @@ const ChatRoomScreen = () => {
       >
         {loading ? (
           <View className="flex-1 items-center justify-center">
-            <Text style={textStyle.style}>{t('common:loading')}</Text>
+            <Text>{t('common:loading')}</Text>
           </View>
         ) : messages.length === 0 ? (
           <View className="flex-1 items-center justify-center">
-            <Text 
-              className="text-gray-500"
-              style={textStyle.style}
-            >
-              {t('chat:noMessages')}
-            </Text>
+            <Text className="text-gray-500">{t('chat:noMessages')}</Text>
           </View>
         ) : (
           messages.map((message) => (
@@ -284,11 +331,10 @@ const ChatRoomScreen = () => {
             >
               {/* Sender's Info */}
               {!message.isMe && (
-                <View className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <Text 
-                    className="text-sm text-[#6C757D]"
-                    style={textStyle.style}
-                  >
+                <View
+                  className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <Text className="text-sm text-[#6C757D]">
                     {message.sender}
                   </Text>
                 </View>
@@ -323,7 +369,6 @@ const ChatRoomScreen = () => {
                   className={`text-xs ${
                     message.isMe ? 'text-[#6C757D] mb-6' : 'text-[#6C757D] mb-2'
                   }`}
-                  style={textStyle.style}
                 >
                   {message.time}
                 </Text>
@@ -343,6 +388,15 @@ const ChatRoomScreen = () => {
 
       {/* Message Input */}
       <MessageInput onSend={sendMessage} />
+
+      {/* Feedback Modal */}
+      {bookingDetails && (
+        <FeedbackModal
+          isVisible={isFeedbackModalVisible}
+          onClose={() => setIsFeedbackModalVisible(false)}
+          booking={bookingDetails}
+        />
+      )}
     </View>
   );
 };

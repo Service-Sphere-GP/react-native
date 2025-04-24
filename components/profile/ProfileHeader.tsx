@@ -40,14 +40,12 @@ const ProfileHeader = ({
         <View>
           <Text
             className={`text-lg text-white font-medium ${textStyle.className}`}
-            style={textStyle.style}
           >
             {fullName}
           </Text>
           {role && (
             <Text
               className={`text-[#D9DEE4] text-sm font-light ${textStyle.className}`}
-              style={textStyle.style}
             >
               {role}
             </Text>
@@ -55,21 +53,13 @@ const ProfileHeader = ({
           <View
             className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <Text
-              className={`text-[#D9DEE4] ${textStyle.className}`}
-              style={textStyle.style}
-            >
-              {rating?.toFixed(2)}
-            </Text>
-            {
-              rating &&
-              <Rating
-                readonly
-                startingValue={rating}
-                imageSize={15}
-                tintColor="#147E93"
-              />
-            }
+            <Text className={`text-[#D9DEE4]`}>{rating?.toFixed(2)}</Text>
+            <Rating
+              readonly
+              startingValue={rating}
+              imageSize={15}
+              tintColor="#147E93"
+            />
           </View>
         </View>
       </View>

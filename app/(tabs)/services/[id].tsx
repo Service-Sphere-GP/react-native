@@ -59,7 +59,7 @@ const ServiceDetailsPage = () => {
   const { t } = useTranslation(['services', 'common']);
   const { isRTL } = useLanguage();
   const textStyle = getTextStyle(isRTL);
-  
+
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
@@ -112,7 +112,9 @@ const ServiceDetailsPage = () => {
   }, [id, router]);
 
   const renderReviewItem = ({ item }: { item: Feedback }) => (
-    <View className="bg-white pb-4 pt-3 border-b items-start gap-2 border-gray-200">
+    <View
+      className={`pb-4 pt-3 border-b gap-2 border-gray-200 ${isRTL ? 'items-end' : 'items-start'}`}
+    >
       <View className={`flex-row ${isRTL ? 'flex-row-reverse' : ''}`}>
         <Image
           source={{ uri: item.user.profile_image }}
@@ -122,32 +124,28 @@ const ServiceDetailsPage = () => {
 
         {/* Review Details */}
         <View className="flex-1">
-          <Text 
+          <Text
             className={`text-lg font-medium text-[#030B19] ${textStyle.className}`}
-            style={textStyle.style}
           >
             {item.user.first_name} {item.user.last_name}
           </Text>
 
-          <Text 
-            className={`text-sm text-[#676B73] ${textStyle.className}`}
-            style={textStyle.style}
-          >
-            {new Date(item.createdAt).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })}
+          <Text className={`text-sm text-[#676B73] ${textStyle.className}`}>
+            {new Date(item.createdAt).toLocaleDateString(
+              isRTL ? 'ar-EG' : 'en-US',
+              {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              },
+            )}
           </Text>
         </View>
       </View>
 
       <Rating value={item.rating} />
 
-      <Text 
-        className={`text-sm text-[#363E4C] mt-2 ${textStyle.className}`}
-        style={textStyle.style}
-      >
+      <Text className={`text-sm text-[#363E4C] mt-2 ${textStyle.className}`}>
         {item.message}
       </Text>
     </View>
@@ -184,21 +182,18 @@ const ServiceDetailsPage = () => {
           <View className="bg-white px-2 py-2">
             <Header title={service?.service_name} showBackButton={true} />
 
-            <View className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Text 
-                className={`font-medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+            <View
+              className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
+              <Text className={`font-medium text-lg`}>
                 {t('services:serviceProvider')}
               </Text>
               <Text
-                className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base ${textStyle.className}`}
-                style={textStyle.style}
+                className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base`}
               >
                 {service?.status === 'active'
                   ? t('services:active')
-                    : t('services:inactive')}
-                  
+                  : t('services:inactive')}
               </Text>
             </View>
             <ProfileHeader
@@ -210,10 +205,7 @@ const ServiceDetailsPage = () => {
             />
 
             <View className="mt-6">
-              <Text 
-                className={`font-medium text-lg ${textStyle.className}`}
-                style={textStyle.style}
-              >
+              <Text className={`font-medium text-lg ${textStyle.className}`}>
                 {t('services:images')}
               </Text>
               <ScrollView
@@ -232,93 +224,85 @@ const ServiceDetailsPage = () => {
               </ScrollView>
             </View>
 
-            <Text 
+            <Text
               className={`text-xs text-[#666B73] mt-5 ${textStyle.className}`}
-              style={textStyle.style}
             >
               {service?.description}
             </Text>
 
-            <Text 
-              className={`font-medium text-lg mt-5 ${textStyle.className}`}
-              style={textStyle.style}
-            >
-              {t('services:currency')} {service?.base_price.toFixed(2)}
+            <Text className="font-medium text-lg mt-5">
+              {!isRTL
+                ? t('services:currency') + ' ' + service?.base_price.toFixed(2)
+                : service?.base_price.toFixed(2) + ' ' + t('services:currency')}
             </Text>
           </View>
           <View className="bg-white px-6 py-2">
-            <Text 
-              className={`text-2xl font-semibold border-b border-gray-200 py-2 mb-4 `}
-              style={textStyle.style}
-            >
+            <Text className="text-2xl font-semibold border-b border-gray-200 py-2 mb-4">
               {t('services:ratingsAndReviews')}
             </Text>
-            <View className={`gap-3 border-b border-gray-200 mb-4 pb-4 ${isRTL  ? 'items-end' : 'items-start'}`}>
-              <Text 
-                className={`text-xl font-medium `}
-                style={textStyle.style}
-              >
+            <View
+              className={`gap-3 border-b border-gray-200 mb-4 pb-4 ${isRTL ? 'items-end' : 'items-start'}`}
+            >
+              <Text className="text-xl font-medium">
                 {t('services:overallRating')}
               </Text>
-              <Text 
-                className={`text-2xl font-bold `}
-                style={textStyle.style}
-              >
+              <Text className="text-2xl font-bold">
                 {service?.rating_average.toFixed(2)}
               </Text>
               <Rating value={service?.rating_average} />
               <View className="border-t border-gray-200 py-4">
-                <Text 
-                  className={`text-2xl font-semibold text-[#147E93] mb-3 text-right`}
-                  style={textStyle.style}
-                >
+                <Text className="text-2xl font-semibold text-[#147E93] mb-3">
                   ✨ {t('services:howToWriteReview')}
                 </Text>
 
                 <View className="space-y-3">
-                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <View
+                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <Ionicons
                       name="megaphone-outline"
                       size={20}
                       color="#147E93"
                     />
-                    <Text 
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
-                      style={textStyle.style}
+                    <Text
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
                     >
                       {t('services:reviewTip1')}
                     </Text>
                   </View>
 
-                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <View
+                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <Ionicons
                       name="chatbox-ellipses-outline"
                       size={20}
                       color="#147E93"
                     />
-                    <Text 
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
-                      style={textStyle.style}
+                    <Text
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
                     >
                       {t('services:reviewTip2')}
                     </Text>
                   </View>
 
-                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <View
+                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <Ionicons name="trophy-outline" size={20} color="#147E93" />
-                    <Text 
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
-                      style={textStyle.style}
+                    <Text
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
                     >
                       {t('services:reviewTip3')}
                     </Text>
                   </View>
 
-                  <View className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <View
+                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <Ionicons name="bulb-outline" size={20} color="#147E93" />
-                    <Text 
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C] ${textStyle.className}`}
-                      style={textStyle.style}
+                    <Text
+                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
                     >
                       {t('services:reviewTip4')}
                     </Text>
@@ -349,10 +333,7 @@ const ServiceDetailsPage = () => {
                 }
               }}
             >
-              <Text 
-                className={`font-medium text-lg text-center `}
-                style={textStyle.style}
-              >
+              <Text className="font-medium text-lg text-center">
                 {service?.service_provider.full_name === user?.full_name
                   ? t('services:editYourService')
                   : t('services:bookService')}
