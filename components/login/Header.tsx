@@ -1,12 +1,14 @@
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLanguage } from '@/src/i18n/LanguageContext';
 
 const screenWidth = Dimensions.get('window').width;
 
 const Header = () => {
   const router = useRouter();
+  const { isRTL } = useLanguage();
 
   return (
     <>
@@ -24,10 +26,16 @@ const Header = () => {
               router.back();
             } else router.push('/');
           }}
+          style={{
+            marginTop: 50,
+            marginLeft: isRTL ? undefined : 20,
+            marginRight: isRTL ? 20 : undefined,
+            alignSelf: isRTL ? 'flex-end' : 'flex-start'
+          }}
         >
           <Image
             source={require('@/assets/images/whiteArrow.png')}
-            style={{ marginTop: 50, marginLeft: 20 }}
+            style={isRTL ? styles.flippedImage : {}}
             resizeMode="cover"
           />
         </TouchableOpacity>
@@ -51,12 +59,20 @@ const Header = () => {
           borderWidth: 3,
           borderRadius: 8,
           marginTop: -40,
-          marginLeft: 20,
+          marginLeft: isRTL ? undefined : 20,
+          marginRight: isRTL ? 20 : undefined,
+          alignSelf: isRTL ? 'flex-end' : 'flex-start'
         }}
         resizeMode="cover"
       />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  flippedImage: {
+    transform: [{ scaleX: -1 }] // Horizontally flip the image
+  }
+});
 
 export default Header;

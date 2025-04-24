@@ -6,6 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProfileDetail from '@/components/profile/ProfileDetail';
 import Header from '@/components/Header';
+// Import translation hook
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../../src/i18n/LanguageContext';
 
 const ProfileComponent = () => {
   interface User {
@@ -18,6 +21,9 @@ const ProfileComponent = () => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const [showAdminOption, setShowAdminOption] = useState(false);
+  // Add translation hook
+  const { t } = useTranslation(['profile', 'common']);
+  const { isRTL } = useLanguage();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -64,6 +70,10 @@ const ProfileComponent = () => {
   const navigateToMyReviews = () => {
     router.push('/profile/my-reviews');
   };
+  // Add navigation to language settings
+  const navigateToLanguageSettings = () => {
+    router.push('/profile/language');
+  };
   const logoutHandler = async () => {
     try {
       await AsyncStorage.removeItem('user');
@@ -78,7 +88,10 @@ const ProfileComponent = () => {
     <ScrollView>
       {user ? (
         <View className="px-1 py-4 xs:px-4 gap-4">
-          <Header title="Profile" showBackButton={false} />
+          <Header
+            title={t('profile:title')}
+            showBackButton={false}
+          />
 
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader
@@ -88,43 +101,51 @@ const ProfileComponent = () => {
             />
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
-                title="Personal Data"
-                description="Manage your personal details"
+                title={t('profile:editProfile')}
+                description={t('profile:settings')}
                 image={require('@/assets/images/personalData.png')}
                 onPress={navigateToPerosnalData}
               />
               {user.role === 'service_provider' && (
                 <>
                   <ProfileDetail
-                    title="Services"
-                    description="Manage your services"
+                    title={t('profile:myServices')}
+                    description={t('services:allServices')}
                     image={require('@/assets/images/services.png')}
                     onPress={navigateToMyServices}
                   />
                   <ProfileDetail
-                    title="Reviews"
-                    description="What people are saying about you"
+                    title={t('profile:myReviews')}
+                    description={t('services:reviews')}
                     image={require('@/assets/images/reviews.png')}
                     onPress={navigateToMyReviews}
                   />
                 </>
               )}
+              
+              {/* Language Settings Option */}
+              <ProfileDetail
+                title={t('common:language')}
+                description={t('common:languageDescription')}
+                image={require('@/assets/images/info.png')}
+                onPress={navigateToLanguageSettings}
+              />
 
               <ProfileDetail
-                title="Log out"
-                description="logging out will clear your session"
+                title={t('profile:logout')}
+                description={t('profile:loggingOut')}
                 image={require('@/assets/images/logout.png')}
                 onPress={logoutHandler}
               />
             </View>
             <View className="bg-white rounded-3xl w-full">
               <ProfileDetail
-                title="Help & Support"
+                title={t('profile:helpSupport')}
                 description={null}
                 image={require('@/assets/images/help.png')}
               />
               <ProfileDetail
-                title="About App"
+                title={t('profile:aboutApp')}
                 description={null}
                 image={require('@/assets/images/info.png')}
               />
@@ -132,19 +153,28 @@ const ProfileComponent = () => {
               {/* Admin Panel Access Button */}
               {showAdminOption && (
                 <TouchableOpacity onPress={handleAdminAccess}>
-                  <View className="flex-row justify-between p-4 items-center border-t border-[#f5f5f5]">
-                    <View className="flex-row gap-4">
+                  <View className={`flex-row justify-between p-4 items-center border-t border-[#f5f5f5] ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <View className={`flex-row gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <View className="w-10 h-10 rounded-full bg-[#FFF9C4] items-center justify-center">
-                        <Text className="text-[#F57F17] text-lg font-Roboto-Bold">
+                        <Text 
+                          className="text-[#F57F17] text-lg font-bold"
+                          style={{ fontFamily: isRTL ? 'Montserrat-Arabic' : 'Roboto' }}
+                        >
                           A
                         </Text>
                       </View>
                       <View className="justify-center">
-                        <Text className="font-Roboto-Medium text-base text-[#147E93]">
-                          Admin Panel
+                        <Text 
+                          className={`text-base text-[#147E93] font-medium ${isRTL ? 'text-right' : 'text-left'}`}
+                          style={{ fontFamily: isRTL ? 'Montserrat-Arabic' : 'Roboto-Regular' }}
+                        >
+                          {t('profile:adminPanel')}
                         </Text>
-                        <Text className="text-[#676B73] text-sm font-Roboto">
-                          Access administration dashboard
+                        <Text 
+                          className={`text-[#676B73] text-sm ${isRTL ? 'text-right' : 'text-left'}`}
+                          style={{ fontFamily: isRTL ? 'Montserrat-Arabic' : 'Roboto-Regular' }}
+                        >
+                          {t('profile:adminAccess')}
                         </Text>
                       </View>
                     </View>

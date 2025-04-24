@@ -14,6 +14,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 import ApiService from '../../constants/ApiService';
 import ToastService from '../../constants/ToastService';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface LoginResponse {
   status: string;
@@ -37,6 +40,9 @@ export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation(['auth', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   const handleLogin = async () => {
     // Simple validation
@@ -121,15 +127,30 @@ export default function AdminLogin() {
       <View style={styles.contentContainer}>
         {/* Back button for mobile */}
         {Platform.OS !== 'web' && (
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <Text style={styles.backButtonText}>← Back</Text>
+          <TouchableOpacity 
+            style={[styles.backButton, isRTL && styles.backButtonRTL]} 
+            onPress={handleBack}
+          >
+            <Text 
+              style={[styles.backButtonText, textStyle.style]}
+            >
+              {isRTL ? 'عودة →' : '← Back'}
+            </Text>
           </TouchableOpacity>
         )}
 
         {/* Logo or Icon - Optional */}
         <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>Service Sphere</Text>
-          <Text style={styles.adminText}>Admin Portal</Text>
+          <Text 
+            style={[styles.logoText, textStyle.style]}
+          >
+            {t('common:appName')}
+          </Text>
+          <Text 
+            style={[styles.adminText, textStyle.style]}
+          >
+            {t('profile:adminPanel')}
+          </Text>
         </View>
 
         <View
@@ -138,15 +159,37 @@ export default function AdminLogin() {
             Platform.OS !== 'web' && styles.mobileLoginBox,
           ]}
         >
-          <Text style={styles.title}>Admin Login</Text>
+          <Text 
+            style={[
+              styles.title, 
+              textStyle.style,
+              { textAlign: isRTL ? 'right' : 'left' }
+            ]}
+          >
+            {t('profile:adminAccess')}
+          </Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
+            <Text 
+              style={[
+                styles.label, 
+                textStyle.style,
+                { textAlign: isRTL ? 'right' : 'left' }
+              ]}
+            >
+              {t('auth:email')}
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input, 
+                { 
+                  textAlign: isRTL ? 'right' : 'left',
+                  fontFamily: textStyle.style.fontFamily
+                }
+              ]}
               value={email}
               onChangeText={setEmail}
-              placeholder="Enter your email"
+              placeholder={t('auth:enterEmail')}
               placeholderTextColor="#687076"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -154,12 +197,26 @@ export default function AdminLogin() {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password</Text>
+            <Text 
+              style={[
+                styles.label, 
+                textStyle.style,
+                { textAlign: isRTL ? 'right' : 'left' }
+              ]}
+            >
+              {t('auth:password')}
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input, 
+                { 
+                  textAlign: isRTL ? 'right' : 'left',
+                  fontFamily: textStyle.style.fontFamily
+                }
+              ]}
               value={password}
               onChangeText={setPassword}
-              placeholder="Enter your password"
+              placeholder={t('auth:enterPassword')}
               placeholderTextColor="#687076"
               secureTextEntry
             />
@@ -173,7 +230,11 @@ export default function AdminLogin() {
             {isLoading ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
-              <Text style={styles.loginButtonText}>Login</Text>
+              <Text 
+                style={[styles.loginButtonText, textStyle.style]}
+              >
+                {t('auth:login')}
+              </Text>
             )}
           </TouchableOpacity>
         </View>
@@ -199,10 +260,14 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 10,
   },
+  backButtonRTL: {
+    left: undefined,
+    right: 20,
+  },
   backButtonText: {
     fontSize: 16,
     color: Colors.light.tint,
-    fontFamily: 'Roboto-Medium',
+    fontWeight: '500',
   },
   logoContainer: {
     alignItems: 'center',
@@ -212,12 +277,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: '#147E93',
-    fontFamily: 'Roboto-Bold',
   },
   adminText: {
     fontSize: 18,
     color: '#FDBC10',
-    fontFamily: 'Roboto-Medium',
+    fontWeight: '500',
     marginTop: 5,
   },
   loginBox: {
@@ -239,9 +303,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'center',
     color: Colors.light.text,
-    fontFamily: 'Roboto-Bold',
   },
   inputContainer: {
     marginBottom: 20,
@@ -250,7 +312,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     color: Colors.light.text,
-    fontFamily: 'Roboto-Medium',
+    fontWeight: '500',
   },
   input: {
     height: 50,
@@ -261,7 +323,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#F9FAFB',
     color: Colors.light.text,
-    fontFamily: 'Roboto-Regular',
   },
   loginButton: {
     backgroundColor: Colors.light.tint,
@@ -275,6 +336,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'Roboto-Bold',
   },
 });

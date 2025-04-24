@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
 import Input from '@/components/login/Input';
@@ -7,8 +7,15 @@ import { Link } from 'expo-router';
 import useLogin from '@/hooks/useLogin';
 import { useRouter } from 'expo-router';
 import ToastService from '../../../constants/ToastService';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const Login = () => {
+  const { t } = useTranslation(['auth', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -27,11 +34,11 @@ const Login = () => {
     };
 
     if (!user.email) {
-      errors.email = 'Email is required';
+      errors.email = t('auth:emailRequired');
     }
 
     if (!user.password) {
-      errors.password = 'Password is required';
+      errors.password = t('auth:passwordRequired');
     }
 
     return errors;
@@ -54,7 +61,7 @@ const Login = () => {
       const success = await login(email, password);
 
       if (success) {
-        ToastService.success('Login Successful', 'Welcome back!');
+        ToastService.success(t('auth:loginSuccess'), t('auth:welcomeBack'));
         router.push('/services');
       }
     } catch (err) {
@@ -66,58 +73,80 @@ const Login = () => {
     }
   };
 
+  const containerStyle = [
+    styles.container,
+    isRTL && styles.containerRTL
+  ];
+
   return (
-    <ScrollView className="bg-white h-full">
+    <ScrollView className="bg-white h-full" style={containerStyle}>
       <Header />
       <View className="px-3">
-        <Text className="text-3xl font-Roboto-Medium mt-3">Login</Text>
-        <Text
-          className="font-Roboto-Light text-black/70 text-base my-5"
-          style={{ lineHeight: 20 }}
+        <Text 
+          className={`text-3xl font-medium mt-3 ${textStyle.className}`}
+          style={textStyle.style}
         >
-          Welcome Back, we missed you.
+          {t('auth:login')}
+        </Text>
+        <Text
+          className={`text-black/70 text-base my-5 font-light ${textStyle.className}`}
+          style={{...textStyle.style, lineHeight: 20}}
+        >
+          {t('auth:welcomeBack')}
         </Text>
         <Input
-          label="Email"
-          placeholder="Enter your email"
+          label={t('auth:email')}
+          placeholder={t('auth:enterEmail')}
           isPassword={false}
           value={email}
           onChangeText={setEmail}
           error={errorMessages.email ? true : false}
           errorMessage={errorMessages.email ? errorMessages.email : ''}
+          isRTL={isRTL}
         />
         <Input
-          label="Password"
-          placeholder="Enter your password"
+          label={t('auth:password')}
+          placeholder={t('auth:enterPassword')}
           isPassword={true}
           value={password}
           onChangeText={setPassword}
           error={errorMessages.password ? true : false}
           errorMessage={errorMessages.password ? errorMessages.password : ''}
+          isRTL={isRTL}
         />
-        <Text className="font-Roboto-Light text-black/70 text-base mt-2">
-          Forget your password?{' '}
-          <Text className="text-[#147E93] underline font-Roboto-Medium">
-            Reset it
+        <Text 
+          className={`text-black/70 text-base mt-2 font-light ${textStyle.className}`}
+          style={textStyle.style}
+        >
+          {t('auth:forgotPassword')}{' '}
+          <Text 
+            className="text-[#147E93] underline font-medium"
+            style={textStyle.style}
+          >
+            {t('auth:resetPassword')}
           </Text>
         </Text>
 
         <CustomButton
-          title="Login"
+          title={t('auth:login')}
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"
           textStyles="font-medium text-[21px]"
           onPress={handleLogin}
           disabled={loading}
         />
 
-        <View className="flex-row items-center justify-center my-5">
-          <Text className="font-Roboto-Light text-black/70 text-base">
-            Don't have an account?{' '}
+        <View className={`flex-row items-center justify-center my-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <Text 
+            className={`text-black/70 text-base font-light ${textStyle.className}`}
+            style={textStyle.style}
+          >
+            {t('auth:noAccount')}{' '}
             <Link
               href="/(otp)/customer/register"
-              className="text-[#147E93] underline font-Roboto-Medium"
+              className="text-[#147E93] underline"
+              style={{...textStyle.style, fontWeight: '500'}}
             >
-              Sign up
+              {t('auth:register')}
             </Link>
           </Text>
         </View>
@@ -125,5 +154,16 @@ const Login = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    textAlign: 'left',
+    direction: 'ltr',
+  },
+  containerRTL: {
+    textAlign: 'right',
+    direction: 'rtl',
+  }
+});
 
 export default Login;

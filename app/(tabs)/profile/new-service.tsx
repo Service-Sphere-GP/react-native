@@ -196,7 +196,7 @@ const NewService = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View className="bg-white px-4 pb-12 h-full justify-between">
+        <ScrollView className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
             <Header title="New Service" showBackButton={true} />
             <View>
@@ -299,7 +299,7 @@ const NewService = () => {
               Add new service
             </Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       )}
     </>
   );
