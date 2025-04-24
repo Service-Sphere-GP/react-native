@@ -195,7 +195,10 @@ const ServiceDetailsPage = () => {
                 className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base ${textStyle.className}`}
                 style={textStyle.style}
               >
-                {service?.status}
+                {service?.status === 'active'
+                  ? t('services:active')
+                    : t('services:inactive')}
+                  
               </Text>
             </View>
             <ProfileHeader
@@ -245,20 +248,20 @@ const ServiceDetailsPage = () => {
           </View>
           <View className="bg-white px-6 py-2">
             <Text 
-              className={`text-2xl font-semibold border-b border-gray-200 py-2 mb-4 ${textStyle.className}`}
+              className={`text-2xl font-semibold border-b border-gray-200 py-2 mb-4 `}
               style={textStyle.style}
             >
               {t('services:ratingsAndReviews')}
             </Text>
-            <View className="items-start gap-3 border-b border-gray-200 mb-4 pb-4">
+            <View className={`gap-3 border-b border-gray-200 mb-4 pb-4 ${isRTL  ? 'items-end' : 'items-start'}`}>
               <Text 
-                className={`text-xl font-medium ${textStyle.className}`}
+                className={`text-xl font-medium `}
                 style={textStyle.style}
               >
                 {t('services:overallRating')}
               </Text>
               <Text 
-                className={`text-2xl font-bold ${textStyle.className}`}
+                className={`text-2xl font-bold `}
                 style={textStyle.style}
               >
                 {service?.rating_average.toFixed(2)}
@@ -266,7 +269,7 @@ const ServiceDetailsPage = () => {
               <Rating value={service?.rating_average} />
               <View className="border-t border-gray-200 py-4">
                 <Text 
-                  className={`text-2xl font-semibold text-[#147E93] mb-3 ${textStyle.className}`}
+                  className={`text-2xl font-semibold text-[#147E93] mb-3 text-right`}
                   style={textStyle.style}
                 >
                   ✨ {t('services:howToWriteReview')}
@@ -347,12 +350,12 @@ const ServiceDetailsPage = () => {
               }}
             >
               <Text 
-                className={`font-medium text-lg text-center ${textStyle.className}`}
+                className={`font-medium text-lg text-center `}
                 style={textStyle.style}
               >
                 {service?.service_provider.full_name === user?.full_name
                   ? t('services:editYourService')
-                  : t('services:openChatWith', { name: service?.service_provider.full_name })}
+                  : t('services:bookService')}
               </Text>
             </TouchableOpacity>
           </View>

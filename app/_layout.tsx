@@ -35,7 +35,7 @@ function RootLayoutWithoutContext() {
     // Arabic fonts
     'Montserrat-Arabic-Bold-700': require('../assets/fonts/Montserrat-Arabic Bold 700.otf'),
     'Montserrat-Arabic-Medium-500': require('../assets/fonts/Montserrat-Arabic Medium 500.otf'),
-    'Montserrat-Arabic-Regular-400': require('../assets/fonts/Montserrat-Arabic Regular 400.otf'),
+    'Montserrat-Arabic-Regular-400': require('../assets/fonts/Montserrat-Arabic.otf'),
     'Montserrat-Arabic-Light-300': require('../assets/fonts/Montserrat-Arabic Light 300.otf'),
     'Montserrat-Arabic-Thin-250': require('../assets/fonts/Montserrat-Arabic Thin 250.otf'),
     'Montserrat-Arabic-SemiBold-600': require('../assets/fonts/Montserrat-Arabic SemiBold 600.otf'),
@@ -55,15 +55,15 @@ function RootLayoutWithoutContext() {
   }
 
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-        <Stack.Screen name="admin" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-      <Toast />
-    </ThemeProvider>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+          <Stack.Screen name="admin" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+        <Toast />
+      </ThemeProvider>
   );
 }
 

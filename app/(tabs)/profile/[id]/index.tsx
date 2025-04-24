@@ -8,6 +8,10 @@ import ProfileDetail from '@/components/profile/ProfileDetail';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '@/components/Header';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
+
 interface User {
   first_name: string;
   full_name: string;
@@ -20,6 +24,9 @@ interface User {
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const { t } = useTranslation(['profile', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -59,7 +66,7 @@ export default function Profile() {
         </View>
       ) : (
         <View className="px-1 py-4 xs:px-4 gap-4">
-          <Header title="Profile" showBackButton={true} />
+          <Header title={t('profile:title')} showBackButton={true} />
           <ProfileHeader
             fullName={user?.full_name}
             rating={user?.rating_average}
@@ -69,15 +76,15 @@ export default function Profile() {
           <View className="bg-white rounded-3xl w-full">
             {user?.role === 'service_provider' && (
               <ProfileDetail
-                title="Services"
-                description={`Services Provided by ${user?.first_name}`}
+                title={t('profile:services')}
+                description={t('profile:servicesProvidedBy', { name: user?.first_name })}
                 image={require('@/assets/images/services.png')}
                 onPress={() => router.push(`/profile/${id}/services`)}
               />
             )}
             <ProfileDetail
-              title="Reviews"
-              description={`What people are saying about ${user?.first_name}`}
+              title={t('profile:myReviews')}
+              description={t('profile:whatPeopleSaying', { name: user?.first_name })}
               image={require('@/assets/images/reviews.png')}
               onPress={() => router.push(`/profile/${id}/reviews`)}
             />

@@ -15,6 +15,9 @@ import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 interface ServiceData {
   service_name: string;
@@ -29,6 +32,9 @@ interface ServiceData {
 }
 const NewService = () => {
   const router = useRouter();
+  const { t } = useTranslation(['services', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<string[]>([]);
   const [service, setService] = useState<ServiceData>({
@@ -100,7 +106,7 @@ const NewService = () => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
+      alert(t('services:permissionDenied'));
       return;
     }
 
@@ -194,16 +200,28 @@ const NewService = () => {
       {loading ? (
         <View className="flex items-center justify-center h-screen">
           <ActivityIndicator size="large" color="#0000ff" />
+          <Text 
+            className={`mt-2 text-gray-600 ${textStyle.className}`}
+            style={textStyle.style}
+          >
+            {t('common:loading')}
+          </Text>
         </View>
       ) : (
         <ScrollView className="bg-white px-4 pb-12 h-full justify-between">
           <View className="gap-4">
-            <Header title="New Service" showBackButton={true} />
+            <Header title={t('services:newService')} showBackButton={true} />
             <View>
-              <Text className="font-Roboto-Medium text-lg">Name</Text>
+              <Text 
+                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:name')}
+              </Text>
               <TextInput
-                placeholder="Enter service name"
-                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                placeholder={t('services:enterServiceName')}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
+                style={textStyle.style}
                 onChangeText={(text) =>
                   setService({ ...service, service_name: text })
                 }
@@ -211,8 +229,13 @@ const NewService = () => {
             </View>
 
             <View>
-              <View className="flex-row justify-between items-center">
-                <Text className="font-Roboto-Medium text-lg">Images</Text>
+              <View className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Text 
+                  className={`font-Roboto-Medium text-lg ${textStyle.className}`}
+                  style={textStyle.style}
+                >
+                  {t('services:images')}
+                </Text>
                 <TouchableOpacity
                   className="bg-[#147E93] px-[6px] rounded-md"
                   onPress={addImagesHandler}
@@ -228,7 +251,7 @@ const NewService = () => {
                 className="mt-3"
               >
                 {images.map((image, index) => (
-                  <View key={index} className="mr-3 relative">
+                  <View key={index} className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}>
                     <Image
                       source={{ uri: image }}
                       style={{ width: 130, height: 108, borderRadius: 10 }}
@@ -245,10 +268,16 @@ const NewService = () => {
               </ScrollView>
             </View>
             <View>
-              <Text className="font-Roboto-Medium text-lg">Description</Text>
+              <Text 
+                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:description')}
+              </Text>
               <TextInput
-                placeholder="Enter service description"
-                className="border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 "
+                placeholder={t('services:enterServiceDescription')}
+                className={`border border-gray-300 rounded-md px-4 py-5 h-16 w-full mb-3 ${textStyle.className}`}
+                style={textStyle.style}
                 multiline={true}
                 onChangeText={(text) =>
                   setService({ ...service, description: text })
@@ -257,7 +286,12 @@ const NewService = () => {
             </View>
 
             <View style={{ zIndex: 1000 }}>
-              <Text className="font-Roboto-Medium text-lg">Category</Text>
+              <Text 
+                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:category')}
+              </Text>
               <DropDownPicker
                 open={openCategory}
                 value={categoryValue}
@@ -265,7 +299,7 @@ const NewService = () => {
                 setOpen={setOpenCategory}
                 setValue={setCategoryValue}
                 setItems={setCategoryItems}
-                placeholder="Select category"
+                placeholder={t('services:selectCategory')}
                 zIndex={1000}
                 zIndexInverse={2000}
                 style={{
@@ -277,14 +311,24 @@ const NewService = () => {
                   backgroundColor: '#fff',
                   borderColor: '#ccc',
                 }}
+                textStyle={{
+                  ...textStyle.style,
+                  textAlign: isRTL ? 'right' : 'left'
+                }}
               />
             </View>
 
             <View>
-              <Text className="font-Roboto-Medium text-lg">Price</Text>
+              <Text 
+                className={`font-Roboto-Medium text-lg ${textStyle.className}`}
+                style={textStyle.style}
+              >
+                {t('services:price')}
+              </Text>
               <TextInput
-                placeholder="Enter service price"
-                className="border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3"
+                placeholder={t('services:enterServicePrice')}
+                className={`border border-gray-300 rounded-md px-4 py-3 h-12 w-full mb-3 ${textStyle.className}`}
+                style={textStyle.style}
                 onChangeText={(text) =>
                   setService({ ...service, base_price: text })
                 }
@@ -292,11 +336,14 @@ const NewService = () => {
             </View>
           </View>
           <TouchableOpacity
-            className="flex-row items-center justify-end"
+            className={`flex-row items-center ${isRTL ? 'justify-start' : 'justify-end'}`}
             onPress={addNewServiceHandler}
           >
-            <Text className="text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3">
-              Add new service
+            <Text 
+              className={`text-center font-Roboto-Medium text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
+              style={textStyle.style}
+            >
+              {t('services:addNewService')}
             </Text>
           </TouchableOpacity>
         </ScrollView>

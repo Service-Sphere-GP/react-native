@@ -60,7 +60,19 @@
     "taxId": "الرقم الضريبي",
     "enterBusinessName": "أدخل اسم الشركة",
     "enterBusinessAddress": "أدخل عنوان الشركة",
-    "enterTaxId": "أدخل الرقم الضريبي"
+    "enterTaxId": "أدخل الرقم الضريبي",
+    
+    "confirmCode": "تأكيد الرمز",
+    "enterCodeSentTo": "الرجاء إدخال رمز التحقق المرسل إلى",
+    "incorrectCode": "رمز التحقق الذي أدخلته غير صحيح.",
+    "tryAgainOrResend": "يرجى المحاولة مرة أخرى أو طلب رمز جديد.",
+    "didntReceiveCode": "لم تستلم الرمز؟",
+    "resendCode": "إعادة إرسال الرمز",
+    "registrationCompleted": "اكتمل التسجيل!",
+    "congratsRegistration": "تهانينا! تم إكمال تسجيلك بنجاح.",
+    "allSetToExplore": "أنت جاهز الآن لاستكشاف خدماتنا.",
+    "clickBelowForHomepage": "انقر على الزر أدناه للانتقال إلى الصفحة الرئيسية.",
+    "getStarted": "البدء الآن"
   },
   "home": {
     "title": "الرئيسية",
@@ -86,7 +98,37 @@
     "addService": "إضافة خدمة جديدة",
     "serviceProvider": "مزود الخدمة",
     "reviews": "التقييمات",
-    "currency": "ج.م"
+    "currency": "ج.م",
+    
+    "ratingsAndReviews": "التقييمات والمراجعات",
+    "overallRating": "التقييم العام",
+    "howToWriteReview": "كيفية كتابة مراجعة جيدة",
+    "reviewTip1": "شارك تجربتك الشخصية مع الخدمة",
+    "reviewTip2": "قم بتضمين تفاصيل محددة عما أعجبك أو لم يعجبك",
+    "reviewTip3": "أبرز نقاط القوة ومجالات التحسين",
+    "reviewTip4": "كن منصفًا وبناءً في ملاحظاتك",
+    "noReviews": "لا توجد مراجعات حتى الآن",
+    "beTheFirst": "كن أول من يقيم هذه الخدمة",
+    "reviewVerified": "مراجعة محققة",
+    "helpful": "مفيد",
+    "reportReview": "الإبلاغ عن المراجعة",
+    "bookService": "حجز الخدمة",
+    "editYourService": "تعديل خدمتك",
+    
+    "editService": "تعديل الخدمة",
+    "enterServiceName": "أدخل اسم الخدمة",
+    "enterServiceDescription": "أدخل وصف الخدمة",
+    "selectCategory": "اختر الفئة",
+    "enterServicePrice": "أدخل سعر الخدمة",
+    "status": "الحالة",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "updateService": "تحديث الخدمة",
+    "permissionDenied": "لقد رفضت السماح لهذا التطبيق بالوصول إلى صورك!",
+    "addImage": "إضافة صورة",
+    "myServices": "خدماتي",
+    "addNewService": "إضافة خدمة جديدة",
+    "noServicesFound": "لم يتم العثور على خدمات"
   },
   "bookings": {
     "title": "الحجوزات",
@@ -117,11 +159,59 @@
     "adminPanel": "لوحة الإدارة",
     "adminAccess": "الوصول إلى لوحة الإدارة",
     "deleteAccount": "حذف الحساب",
-    "joined": "انضم في"
+    "joined": "انضم في",
+    
+    "notifications": "الإشعارات",
+    "noNotifications": "لا توجد إشعارات",
+    "markAllRead": "تحديد الكل كمقروء",
+    "clearAllNotifications": "مسح جميع الإشعارات",
+    
+    "reviewsOf": "تقييمات {{name}}",
+    "noReviewsYet": "لا توجد تقييمات حتى الآن",
+    "reviewsLoading": "جاري تحميل التقييمات...",
+    "reviewsByDate": "التقييمات حسب التاريخ",
+    "services": "الخدمات",
+    "servicesProvidedBy": "الخدمات المقدمة من {{name}}",
+    "whatPeopleSaying": "ما يقوله الناس عن {{name}}"
+  },
+  "reviews": {
+    "stars": "نجوم",
+    "star": "نجمة",
+    "writeReview": "كتابة مراجعة",
+    "yourRating": "تقييمك",
+    "yourReview": "مراجعتك",
+    "submitReview": "إرسال المراجعة",
+    "editReview": "تعديل المراجعة",
+    "deleteReview": "حذف المراجعة",
+    "reviewPlaceholder": "شارك تجربتك مع هذه الخدمة...",
+    "reviewSubmitted": "تم إرسال المراجعة بنجاح",
+    "reviewUpdated": "تم تحديث المراجعة بنجاح",
+    "reviewDeleted": "تم حذف المراجعة بنجاح",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه المراجعة؟",
+    "recentReviews": "المراجعات الأخيرة",
+    "allReviews": "جميع المراجعات",
+    "filterByRating": "تصفية حسب التقييم",
+    "sortBy": "الترتيب حسب",
+    "newest": "الأحدث أولاً",
+    "oldest": "الأقدم أولاً",
+    "highestRated": "الأعلى تقييمًا",
+    "lowestRated": "الأقل تقييمًا"
+  },
+  "notifications": {
+    "success": "نجاح",
+    "error": "خطأ",
+    "allMarkedRead": "تم تحديد جميع الإشعارات كمقروءة",
+    "failedToUpdate": "فشل تحديث الإشعارات",
+    "allCleared": "تم مسح جميع الإشعارات",
+    "failedToClear": "فشل مسح الإشعارات"
   },
   "chat": {
     "typeMessage": "اكتب رسالة",
-    "send": "إرسال"
+    "send": "إرسال",
+    "noMessages": "لا توجد رسائل حتى الآن. ابدأ محادثة!",
+    "me": "أنا",
+    "user": "مستخدم",
+    "chat": "محادثة"
   },
   "validation": {
     "required": "{{field}} مطلوب",

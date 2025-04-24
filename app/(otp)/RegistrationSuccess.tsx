@@ -3,10 +3,16 @@ import { router } from 'expo-router';
 import CustomButton from '@/components/CustomButton';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 const RegistrationSuccess = () => {
   const { width } = useWindowDimensions();
   const [role, setRole] = useState('');
+  const { t } = useTranslation(['auth', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -32,10 +38,10 @@ const RegistrationSuccess = () => {
   }, []);
 
   const handleGetStarted = () => {
-    if (role === 'customer') {
-      router.push('/(otp)/customer/login');
+    if (role === 'PROVIDER') {
+      router.replace('/(tabs)/profile/me');
     } else {
-      router.push('/(otp)/customer/login');
+      router.replace('/(tabs)/services');
     }
   };
 
@@ -63,27 +69,27 @@ const RegistrationSuccess = () => {
         </View>
 
         <Text
-          className="mt-8 text-[#030B19] text-center"
-          style={{ fontSize: width * 0.06, fontFamily: 'Roboto-Bold' }}
+          className="mt-8 text-[#030B19] text-center font-bold"
+          style={{ fontSize: width * 0.06, ...textStyle.style }}
         >
-          Registration Completed
+          {t('auth:registrationCompleted')}
         </Text>
 
         <Text
-          className="mt-6 font-Roboto text-[#363E4C] text-center px-8"
-          style={{ fontSize: width * 0.04, fontFamily: 'Roboto-Regular' }}
+          className={`mt-6 text-[#363E4C] px-8  ${isRTL ? 'text-right' : 'text-left'}`}
+          style={{ fontSize: width * 0.04, ...textStyle.style }}
         >
-          Congratulations! Your registration is complete{'\n'}
-          You're all set to start exploring.Click the button{'\n'}
-          below to go to the homepage.{'\n'}
+          {t('auth:congratsRegistration')}{'\n'}
+          {t('auth:allSetToExplore')}{'\n'}
+          {t('auth:clickBelowForHomepage')}{'\n'}
         </Text>
 
         <View className="w-full px-6 mt-12">
           <CustomButton
             onPress={handleGetStarted}
-            title="Get Started"
-            containerStyles={`mx-auto w-full py-3 rounded-lg bg-[#FDBC10] justify-center items-center`}
-            textStyles={`text-xl text-[#030B19] font-Roboto-SemiBold`}
+            title={t('auth:getStarted')}
+            containerStyles="mx-auto w-full py-3 rounded-lg bg-[#FDBC10] justify-center items-center"
+            textStyles="text-xl text-[#030B19] font-semibold"
             style={{
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },

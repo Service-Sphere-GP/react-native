@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SocketService from './SocketService';
 import ToastService from './ToastService';
 import ApiService from './ApiService';
+import { useTranslation } from 'react-i18next';
 
 // Define the shape of a notification
 export interface Notification {
@@ -39,6 +40,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
+  const { t } = useTranslation(['notifications']);
 
   // Fetch all notifications
   const refreshNotifications = async () => {
@@ -66,10 +68,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         prev.map((notification) => ({ ...notification, read: true })),
       );
       setUnreadCount(0);
-      ToastService.success('Success', 'All notifications marked as read');
+      ToastService.success(t('notifications:success'), t('notifications:allMarkedRead'));
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
-      ToastService.error('Error', 'Failed to update notifications');
+      ToastService.error(t('notifications:error'), t('notifications:failedToUpdate'));
     }
   };
 
@@ -100,10 +102,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       );
       setNotifications([]);
       setUnreadCount(0);
-      ToastService.success('Success', 'All notifications cleared');
+      ToastService.success(t('notifications:success'), t('notifications:allCleared'));
     } catch (error) {
       console.error('Failed to clear notifications:', error);
-      ToastService.error('Error', 'Failed to clear notifications');
+      ToastService.error(t('notifications:error'), t('notifications:failedToClear'));
     }
   };
 

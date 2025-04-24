@@ -21,11 +21,13 @@ const ProfileHeader = ({
 
   return (
     <TouchableOpacity
-      className="bg-[#147E93] w-full p-5 rounded-3xl shadow-md justify-between"
+      className={`bg-[#147E93] ${!isRTL ? 'flex-row' : 'flex-row-reverse'} items-center w-full p-5 rounded-3xl shadow-md justify-between`}
       onPress={onPress}
       style={isRTL ? styles.containerRTL : {}}
     >
-      <View className={`flex-row items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <View
+        className={`flex-row items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+      >
         <Image
           source={{ uri: imageUrl }}
           style={{
@@ -36,40 +38,45 @@ const ProfileHeader = ({
           }}
         />
         <View>
-          <Text 
+          <Text
             className={`text-lg text-white font-medium ${textStyle.className}`}
             style={textStyle.style}
           >
             {fullName}
           </Text>
           {role && (
-            <Text 
+            <Text
               className={`text-[#D9DEE4] text-sm font-light ${textStyle.className}`}
               style={textStyle.style}
             >
               {role}
             </Text>
           )}
-          <View className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Text 
+          <View
+            className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            <Text
               className={`text-[#D9DEE4] ${textStyle.className}`}
               style={textStyle.style}
             >
               {rating?.toFixed(2)}
             </Text>
-            <Rating
-              readonly
-              startingValue={rating}
-              imageSize={15}
-              tintColor="#147E93"
-            />
+            {
+              rating &&
+              <Rating
+                readonly
+                startingValue={rating}
+                imageSize={15}
+                tintColor="#147E93"
+              />
+            }
           </View>
         </View>
       </View>
       {onPress && (
-        <Image 
-          source={require('@/assets/images/whiteArrow.png')} 
-          style={isRTL ? styles.flippedImage : {}}
+        <Image
+          source={require('@/assets/images/whiteArrow.png')}
+          style={!isRTL ? styles.flippedImage : {}}
         />
       )}
     </TouchableOpacity>
@@ -81,8 +88,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   flippedImage: {
-    transform: [{ scaleX: -1 }] // Horizontally flip the image
-  }
+    transform: [{ scaleX: -1 }], // Horizontally flip the image
+  },
 });
 
 export default ProfileHeader;

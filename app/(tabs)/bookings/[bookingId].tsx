@@ -8,6 +8,10 @@ import { Ionicons } from '@expo/vector-icons';
 import SocketService from '@/constants/SocketService';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+// Import translation hooks
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/src/i18n/LanguageContext';
+import { getTextStyle } from '@/src/utils/fontUtils';
 
 // Message type definition
 interface Message {
@@ -49,6 +53,10 @@ const ChatRoomScreen = () => {
   const [receiverDetails, setReceiverDetails] =
     useState<ReceiverDetails | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  // Add translation and RTL support
+  const { t } = useTranslation(['chat', 'common']);
+  const { isRTL } = useLanguage();
+  const textStyle = getTextStyle(isRTL);
 
   // Fetch receiver details
   const fetchReceiverDetails = async (bookingId: string) => {
@@ -193,12 +201,12 @@ const ChatRoomScreen = () => {
     const isSentByMe = senderId === currentUserId;
 
     // Extract sender name
-    let senderName = 'User';
+    let senderName = t('chat:user');
     if (typeof message.sender_id === 'object' && message.sender_id !== null) {
-      senderName = message.sender_id.full_name || 'User';
+      senderName = message.sender_id.full_name || t('chat:user');
     } else {
       if (senderId === currentUserId) {
-        senderName = 'Me';
+        senderName = t('chat:me');
       } else if (receiverDetailsRef.current) {
         // Use the ref to get the latest receiver details
         senderName = receiverDetailsRef.current.full_name;
@@ -257,12 +265,15 @@ const ChatRoomScreen = () => {
       >
         {loading ? (
           <View className="flex-1 items-center justify-center">
-            <Text>Loading messages...</Text>
+            <Text style={textStyle.style}>{t('common:loading')}</Text>
           </View>
         ) : messages.length === 0 ? (
           <View className="flex-1 items-center justify-center">
-            <Text className="text-gray-500">
-              No messages yet. Start a conversation!
+            <Text 
+              className="text-gray-500"
+              style={textStyle.style}
+            >
+              {t('chat:noMessages')}
             </Text>
           </View>
         ) : (
@@ -273,8 +284,11 @@ const ChatRoomScreen = () => {
             >
               {/* Sender's Info */}
               {!message.isMe && (
-                <View className="flex-row items-center mt-2">
-                  <Text className="text-sm text-[#6C757D]">
+                <View className={`flex-row items-center mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Text 
+                    className="text-sm text-[#6C757D]"
+                    style={textStyle.style}
+                  >
                     {message.sender}
                   </Text>
                 </View>
@@ -290,6 +304,10 @@ const ChatRoomScreen = () => {
                     className={`text-base ${
                       message.isMe ? 'text-white' : 'text-[#030B19]'
                     }`}
+                    style={{
+                      ...textStyle.style,
+                      textAlign: isRTL ? 'right' : 'left',
+                    }}
                   >
                     {message.text}
                   </Text>
@@ -299,12 +317,13 @@ const ChatRoomScreen = () => {
               <View
                 className={`flex-row items-start mt-1 ${
                   message.isMe ? 'justify-end' : 'justify-start'
-                }`}
+                } ${isRTL ? 'flex-row-reverse' : ''}`}
               >
                 <Text
                   className={`text-xs ${
                     message.isMe ? 'text-[#6C757D] mb-6' : 'text-[#6C757D] mb-2'
                   }`}
+                  style={textStyle.style}
                 >
                   {message.time}
                 </Text>
@@ -313,7 +332,7 @@ const ChatRoomScreen = () => {
                     name="checkmark-done"
                     size={16}
                     color={message.status === 'read' ? '#147E93' : '#6C757D'}
-                    className="ml-1 mb-5"
+                    className={isRTL ? 'mr-1 mb-5' : 'ml-1 mb-5'}
                   />
                 )}
               </View>

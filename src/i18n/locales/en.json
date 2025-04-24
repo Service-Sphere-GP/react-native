@@ -60,7 +60,19 @@
     "taxId": "Tax ID",
     "enterBusinessName": "Enter your business name",
     "enterBusinessAddress": "Enter your business address",
-    "enterTaxId": "Enter your tax ID"
+    "enterTaxId": "Enter your tax ID",
+    
+    "confirmCode": "Confirm Code",
+    "enterCodeSentTo": "Please enter the verification code sent to",
+    "incorrectCode": "The verification code you entered is incorrect.",
+    "tryAgainOrResend": "Please try again or request a new code.",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend Code",
+    "registrationCompleted": "Registration Completed!",
+    "congratsRegistration": "Congratulations! Your registration has been successfully completed.",
+    "allSetToExplore": "You're all set to explore our services.",
+    "clickBelowForHomepage": "Click the button below to go to the homepage.",
+    "getStarted": "Get Started"
   },
   "home": {
     "title": "Home",
@@ -86,7 +98,37 @@
     "addService": "Add new service",
     "serviceProvider": "Service Provider",
     "reviews": "Reviews",
-    "currency": "EGP"
+    "currency": "EGP",
+    
+    "ratingsAndReviews": "Ratings & Reviews",
+    "overallRating": "Overall Rating",
+    "howToWriteReview": "How to write a good review",
+    "reviewTip1": "Share your personal experience with the service",
+    "reviewTip2": "Include specific details about what you liked or disliked",
+    "reviewTip3": "Highlight the strengths and areas for improvement",
+    "reviewTip4": "Be fair and constructive in your feedback",
+    "noReviews": "No reviews yet",
+    "beTheFirst": "Be the first to review this service",
+    "reviewVerified": "Verified review",
+    "helpful": "Helpful",
+    "reportReview": "Report review",
+    "bookService": "Book Service",
+    "editYourService": "Edit Your Service",
+    
+    "editService": "Edit Service",
+    "enterServiceName": "Enter service name",
+    "enterServiceDescription": "Enter service description",
+    "selectCategory": "Select category",
+    "enterServicePrice": "Enter service price",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "updateService": "Update service",
+    "permissionDenied": "You've refused to allow this app to access your photos!",
+    "addImage": "Add image",
+    "myServices": "My Services",
+    "addNewService": "Add new service",
+    "noServicesFound": "No services found"
   },
   "bookings": {
     "title": "Bookings",
@@ -117,11 +159,59 @@
     "adminPanel": "Admin Panel",
     "adminAccess": "Access administration dashboard",
     "deleteAccount": "Delete Account",
-    "joined": "Joined"
+    "joined": "Joined",
+    
+    "notifications": "Notifications",
+    "noNotifications": "There are no notifications",
+    "markAllRead": "Mark all as read",
+    "clearAllNotifications": "Clear All Notifications",
+    
+    "reviewsOf": "Reviews of {{name}}",
+    "noReviewsYet": "No reviews yet",
+    "reviewsLoading": "Loading reviews...",
+    "reviewsByDate": "Reviews by date",
+    "services": "Services",
+    "servicesProvidedBy": "Services provided by {{name}}",
+    "whatPeopleSaying": "What people are saying about {{name}}"
+  },
+  "reviews": {
+    "stars": "stars",
+    "star": "star",
+    "writeReview": "Write a Review",
+    "yourRating": "Your Rating",
+    "yourReview": "Your Review",
+    "submitReview": "Submit Review",
+    "editReview": "Edit Review",
+    "deleteReview": "Delete Review",
+    "reviewPlaceholder": "Share your experience with this service...",
+    "reviewSubmitted": "Review submitted successfully",
+    "reviewUpdated": "Review updated successfully",
+    "reviewDeleted": "Review deleted successfully",
+    "confirmDelete": "Are you sure you want to delete this review?",
+    "recentReviews": "Recent Reviews",
+    "allReviews": "All Reviews",
+    "filterByRating": "Filter by Rating",
+    "sortBy": "Sort by",
+    "newest": "Newest first",
+    "oldest": "Oldest first",
+    "highestRated": "Highest rated",
+    "lowestRated": "Lowest rated"
+  },
+  "notifications": {
+    "success": "Success",
+    "error": "Error",
+    "allMarkedRead": "All notifications marked as read",
+    "failedToUpdate": "Failed to update notifications",
+    "allCleared": "All notifications cleared",
+    "failedToClear": "Failed to clear notifications"
   },
   "chat": {
     "typeMessage": "Type a message",
-    "send": "Send"
+    "send": "Send",
+    "noMessages": "No messages yet. Start a conversation!",
+    "me": "Me",
+    "user": "User",
+    "chat": "Chat"
   },
   "validation": {
     "required": "{{field}} is required",
