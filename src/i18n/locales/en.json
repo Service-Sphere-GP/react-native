@@ -169,7 +169,10 @@
     "reviewsOf": "Reviews of {{name}}",
     "noReviewsYet": "No reviews yet",
     "reviewsLoading": "Loading reviews...",
-    "reviewsByDate": "Reviews by date"
+    "reviewsByDate": "Reviews by date",
+    "services": "Services",
+    "servicesProvidedBy": "Services provided by {{name}}",
+    "whatPeopleSaying": "What people are saying about {{name}}"
   },
   "reviews": {
     "stars": "stars",

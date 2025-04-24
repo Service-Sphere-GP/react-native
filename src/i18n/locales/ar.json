@@ -169,7 +169,10 @@
     "reviewsOf": "تقييمات {{name}}",
     "noReviewsYet": "لا توجد تقييمات حتى الآن",
     "reviewsLoading": "جاري تحميل التقييمات...",
-    "reviewsByDate": "التقييمات حسب التاريخ"
+    "reviewsByDate": "التقييمات حسب التاريخ",
+    "services": "الخدمات",
+    "servicesProvidedBy": "الخدمات المقدمة من {{name}}",
+    "whatPeopleSaying": "ما يقوله الناس عن {{name}}"
   },
   "reviews": {
     "stars": "نجوم",
