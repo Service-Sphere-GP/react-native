@@ -47,7 +47,7 @@
             "./assets/fonts/Roboto-Medium.ttf",
             "./assets/fonts/Roboto-Light.ttf",
             "./assets/fonts/Roboto-Thin.ttf",
-            "./assets/fonts/Roboto-SemiBold.ttf",
+            "./assets/fonts/Roboto-Semibold.ttf", // Corrected filename
             "./assets/fonts/Roboto-ExtraBold.ttf",
             "./assets/fonts/Roboto-ExtraLight.ttf",
             "./assets/fonts/Pacifico-Regular.ttf",

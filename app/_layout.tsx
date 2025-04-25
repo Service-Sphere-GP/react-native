@@ -27,7 +27,7 @@ function RootLayoutWithoutContext() {
     'Roboto-Bold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap',
     'Roboto-Light': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap',
     'Roboto-Thin': 'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap',
-    'Roboto-SemiBold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap',
+    'Roboto-Semibold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap', // Corrected key
     'Roboto-ExtraBold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@800&display=swap', 
     'Roboto-ExtraLight': 'https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap',
     'Pacifico-Regular': 'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',

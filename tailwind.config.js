@@ -12,7 +12,7 @@ module.exports = {
         'Roboto-Medium': ['Roboto-Medium', 'Roboto', 'sans-serif'],
         'Roboto-Light': ['Roboto-Light', 'Roboto', 'sans-serif'],
         'Roboto-Thin': ['Roboto-Thin', 'Roboto', 'sans-serif'],
-        'Roboto-SemiBold': ['Roboto-SemiBold', 'Roboto', 'sans-serif'],
+        'Roboto-Semibold': ['Roboto-Semibold', 'Roboto', 'sans-serif'], // Corrected name
         'Roboto-ExtraBold': ['Roboto-ExtraBold', 'Roboto', 'sans-serif'],
         'Roboto-ExtraLight': ['Roboto-ExtraLight', 'Roboto', 'sans-serif'],
         'Pacifico-Regular': ['Pacifico', 'cursive'],
