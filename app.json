@@ -21,7 +21,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#147e93"
       },
-      "package": "service.sphere"
+      "package": "com.servicesphere.app"
     },
     "web": {
       "bundler": "metro",
@@ -47,10 +47,21 @@
             "./assets/fonts/Roboto-Medium.ttf",
             "./assets/fonts/Roboto-Light.ttf",
             "./assets/fonts/Roboto-Thin.ttf",
-            "./assets/fonts/Roboto-Semibold.ttf",
+            "./assets/fonts/Roboto-SemiBold.ttf",
             "./assets/fonts/Roboto-ExtraBold.ttf",
             "./assets/fonts/Roboto-ExtraLight.ttf",
-            "./assets/fonts/Pacifico-Regular.ttf"
+            "./assets/fonts/Pacifico-Regular.ttf",
+            "./assets/fonts/Montserrat-Arabic Black 900.otf",
+            "./assets/fonts/Montserrat-Arabic Bold 700.otf",
+            "./assets/fonts/Montserrat-Arabic ExtraBold 800.otf",
+            "./assets/fonts/Montserrat-Arabic ExtraLight 275.otf",
+            "./assets/fonts/Montserrat-Arabic Light 300.otf",
+            "./assets/fonts/Montserrat-Arabic Medium 500.otf",
+            "./assets/fonts/Montserrat-Arabic SemiBold 600.otf",
+            "./assets/fonts/Montserrat-Arabic Thin 250.otf",
+            "./assets/fonts/Montserrat-Arabic.otf",
+            "./assets/fonts/Montserrat-Regular.otf",
+            "./assets/fonts/SpaceMono-Regular.ttf"
           ]
         }
       ]
