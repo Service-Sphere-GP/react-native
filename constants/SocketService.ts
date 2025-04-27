@@ -3,8 +3,10 @@ import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Base URL for WebSocket connection
-const SOCKET_URL =
-  Platform.OS === 'web' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+// const SOCKET_URL =
+//   Platform.OS === 'web' ? 'http://localhost:3000' : 'http://10.0.2.2:3000';
+
+const SOCKET_URL = 'https://service-sphere-9ad98507b341.herokuapp.com';
 
 class SocketService {
   private socket: Socket | null = null;
