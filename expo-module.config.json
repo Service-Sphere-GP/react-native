@@ -1,0 +1,22 @@
+{
+  "android": {
+    "modules": [
+      "expo-constants",
+      "expo-file-system", 
+      "expo-image-loader",
+      "expo-linking",
+      "expo-modules-core",
+      "expo-asset",
+      "expo-blur",
+      "expo-font",
+      "expo-haptics",
+      "expo-image",
+      "expo-image-picker",
+      "expo-keep-awake",
+      "expo-localization",
+      "expo-splash-screen",
+      "expo-system-ui",
+      "expo-web-browser"
+    ]
+  }
+}
