@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 import ToastService from '../../constants/ToastService';
 import ApiService from '../../constants/ApiService';
+import { API_ENDPOINTS } from '../../constants/ApiConfig';
 
 interface AdminUser {
   _id: string;
@@ -192,10 +193,28 @@ export default function AdminDashboard() {
       // Get user name before clearing storage
       const userName = adminUser?.full_name || 'Admin';
 
+      // Get refresh token for logout API call
+      const adminRefreshToken = await AsyncStorage.getItem('adminRefreshToken');
+
+      // Call logout API if refresh token exists
+      if (adminRefreshToken) {
+        try {
+          await ApiService.post(API_ENDPOINTS.LOGOUT, {
+            refreshToken: adminRefreshToken,
+          });
+        } catch (error) {
+          console.error('Logout API error:', error);
+          // Continue with local logout even if API call fails
+        }
+      }
+
       // Clear admin session data
-      await AsyncStorage.removeItem('adminAuthenticated');
-      await AsyncStorage.removeItem('adminToken');
-      await AsyncStorage.removeItem('adminUser');
+      await AsyncStorage.multiRemove([
+        'adminAuthenticated',
+        'adminToken',
+        'adminRefreshToken',
+        'adminUser',
+      ]);
 
       // Show logout toast
       ToastService.success('Logged Out Successfully', `Goodbye, ${userName}!`);

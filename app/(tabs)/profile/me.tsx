@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 // Import translation hook
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../../src/i18n/LanguageContext';
+import ApiService from '@/constants/ApiService';
 
 const ProfileComponent = () => {
   interface User {
@@ -76,11 +77,13 @@ const ProfileComponent = () => {
   };
   const logoutHandler = async () => {
     try {
-      await AsyncStorage.removeItem('user');
-      await AsyncStorage.removeItem('authToken');
+      // Use the ApiService logout method which handles refresh token cleanup
+      await ApiService.logout();
       router.push('/(otp)/customer/login');
     } catch (error) {
       console.error('Failed to logout', error);
+      // Even if logout fails, redirect to login
+      router.push('/(otp)/customer/login');
     }
   };
 

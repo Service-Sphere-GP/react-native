@@ -12,6 +12,8 @@ const API_BASE_URL = 'https://service-sphere-9ad98507b341.herokuapp.com/api/v1';
 const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
+  REFRESH_TOKEN: '/auth/refresh',
+  LOGOUT: '/auth/logout',
   GET_USER: '/users/:id',
   DELETE_CUSTOMER: '/users/customers/:id',
   DELETE_PROVIDER: '/users/service-providers/:id',
@@ -36,7 +38,7 @@ const API_ENDPOINTS = {
   GET_SERVICE_FEEDBACKS: '/feedback/service/:id',
   GET_CATEGORIES: '/categories',
   UPDATE_SERVICE: '/services/:id',
-  ADVICE: '/advice/me'
+  ADVICE: '/advice/me',
   // Add more endpoints as needed
 };
 

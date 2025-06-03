@@ -71,14 +71,17 @@ export default function AdminLogin() {
         response.data.status === 'success' &&
         response.data.data
       ) {
-        const { token, user } = response.data.data;
+        const { accessToken, refreshToken, user } = response.data.data;
 
         // Check if user has admin role
         if (user.role === 'admin') {
-          // Store admin session and token
-          await AsyncStorage.setItem('adminAuthenticated', 'true');
-          await AsyncStorage.setItem('adminToken', token);
-          await AsyncStorage.setItem('adminUser', JSON.stringify(user));
+          // Store admin session and both tokens
+          await AsyncStorage.multiSet([
+            ['adminAuthenticated', 'true'],
+            ['adminToken', accessToken],
+            ['adminRefreshToken', refreshToken],
+            ['adminUser', JSON.stringify(user)],
+          ]);
 
           // Show success toast
           ToastService.success(

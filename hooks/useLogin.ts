@@ -20,9 +20,13 @@ const useLogin = () => {
         password,
       });
 
+      // Backend now returns both accessToken and refreshToken
+      const { user, accessToken, refreshToken } = response.data.data;
+
       await AsyncStorage.multiSet([
-        ['user', JSON.stringify(response.data.data.user)],
-        ['authToken', response.data.data.token],
+        ['user', JSON.stringify(user)],
+        ['authToken', accessToken],
+        ['refreshToken', refreshToken],
       ]);
 
       return true;
