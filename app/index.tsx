@@ -7,25 +7,79 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import CustomButton from '@/components/CustomButton';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
 import { getTextStyle } from '@/src/utils/fontUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   const router = useRouter();
   const landingImage = require('@/assets/images/LandingImage.png');
   const { t } = useTranslation(['common']);
   const { isRTL } = useLanguage();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const { height } = useWindowDimensions();
   const responsiveHeight = height * 0.5;
 
   // Get text styles with appropriate font family and alignment
   const textStyle = getTextStyle(isRTL);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        console.log('🔍 Landing Page: Checking authentication status...');
+        
+        const userData = await AsyncStorage.getItem('user');
+        const authToken = await AsyncStorage.getItem('authToken');
+        
+        console.log('📱 Landing Page: User data exists:', !!userData);
+        console.log('🔑 Landing Page: Auth token exists:', !!authToken);
+        
+        if (userData && authToken) {
+          const parsedUser = JSON.parse(userData);
+          console.log('👤 Landing Page: User found with role:', parsedUser.role);
+          
+          // Redirect based on user role
+          if (parsedUser.role === 'customer') {
+            console.log('🏠 Landing Page: Redirecting customer to home page');
+            router.replace('/(tabs)/home');
+          } else if (parsedUser.role === 'service_provider') {
+            console.log('🏠 Landing Page: Redirecting service provider to home page');
+            router.replace('/(tabs)/home');
+          } else if (parsedUser.role === 'admin') {
+            console.log('🏠 Landing Page: Redirecting admin to dashboard');
+            router.replace('/admin/dashboard');
+          } else {
+            console.log('❓ Landing Page: Unknown user role:', parsedUser.role);
+            // For unknown roles, stay on landing page
+            setIsCheckingAuth(false);
+          }
+        } else {
+          console.log('🚫 Landing Page: No valid authentication found, staying on landing page');
+          setIsCheckingAuth(false);
+        }
+      } catch (error) {
+        console.error('❌ Landing Page: Error checking authentication:', error);
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, [router]);
+
+  // Show loading or nothing while checking authentication
+  if (isCheckingAuth) {
+    console.log('⏳ Landing Page: Still checking authentication...');
+    return null; // Or you could show a loading spinner here
+  }
+
+  console.log('✅ Landing Page: Rendering landing page for unauthenticated user');
 
   return (
     <ScrollView
