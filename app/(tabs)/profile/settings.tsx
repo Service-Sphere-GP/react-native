@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +16,7 @@ import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
 import * as ImagePicker from 'expo-image-picker';
+import { StyleSheet } from 'react-native';
 
 const Settings = () => {
   interface User {
@@ -25,7 +27,7 @@ const Settings = () => {
     role: string;
     email: string;
     password: string;
-    created_at: string;
+    createdAt: string;
     business_name?: string;
     business_address?: string;
     profile_image?: string;
@@ -219,13 +221,15 @@ const Settings = () => {
     }
   };
 
-  let created_at = '';
+  let createdAt = '';
   if (user) {
-    const date = new Date(user.created_at);
-    created_at = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    const date = new Date(user.createdAt);
+    createdAt = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
   }
   return (
-    <View>
+    <View style={styles.container}>
+      <Header title="Personal Data" showBackButton={true} />
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -260,123 +264,237 @@ const Settings = () => {
           </View>
         </View>
       </Modal>
+
       {user ? (
-        <View className="px-1 py-4 xs:px-4 gap-4">
-          <Header title="Personal Data" showBackButton={true} />
-          <View>
-            <Image
-              source={
-                image
-                  ? { uri: image }
-                  : require('@/assets/images/anonymous.jpg')
-              }
-              style={{
-                width: 118,
-                height: 118,
-                borderRadius: 59,
-                alignSelf: 'center',
-                marginTop: 10,
-              }}
-            />
-            <TouchableOpacity onPress={pickImage}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Profile Image Section */}
+          <View style={styles.profileImageSection}>
+            <View style={styles.profileImageContainer}>
               <Image
-                source={require('@/assets/images/edit.png')}
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 18,
-                  alignSelf: 'center',
-                  marginTop: -30,
-                  marginLeft: 70,
-                }}
+                source={
+                  image
+                    ? { uri: image }
+                    : require('@/assets/images/anonymous.jpg')
+                }
+                style={styles.profileImage}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={pickImage}
+                style={styles.editImageButton}
+              >
+                <Image
+                  source={require('@/assets/images/edit.png')}
+                  style={styles.editIcon}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <View className="bg-white rounded-3xl w-full p-3">
-            <Text className="font-Roboto-Medium text-lg">First Name</Text>
+          {/* Form Section */}
+          <View style={styles.formContainer}>
+            <Text style={styles.label}>First Name</Text>
             <TextInput
-              value={formData.first_name}
+              value={formData.first_name || ''}
               onChangeText={(value) => handleInputChange('first_name', value)}
               placeholder={user.first_name}
-              className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
+              style={styles.textInput}
               inputMode="text"
             />
 
-            <Text className="font-Roboto-Medium text-lg">Last Name</Text>
+            <Text style={styles.label}>Last Name</Text>
             <TextInput
-              value={formData.last_name}
+              value={formData.last_name || ''}
               onChangeText={(value) => handleInputChange('last_name', value)}
               placeholder={user.last_name}
-              className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
+              style={styles.textInput}
               inputMode="text"
             />
 
-            {user.role === 'service_provider' ? (
+            {user.role === 'service_provider' && (
               <>
-                <Text className="font-Roboto-Medium text-lg">
-                  Business Name
-                </Text>
+                <Text style={styles.label}>Business Name</Text>
                 <TextInput
-                  value={formData.business_name}
+                  value={formData.business_name || ''}
                   onChangeText={(value) =>
                     handleInputChange('business_name', value)
                   }
                   placeholder={user.business_name}
-                  className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
+                  style={styles.textInput}
                   inputMode="text"
                 />
-                <Text className="font-Roboto-Medium text-lg">
-                  Business Address
-                </Text>
+                <Text style={styles.label}>Business Address</Text>
                 <TextInput
-                  value={formData.business_address}
+                  value={formData.business_address || ''}
                   onChangeText={(value) =>
                     handleInputChange('business_address', value)
                   }
                   placeholder={user.business_address}
-                  className="border border-[#EDEDED] placeholder:text-[#363E4C] rounded-md h-12 px-2 mb-2 font-Roboto text-base focus:outline-[#147E93]"
+                  style={styles.textInput}
                   inputMode="text"
                 />
               </>
-            ) : null}
+            )}
 
             {isFormModified && (
               <TouchableOpacity
-                className="bg-[#147E93] rounded-xl shadow-md items-center px-6 py-3 mt-3"
+                style={styles.saveButton}
                 onPress={handleSaveChanges}
               >
-                <Text className="text-white font-Roboto-Medium text-base">
-                  Save Changes
-                </Text>
+                <Text style={styles.saveButtonText}>Save Changes</Text>
               </TouchableOpacity>
             )}
           </View>
 
-          <View className="flex-row justify-between">
-            <View className="flex-row gap-1 items-center">
-              <Text className="font-Roboto text-lg">Joined</Text>
-              <Text className="font-Roboto text-lg text-[#363E4C]">
-                {created_at}
-              </Text>
+          {/* Footer Section */}
+          <View style={styles.footerContainer} className='m-4'>
+            <View style={styles.joinedContainer}>
+              <Text style={styles.joinedText}>Joined </Text>
+              <Text style={styles.joinedDate}>{createdAt}</Text>
             </View>
+
             <TouchableOpacity
-              className="bg-red-500 rounded-xl shadow-md items-center px-6 py-3"
+              style={styles.deleteAccountButton}
               onPress={() => setModalVisible(true)}
             >
-              <Text className="text-white font-Roboto-Medium text-base">
-                Delete Account
-              </Text>
+              <Text style={styles.deleteAccountButtonText}>Delete Account</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       ) : (
-        <View className="flex items-center justify-center h-screen">
-          <ActivityIndicator size="large" color="#0000ff" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#147E93" />
+          <Text style={styles.loadingText}>Loading...</Text>
         </View>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 20,
+  },
+  profileImageSection: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  profileImageContainer: {
+    position: 'relative',
+  },
+  profileImage: {
+    width: 118,
+    height: 118,
+    borderRadius: 59,
+  },
+  editImageButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#147E93',
+  },
+  editIcon: {
+    width: 16,
+    height: 16,
+    tintColor: '#147E93',
+  },
+  formContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 20,
+    marginTop: 20,
+    elevation: 2,
+  },
+  label: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#333333',
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    height: 48,
+    paddingHorizontal: 12,
+    marginBottom: 16,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#333333',
+  },
+  saveButton: {
+    backgroundColor: '#147E93',
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  saveButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  joinedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  joinedText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#666666',
+  },
+  joinedDate: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 14,
+    color: '#333333',
+    marginLeft: 4,
+  },
+  deleteAccountButton: {
+    backgroundColor: '#FF3B30',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  deleteAccountButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#666666',
+  },
+});
 
 export default Settings;
