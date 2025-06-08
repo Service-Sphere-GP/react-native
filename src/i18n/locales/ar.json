@@ -100,6 +100,9 @@
     "showLess": "عرض أقل",
     "noConfirmedBookings": "لا توجد حجوزات مؤكدة",
     "loadingAdvice": "جاري تحميل النصائح...",
+    "loadNewAdvice": "تحميل نصائح جديدة",
+    "getAdvice": "احصل على نصائح",
+    "noAdviceYet": "لا توجد نصائح متاحة حتى الآن. احصل على توصيات شخصية لتحسين جودة خدمتك.",
     "welcomeMessage": "مرحبًا بك في سيرفس سفير!",
     "exploreServices": "استكشف واحجز خدمات من أفضل المهنيين في منطقتك.",
     "exploreNow": "استكشف الآن",
@@ -109,7 +112,8 @@
     "noRecommendations": "لم يتم العثور على خدمات موصى بها",
     "recentBookings": "الحجوزات الأخيرة",
     "noRecentBookings": "ليس لديك أي حجوزات أخيرة",
-    "bookNow": "احجز الآن"
+    "bookNow": "احجز الآن",
+    "loadAdvice": "عرض النصائح"
   },
   "services": {
     "allServices": "الخدمات",

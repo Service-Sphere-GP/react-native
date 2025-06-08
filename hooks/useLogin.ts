@@ -20,6 +20,7 @@ const useLogin = () => {
         password,
       });
 
+
       // Backend now returns both accessToken and refreshToken
       const { user, accessToken, refreshToken } = response.data.data;
 
@@ -30,8 +31,9 @@ const useLogin = () => {
       ]);
 
       return true;
-    } catch (err: any) {
-      setError(err.response?.data?.data?.message || 'An error occurred');
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'An error occurred');
       return false;
     } finally {
       setLoading(false);

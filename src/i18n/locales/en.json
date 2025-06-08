@@ -100,6 +100,9 @@
     "showLess": "Show Less",
     "noConfirmedBookings": "No confirmed bookings",
     "loadingAdvice": "Loading advice...",
+    "loadNewAdvice": "Load New Advice",
+    "getAdvice": "Get Advice",
+    "noAdviceYet": "No advice available yet. Get personalized recommendations to improve your service quality.",
     "welcomeMessage": "Welcome to ServiceSphere!",
     "exploreServices": "Discover and book services from top-rated professionals in your area.",
     "exploreNow": "Explore Now",
@@ -109,7 +112,8 @@
     "noRecommendations": "No recommended services found",
     "recentBookings": "Recent Bookings",
     "noRecentBookings": "You don't have any recent bookings",
-    "bookNow": "Book Now"
+    "bookNow": "Book Now",
+    "loadAdvice": "Load Advice"
   },
   "services": {
     "allServices": "Services",

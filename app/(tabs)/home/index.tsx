@@ -75,6 +75,15 @@ const Dashboard = () => {
           setUserRole(parsedUser.role);
           setRating(parsedUser.rating_average || 0);
 
+          // Load stored advice for service providers
+          if (parsedUser.role === 'service_provider') {
+            const storedAdvice = await AsyncStorage.getItem('stored_advice');
+            if (storedAdvice) {
+              setAdvice(storedAdvice);
+            }
+            setLoadingAdvice(false);
+          }
+
           // Get all bookings based on user role
           const endpoint =
             parsedUser.role === 'customer'
@@ -149,21 +158,21 @@ const Dashboard = () => {
         }
 
         // Get advice for service providers only
-        if (userRole === 'service_provider') {
-          setLoadingAdvice(true);
-          const adviceResponse: any = await ApiService.get(
-            API_ENDPOINTS.ADVICE,
-          );
+        // if (userRole === 'service_provider') {
+        //   setLoadingAdvice(true);
+        //   const adviceResponse: any = await ApiService.get(
+        //     API_ENDPOINTS.ADVICE,
+        //   );
 
-          if (
-            adviceResponse.data &&
-            adviceResponse.data.data &&
-            adviceResponse.data.data.advice
-          ) {
-            setAdvice(adviceResponse.data.data.advice);
-          }
-          setLoadingAdvice(false);
-        }
+        //   if (
+        //     adviceResponse.data &&
+        //     adviceResponse.data.data &&
+        //     adviceResponse.data.data.advice
+        //   ) {
+        //     setAdvice(adviceResponse.data.data.advice);
+        //   }
+        //   setLoadingAdvice(false);
+        // }
       } catch (error) {
         console.error('Error fetching data:', error);
         setLoadingAdvice(false);
@@ -226,6 +235,24 @@ const Dashboard = () => {
   // Function to navigate to booking details
   const handleBookingPress = (bookingId: string) => {
     router.push(`/bookings/${bookingId}`);
+  };
+
+  // Function to load new advice
+  const loadNewAdvice = async () => {
+    setLoadingAdvice(true);
+    try {
+      const response: any = await ApiService.get(API_ENDPOINTS.ADVICE);
+      if (response.data && response.data.data && response.data.data.advice) {
+        const newAdvice = response.data.data.advice;
+        setAdvice(newAdvice);
+        // Store the advice in AsyncStorage
+        await AsyncStorage.setItem('stored_advice', newAdvice);
+      }
+    } catch (error) {
+      console.error('Error fetching advice:', error);
+    } finally {
+      setLoadingAdvice(false);
+    }
   };
 
   return (
@@ -382,16 +409,16 @@ const Dashboard = () => {
               ItemSeparatorComponent={() => <View className="w-3" />}
               ListEmptyComponent={() => (
                 <View
-                style={{
-                  width: width - 32,
-                  alignItems: isRTL ? 'flex-end' : 'flex-start',
-                }}
-                className="justify-center px-4"
-              >
-                <Text className={`text-[#676B73] text-sm`}>
-                {t('home:noRecommendations')}
-                </Text>
-              </View>
+                  style={{
+                    width: width - 32,
+                    alignItems: isRTL ? 'flex-end' : 'flex-start',
+                  }}
+                  className="justify-center px-4"
+                >
+                  <Text className={`text-[#676B73] text-sm`}>
+                    {t('home:noRecommendations')}
+                  </Text>
+                </View>
               )}
               renderItem={({ item }) => (
                 <TouchableOpacity
@@ -517,14 +544,7 @@ const Dashboard = () => {
               {t('home:feedbackInsights')}
             </Text>
 
-            {loadingAdvice ? (
-              <View className="items-center py-4">
-                <ActivityIndicator size="small" color="#147E93" />
-                <Text className="text-sm text-[#363E4C] mt-2">
-                  {t('home:loadingAdvice')}
-                </Text>
-              </View>
-            ) : advice ? (
+            {advice ? (
               <>
                 {/* Using RenderHtml instead of Markdown */}
                 <RenderHtml
@@ -544,19 +564,135 @@ const Dashboard = () => {
                   }}
                 />
 
+                {/* Load New Advice Button */}
                 <TouchableOpacity
-                  onPress={() => setShowFullAdvice(!showFullAdvice)}
-                  className="mt-2"
+                  className="bg-gradient-to-r from-[#2C8394] to-[#147E93] px-6 py-3 rounded-xl mt-4 shadow-lg"
+                  style={{
+                    backgroundColor: '#2C8394',
+                    shadowColor: '#2C8394',
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 8,
+                    elevation: 8,
+                  }}
+                  onPress={loadNewAdvice}
+                  disabled={loadingAdvice}
                 >
-                  <Text className="text-[#147E93] text-sm">
-                    {showFullAdvice ? t('home:showLess') : t('home:seeMore')}
-                  </Text>
+                  <View
+                    className={`flex-row items-center justify-center ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
+                    {loadingAdvice ? (
+                      <>
+                        <ActivityIndicator
+                          size="small"
+                          color="#FFFFFF"
+                          className={isRTL ? 'ml-2' : 'mr-2'}
+                        />
+                        <Text className="text-white font-semibold text-base">
+                          {t('home:loadingAdvice')}
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        {/* Use a circular arrow or sync icon effect */}
+                        <View
+                          style={{
+                            width: 18,
+                            height: 18,
+                            borderRadius: 9,
+                            borderWidth: 2,
+                            borderColor: '#FFFFFF',
+                            borderTopColor: 'transparent',
+                            marginRight: isRTL ? 0 : 8,
+                            marginLeft: isRTL ? 8 : 0,
+                            transform: [{ rotate: '45deg' }],
+                          }}
+                        />
+                        <Text className="text-white font-semibold text-base">
+                          {t('home:loadNewAdvice')}
+                        </Text>
+                      </>
+                    )}
+                  </View>
                 </TouchableOpacity>
               </>
             ) : (
-              <Text className={`text-sm text-[#363E4C]`}>
-                {t('home:feedbackExample')}
-              </Text>
+              <View className="mt-4">
+                <Text className="text-[#676B73] text-sm mb-4 text-center">
+                  {t('home:noAdviceYet')}
+                </Text>
+                <TouchableOpacity
+                  className="bg-gradient-to-r from-[#FDBC10] to-[#F5A623] px-6 py-4 rounded-xl shadow-lg"
+                  style={{
+                    backgroundColor: '#FDBC10',
+                    shadowColor: '#FDBC10',
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 8,
+                    elevation: 8,
+                  }}
+                  onPress={loadNewAdvice}
+                  disabled={loadingAdvice}
+                >
+                  <View
+                    className={`flex-row items-center justify-center ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
+                    {loadingAdvice ? (
+                      <>
+                        <ActivityIndicator
+                          size="small"
+                          color="#030B19"
+                          className={isRTL ? 'ml-2' : 'mr-2'}
+                        />
+                        <Text className="text-[#030B19] font-bold text-base">
+                          {t('home:loadingAdvice')}
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        {/* Use a lightbulb-like icon made from basic shapes */}
+                        <View
+                          style={{
+                            width: 20,
+                            height: 20,
+                            marginRight: isRTL ? 0 : 8,
+                            marginLeft: isRTL ? 8 : 0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: 6,
+                              backgroundColor: '#030B19',
+                              marginBottom: 2,
+                            }}
+                          />
+                          <View
+                            style={{
+                              width: 8,
+                              height: 4,
+                              backgroundColor: '#030B19',
+                              borderRadius: 2,
+                            }}
+                          />
+                        </View>
+                        <Text className="text-[#030B19] font-bold text-base">
+                          {t('home:getAdvice')}
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
 

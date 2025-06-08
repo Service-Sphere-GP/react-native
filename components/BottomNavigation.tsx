@@ -83,7 +83,7 @@ const BottomNavigation: React.FC = () => {
   return (
     <View
       key={`nav-${effectiveRTL ? 'rtl' : 'ltr'}`}
-      style={[styles.container, effectiveRTL && styles.rtl]}
+      style={[styles.container]}
     >
       {tabs.map((tab) => {
         const IconComponent = tab.icon;
