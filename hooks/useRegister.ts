@@ -59,6 +59,18 @@ const useRegister = () => {
     setError(null);
 
     try {
+      console.log('Registering service provider with data:', {
+        email,
+        password,
+        first_name,
+        last_name,
+        confirm_password,
+        business_name,
+        business_address,
+        tax_id,
+      });
+
+
       const response: any = await ApiService.post(
         API_ENDPOINTS.REGISTER + '/service-provider',
         {
@@ -73,6 +85,8 @@ const useRegister = () => {
         },
       );
 
+      console.log('Registration response:', response);
+
       await AsyncStorage.multiSet([
         ['user', JSON.stringify(response.data.data)],
       ]);
@@ -80,6 +94,7 @@ const useRegister = () => {
       return true;
     } catch (err: any) {
       setError(err.response?.data?.data?.message || 'Registration failed');
+      console.error('Registration error:', err);
       return false;
     } finally {
       setLoading(false);

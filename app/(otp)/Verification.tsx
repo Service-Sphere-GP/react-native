@@ -22,6 +22,8 @@ const Verification = () => {
   const { width, height } = useWindowDimensions();
   const [otp, setOtp] = useState('');
   const [showError, setShowError] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(
+''  );
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   // Add translation and language context
@@ -73,7 +75,6 @@ const Verification = () => {
         setShowError(true);
       });
   };
-
   const handleResend = () => {
     setShowError(false);
     setOtp('');
@@ -83,8 +84,13 @@ const Verification = () => {
           console.log('OTP sent successfully');
         }
       })
-      .catch(() => {
-        console.error('Failed to resend OTP');
+      .catch((e) => {
+        console.error(e.response?.data?.message || 'Failed to resend OTP');
+        // Show error message to the user
+        // setShowErrorMessage(
+        //   e.response?.data?.message || '');
+        setShowError(true);
+        console.log('Full error object:', JSON.stringify(e, null, 2));
       });
   };
 
@@ -152,6 +158,7 @@ const Verification = () => {
               className={`text-red-500 text-sm`}
             >
               {t('auth:incorrectCode')}{'\n'}{t('auth:tryAgainOrResend')}
+              {showErrorMessage}
             </Text>
           </View>
         )}

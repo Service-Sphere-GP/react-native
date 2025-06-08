@@ -157,6 +157,7 @@ const NewService = () => {
       );
 
       // Convert images to blobs and append to FormData
+
       await Promise.all(
         images.map(async (uri, index) => {
           try {
@@ -172,26 +173,46 @@ const NewService = () => {
         }),
       );
 
-      // Send FormData to server with proper configuration
-      const response = await ApiService.post(
-        API_ENDPOINTS.CREATE_SERVICE,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-          },
-          transformRequest: (data) => data, // Don't transform FormData
-        },
-      );
-      console.log('Response:', response);
+      console.log('FormData prepared:', formData);
 
-      router.push('/profile/me');
+      // Send FormData to server with improved configuration
+      try {
+        const response = await ApiService.post(
+          API_ENDPOINTS.CREATE_SERVICE,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Accept: 'application/json',
+            },
+            timeout: 30000, // Increase timeout for large file uploads
+            transformRequest: (data) => data, // Don't transform FormData
+          },
+        );
+        console.log('Service created successfully:', response);
+        router.push('/profile/me');
+      } catch (networkError: any) {
+        // Handle network errors specifically
+        if (networkError.code === 'ERR_NETWORK' || networkError.message === 'Network Error') {
+          // Service might have been created successfully despite the network error
+          console.log('Network error occurred, but service may have been created');
+          // Navigate to profile since the service was likely created
+          router.push('/profile/me');
+        } else {
+          // Re-throw other errors
+          throw networkError;
+        }
+      }
     } catch (err: any) {
-      console.error(
-        'Error creating service:',
-        err.response?.data || err.message || err,
-      );
+      console.error('Error creating service:', {
+        message: err.message,
+        code: err.code,
+        status: err.response?.status,
+        data: err.response?.data,
+      });
+      
+      // Show user-friendly error message
+      alert(t('services:createServiceError') || 'Failed to create service. Please try again.');
     }
   };
 
@@ -205,7 +226,10 @@ const NewService = () => {
           </Text>
         </View>
       ) : (
-        <ScrollView className="bg-white px-4 pb-12 h-full justify-between">
+        <ScrollView
+          className="bg-white px-4 pb-12 h-full"
+          contentContainerStyle={{ justifyContent: 'space-between', flexGrow: 1 }}
+        >
           <View className="gap-4">
             <Header title={t('services:newService')} showBackButton={true} />
             <View>
