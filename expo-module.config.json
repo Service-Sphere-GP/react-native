@@ -2,7 +2,7 @@
   "android": {
     "modules": [
       "expo-constants",
-      "expo-file-system", 
+      "expo-file-system",
       "expo-image-loader",
       "expo-linking",
       "expo-modules-core",

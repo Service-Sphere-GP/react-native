@@ -20,7 +20,10 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) => {
   return (
     <View style={[styles.container, isRTL && styles.containerRTL]}>
       {showBackButton && (
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
           <Image
             source={
               isRTL
@@ -33,11 +36,14 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton = true }) => {
         </TouchableOpacity>
       )}
 
-      <Text style={[
-        styles.title,
-        isRTL ? styles.titleRTL : styles.titleLTR,
-        showBackButton && (isRTL ? styles.titleWithBackRTL : styles.titleWithBackLTR)
-      ]}>
+      <Text
+        style={[
+          styles.title,
+          isRTL ? styles.titleRTL : styles.titleLTR,
+          showBackButton &&
+            (isRTL ? styles.titleWithBackRTL : styles.titleWithBackLTR),
+        ]}
+      >
         {title}
       </Text>
 

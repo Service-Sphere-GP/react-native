@@ -193,9 +193,14 @@ const NewService = () => {
         router.push('/profile/me');
       } catch (networkError: any) {
         // Handle network errors specifically
-        if (networkError.code === 'ERR_NETWORK' || networkError.message === 'Network Error') {
+        if (
+          networkError.code === 'ERR_NETWORK' ||
+          networkError.message === 'Network Error'
+        ) {
           // Service might have been created successfully despite the network error
-          console.log('Network error occurred, but service may have been created');
+          console.log(
+            'Network error occurred, but service may have been created',
+          );
           // Navigate to profile since the service was likely created
           router.push('/profile/me');
         } else {
@@ -210,9 +215,12 @@ const NewService = () => {
         status: err.response?.status,
         data: err.response?.data,
       });
-      
+
       // Show user-friendly error message
-      alert(t('services:createServiceError') || 'Failed to create service. Please try again.');
+      alert(
+        t('services:createServiceError') ||
+          'Failed to create service. Please try again.',
+      );
     }
   };
 
@@ -228,7 +236,10 @@ const NewService = () => {
       ) : (
         <ScrollView
           className="bg-white px-4 pb-12 h-full"
-          contentContainerStyle={{ justifyContent: 'space-between', flexGrow: 1 }}
+          contentContainerStyle={{
+            justifyContent: 'space-between',
+            flexGrow: 1,
+          }}
         >
           <View className="gap-4">
             <Header title={t('services:newService')} showBackButton={true} />
@@ -249,7 +260,9 @@ const NewService = () => {
               <View
                 className={`flex-row justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}
               >
-                <Text className={`font-semibold text-lg ${textStyle.className}`}>
+                <Text
+                  className={`font-semibold text-lg ${textStyle.className}`}
+                >
                   {t('services:images')}
                 </Text>
                 <TouchableOpacity

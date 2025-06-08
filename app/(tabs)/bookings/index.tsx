@@ -135,7 +135,7 @@ const Booking = () => {
     return (
       <TouchableOpacity
         onPress={() => router.push(`/bookings/${item._id}`)}
-        disabled={bookingStatus === 'pending' || bookingStatus === 'cancelled'}
+        disabled={bookingStatus !== 'confirmed'}
       >
         {/* Booking Item */}
         <View

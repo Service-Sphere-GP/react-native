@@ -22,8 +22,7 @@ const Verification = () => {
   const { width, height } = useWindowDimensions();
   const [otp, setOtp] = useState('');
   const [showError, setShowError] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(
-''  );
+  const [showErrorMessage, setShowErrorMessage] = useState('');
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   // Add translation and language context
@@ -107,10 +106,10 @@ const Verification = () => {
         >
           <Image
             source={require('@/assets/images/back-Icon.png')}
-            style={{ 
-              width: width * 0.035, 
+            style={{
+              width: width * 0.035,
               height: height * 0.03,
-              transform: [{ scaleX: isRTL ? -1 : 1 }] 
+              transform: [{ scaleX: isRTL ? -1 : 1 }],
             }}
             resizeMode="contain"
           />
@@ -124,20 +123,16 @@ const Verification = () => {
           />
         </View>
 
-        <Text 
+        <Text
           className={`text-center mt-8 text-2xl text-[#030B19] font-semibold`}
         >
           {t('auth:verification')}
         </Text>
 
         <View className="mt-6 px-6">
-          <Text 
-            className={`text-center text-base text-[#363E4C] `}
-          >
+          <Text className={`text-center text-base text-[#363E4C] `}>
             {t('auth:enterCodeSentTo')} {'\n'}
-            <Text 
-              className={`text-base text-[#3A3A3A] font-bold`}
-            >
+            <Text className={`text-base text-[#3A3A3A] font-bold`}>
               {email}
             </Text>
           </Text>
@@ -147,31 +142,30 @@ const Verification = () => {
         </View>
 
         {showError && (
-          <View className={`items-center px-6 mt-4 justify-center ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          <View
+            className={`items-center px-6 mt-4 justify-center ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
+          >
             <Image
               source={require('@/assets/images/xicon.png')}
               style={{ width: width * 0.04, height: width * 0.04 }}
               resizeMode="contain"
               className={isRTL ? 'ml-2' : 'mr-2'}
             />
-            <Text 
-              className={`text-red-500 text-sm`}
-            >
-              {t('auth:incorrectCode')}{'\n'}{t('auth:tryAgainOrResend')}
+            <Text className={`text-red-500 text-sm`}>
+              {t('auth:incorrectCode')}
+              {'\n'}
+              {t('auth:tryAgainOrResend')}
               {showErrorMessage}
             </Text>
           </View>
         )}
 
         <View className="mt-4">
-          <Text 
-            className={`text-center text-sm `}
-          >
-            <Text className={`text-[#3A3A3A]`}>{t('auth:didntReceiveCode')}{' '}</Text>
-            <Text 
-              className={`text-[#147E93] underline`}
-              onPress={handleResend}
-            >
+          <Text className={`text-center text-sm `}>
+            <Text className={`text-[#3A3A3A]`}>
+              {t('auth:didntReceiveCode')}{' '}
+            </Text>
+            <Text className={`text-[#147E93] underline`} onPress={handleResend}>
               {t('auth:resendCode')}
             </Text>
           </Text>

@@ -34,23 +34,28 @@ const App = () => {
     const checkAuthStatus = async () => {
       try {
         console.log('🔍 Landing Page: Checking authentication status...');
-        
+
         const userData = await AsyncStorage.getItem('user');
         const authToken = await AsyncStorage.getItem('authToken');
-        
+
         console.log('📱 Landing Page: User data exists:', !!userData);
         console.log('🔑 Landing Page: Auth token exists:', !!authToken);
-        
+
         if (userData && authToken) {
           const parsedUser = JSON.parse(userData);
-          console.log('👤 Landing Page: User found with role:', parsedUser.role);
-          
+          console.log(
+            '👤 Landing Page: User found with role:',
+            parsedUser.role,
+          );
+
           // Redirect based on user role
           if (parsedUser.role === 'customer') {
             console.log('🏠 Landing Page: Redirecting customer to home page');
             router.replace('/(tabs)/home');
           } else if (parsedUser.role === 'service_provider') {
-            console.log('🏠 Landing Page: Redirecting service provider to home page');
+            console.log(
+              '🏠 Landing Page: Redirecting service provider to home page',
+            );
             router.replace('/(tabs)/home');
           } else if (parsedUser.role === 'admin') {
             console.log('🏠 Landing Page: Redirecting admin to dashboard');
@@ -61,7 +66,9 @@ const App = () => {
             setIsCheckingAuth(false);
           }
         } else {
-          console.log('🚫 Landing Page: No valid authentication found, staying on landing page');
+          console.log(
+            '🚫 Landing Page: No valid authentication found, staying on landing page',
+          );
           setIsCheckingAuth(false);
         }
       } catch (error) {
@@ -79,7 +86,9 @@ const App = () => {
     return null; // Or you could show a loading spinner here
   }
 
-  console.log('✅ Landing Page: Rendering landing page for unauthenticated user');
+  console.log(
+    '✅ Landing Page: Rendering landing page for unauthenticated user',
+  );
 
   return (
     <ScrollView
@@ -93,9 +102,15 @@ const App = () => {
             entering={FadeInDown.delay(300)}
             className="w-full mt-2"
           >
-            <Text className={`text-[40px] font-semibold ${textStyle.className}`}>
-              <Text className="text-[#FFCE4C]" style={textStyle.style}>{t('common:serviceTitle')} </Text>
-              <Text className="text-[#147E93]" style={textStyle.style}>{t('common:sphereTitle')}</Text>
+            <Text
+              className={`text-[40px] font-semibold ${textStyle.className}`}
+            >
+              <Text className="text-[#FFCE4C]" style={textStyle.style}>
+                {t('common:serviceTitle')}{' '}
+              </Text>
+              <Text className="text-[#147E93]" style={textStyle.style}>
+                {t('common:sphereTitle')}
+              </Text>
             </Text>
           </Animated.View>
 
@@ -103,7 +118,7 @@ const App = () => {
           <View className="w-full" style={{ marginTop: 15 }}>
             {/* Subtitle */}
             <Animated.View entering={FadeInDown.delay(400)}>
-              <Text 
+              <Text
                 className={`text-[#030B19] text-[22px] leading-tight font-semibold ${textStyle.className}`}
                 style={textStyle.style}
               >
@@ -116,7 +131,7 @@ const App = () => {
               entering={FadeInDown.delay(500)}
               style={{ marginTop: 15 }}
             >
-              <Text 
+              <Text
                 className={`text-[#030B19] text-[16px] ${textStyle.className}`}
                 style={textStyle.style}
               >

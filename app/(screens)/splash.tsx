@@ -21,19 +21,21 @@ export default function SplashScreen() {
 
   return (
     <View className="flex-1 bg-[#f8f7f8] justify-center items-center">
-      <View className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <View
+        className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+      >
         <Image
           source={require('../../assets/images/icon-dark.png')}
           className="w-64 h-64"
         />
         <View className={`${isRTL ? 'mr-1' : 'ml-1'} mt-10`}>
-          <Text 
+          <Text
             className={`text-5xl text-[#147e93] font-semibold ${textStyle.className}`}
             style={textStyle.style}
           >
             {t('common:appName').split(' ')[0]}
           </Text>
-          <Text 
+          <Text
             className={`text-5xl text-[#147e93] font-semibold ${textStyle.className}`}
             style={textStyle.style}
           >

@@ -22,7 +22,9 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
 
   return (
     <View className="flex-row items-center bg-white px-4 py-3 border-t border-gray-300">
-      <View className={`flex-1 items-center bg-[#E9ECEF] rounded-full px-4 py-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+      <View
+        className={`flex-1 items-center bg-[#E9ECEF] rounded-full px-4 py-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
+      >
         <TextInput
           placeholder={t('chat:typeMessage')}
           placeholderTextColor="#6C757D"
@@ -37,7 +39,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
           style={{
             textAlign: isRTL ? 'right' : 'left',
             writingDirection: isRTL ? 'rtl' : 'ltr',
-            ...textStyle.style
+            ...textStyle.style,
           }}
         />
         <TouchableOpacity>

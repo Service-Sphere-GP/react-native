@@ -79,11 +79,11 @@ const ProfileComponent = () => {
     try {
       // Use the ApiService logout method which handles refresh token cleanup
       await ApiService.logout();
-      router.push('/(otp)/customer/login');
+      router.push('/');
     } catch (error) {
       console.error('Failed to logout', error);
       // Even if logout fails, redirect to login
-      router.push('/(otp)/customer/login');
+      router.push('/');
     }
   };
 

@@ -70,7 +70,6 @@ const useRegister = () => {
         tax_id,
       });
 
-
       const response: any = await ApiService.post(
         API_ENDPOINTS.REGISTER + '/service-provider',
         {

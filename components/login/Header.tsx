@@ -30,7 +30,7 @@ const Header = () => {
             marginTop: 50,
             marginLeft: isRTL ? undefined : 20,
             marginRight: isRTL ? 20 : undefined,
-            alignSelf: isRTL ? 'flex-end' : 'flex-start'
+            alignSelf: isRTL ? 'flex-end' : 'flex-start',
           }}
         >
           <Image
@@ -61,7 +61,7 @@ const Header = () => {
           marginTop: -40,
           marginLeft: isRTL ? undefined : 20,
           marginRight: isRTL ? 20 : undefined,
-          alignSelf: isRTL ? 'flex-end' : 'flex-start'
+          alignSelf: isRTL ? 'flex-end' : 'flex-start',
         }}
         resizeMode="cover"
       />
@@ -71,8 +71,8 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   flippedImage: {
-    transform: [{ scaleX: -1 }] // Horizontally flip the image
-  }
+    transform: [{ scaleX: -1 }], // Horizontally flip the image
+  },
 });
 
 export default Header;

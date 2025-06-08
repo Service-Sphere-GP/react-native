@@ -250,65 +250,71 @@ const ServiceDetailsPage = () => {
                 {service?.rating_average.toFixed(2)}
               </Text>
               <Rating value={service?.rating_average} />
-              <View className="border-t border-gray-200 py-4">
-                <Text className="text-2xl font-semibold text-[#147E93] mb-3">
-                  ✨ {t('services:howToWriteReview')}
-                </Text>
+              {user.role === 'customer' && (
+                <View className="border-t border-gray-200 py-4">
+                  <Text className="text-2xl font-semibold text-[#147E93] mb-3">
+                    ✨ {t('services:howToWriteReview')}
+                  </Text>
 
-                <View className="space-y-3">
-                  <View
-                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <Ionicons
-                      name="megaphone-outline"
-                      size={20}
-                      color="#147E93"
-                    />
-                    <Text
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                  <View className="space-y-3">
+                    <View
+                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      {t('services:reviewTip1')}
-                    </Text>
-                  </View>
+                      <Ionicons
+                        name="megaphone-outline"
+                        size={20}
+                        color="#147E93"
+                      />
+                      <Text
+                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      >
+                        {t('services:reviewTip1')}
+                      </Text>
+                    </View>
 
-                  <View
-                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <Ionicons
-                      name="chatbox-ellipses-outline"
-                      size={20}
-                      color="#147E93"
-                    />
-                    <Text
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                    <View
+                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      {t('services:reviewTip2')}
-                    </Text>
-                  </View>
+                      <Ionicons
+                        name="chatbox-ellipses-outline"
+                        size={20}
+                        color="#147E93"
+                      />
+                      <Text
+                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      >
+                        {t('services:reviewTip2')}
+                      </Text>
+                    </View>
 
-                  <View
-                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <Ionicons name="trophy-outline" size={20} color="#147E93" />
-                    <Text
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                    <View
+                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      {t('services:reviewTip3')}
-                    </Text>
-                  </View>
+                      <Ionicons
+                        name="trophy-outline"
+                        size={20}
+                        color="#147E93"
+                      />
+                      <Text
+                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      >
+                        {t('services:reviewTip3')}
+                      </Text>
+                    </View>
 
-                  <View
-                    className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <Ionicons name="bulb-outline" size={20} color="#147E93" />
-                    <Text
-                      className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                    <View
+                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      {t('services:reviewTip4')}
-                    </Text>
+                      <Ionicons name="bulb-outline" size={20} color="#147E93" />
+                      <Text
+                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      >
+                        {t('services:reviewTip4')}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              )}
             </View>
 
             <FlatList

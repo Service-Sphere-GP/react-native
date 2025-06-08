@@ -25,17 +25,18 @@ const LanguageSettings = () => {
           >
             {t('common:languageDescription')}
           </Text>
-          
+
           {/* RTL Notice */}
-          <View className={`bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 ${isRTL ? 'items-end' : 'items-start'}`}>
+          <View
+            className={`bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 ${isRTL ? 'items-end' : 'items-start'}`}
+          >
             <Text
               className={`text-sm text-blue-700 ${textStyle.className}`}
               style={textStyle.style}
             >
-              {isRTL 
+              {isRTL
                 ? 'ملاحظة: تغيير اللغة من/إلى العربية يتطلب إعادة تشغيل التطبيق لتطبيق اتجاه النص الصحيح.'
-                : 'Note: Switching to/from Arabic requires an app restart to properly apply the text direction.'
-              }
+                : 'Note: Switching to/from Arabic requires an app restart to properly apply the text direction.'}
             </Text>
           </View>
 

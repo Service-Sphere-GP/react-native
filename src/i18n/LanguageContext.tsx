@@ -2,7 +2,10 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { I18nManager, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
-import i18next, { changeLanguage as i18nextChangeLanguage, LANGUAGES } from './i18n';
+import i18next, {
+  changeLanguage as i18nextChangeLanguage,
+  LANGUAGES,
+} from './i18n';
 
 // Define the types for our context
 type LanguageContextType = {
@@ -29,7 +32,9 @@ const isLanguageRTL = (lang: string): boolean => {
 };
 
 // Language provider component
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   // Initialize with device locale but only the language part (e.g., 'en' from 'en-US')
   const deviceLocale = Localization.locale.split('-')[0];
   const [language, setLanguageState] = useState(deviceLocale);
@@ -54,7 +59,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           await handleLanguageChange(savedLanguage, false);
         } else {
           // If no saved preference, use device locale but check if it's supported
-          const fallbackLang = Object.keys(LANGUAGES).includes(deviceLocale) ? deviceLocale : 'en';
+          const fallbackLang = Object.keys(LANGUAGES).includes(deviceLocale)
+            ? deviceLocale
+            : 'en';
           await handleLanguageChange(fallbackLang, false);
         }
       } catch (error) {
@@ -66,26 +73,29 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   // Handle language changing
-  const handleLanguageChange = async (lang: string, showRestartPrompt: boolean = true) => {
+  const handleLanguageChange = async (
+    lang: string,
+    showRestartPrompt: boolean = true,
+  ) => {
     try {
       // Determine if the language is RTL
       const rtl = isLanguageRTL(lang);
       const currentRTL = I18nManager.isRTL;
-      
+
       // Update i18next first
       await i18nextChangeLanguage(lang);
-      
+
       // Update language state
       setLanguageState(lang);
 
       // Save preference
       await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-      
+
       // Check if RTL state needs to change
       if (currentRTL !== rtl) {
         // Force RTL layout change
         I18nManager.forceRTL(rtl);
-        
+
         if (showRestartPrompt) {
           // Show restart prompt for RTL changes
           Alert.alert(
@@ -97,9 +107,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 onPress: () => {
                   // Update local state for immediate feedback
                   setIsRTL(rtl);
-                }
-              }
-            ]
+                },
+              },
+            ],
           );
         } else {
           // Just update the state if no prompt needed (initial load)
@@ -109,7 +119,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         // No RTL change needed, just update the state
         setIsRTL(rtl);
       }
-      
+
       console.log(`Language changed to ${lang}, RTL: ${rtl}`);
     } catch (error) {
       console.error('Failed to change language:', error);

@@ -13,7 +13,7 @@ export default function TabsLayout() {
             headerShown: false,
             contentStyle: { paddingBottom: 70 },
           }}
-          />
+        />
         <BottomNavigation />
       </View>
     </NotificationProvider>

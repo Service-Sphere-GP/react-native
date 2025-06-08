@@ -18,31 +18,50 @@ SplashScreen.preventAutoHideAsync();
 // Root layout without language context - needed because we need to wrap the app with LanguageProvider
 function RootLayoutWithoutContext() {
   const { language, isRTL } = useLanguage();
-  
+
   // Load web fonts using Google Fonts CDN
   const [loaded] = useFonts({
     // Using web fonts instead of local files
-    'Roboto-Regular': 'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
-    'Roboto-Medium': 'https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap',
-    'Roboto-Bold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap',
-    'Roboto-Light': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap',
-    'Roboto-Thin': 'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap',
-    'Roboto-Semibold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap', // Corrected key
-    'Roboto-ExtraBold': 'https://fonts.googleapis.com/css2?family=Roboto:wght@800&display=swap', 
-    'Roboto-ExtraLight': 'https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap',
-    'Pacifico-Regular': 'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
-    
+    'Roboto-Regular':
+      'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
+    'Roboto-Medium':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap',
+    'Roboto-Bold':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap',
+    'Roboto-Light':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap',
+    'Roboto-Thin':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap',
+    'Roboto-Semibold':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap', // Corrected key
+    'Roboto-ExtraBold':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@800&display=swap',
+    'Roboto-ExtraLight':
+      'https://fonts.googleapis.com/css2?family=Roboto:wght@200&display=swap',
+    'Pacifico-Regular':
+      'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
+
     // Arabic fonts - using Montserrat from CDN
-    'Montserrat-Arabic': 'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
-    'Montserrat-Arabic-Bold-700': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap',
-    'Montserrat-Arabic-Medium-500': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap',
-    'Montserrat-Arabic-Regular-400': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap',
-    'Montserrat-Arabic-Light-300': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap',
-    'Montserrat-Arabic-Thin-250': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
-    'Montserrat-Arabic-SemiBold-600': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap', 
-    'Montserrat-Arabic-ExtraBold-800': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap',
-    'Montserrat-Arabic-ExtraLight-275': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
-    'Montserrat-Arabic-Black-900': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap',
+    'Montserrat-Arabic':
+      'https://fonts.googleapis.com/css2?family=Montserrat&display=swap',
+    'Montserrat-Arabic-Bold-700':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap',
+    'Montserrat-Arabic-Medium-500':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap',
+    'Montserrat-Arabic-Regular-400':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap',
+    'Montserrat-Arabic-Light-300':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap',
+    'Montserrat-Arabic-Thin-250':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
+    'Montserrat-Arabic-SemiBold-600':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap',
+    'Montserrat-Arabic-ExtraBold-800':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap',
+    'Montserrat-Arabic-ExtraLight-275':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap',
+    'Montserrat-Arabic-Black-900':
+      'https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap',
   });
 
   useEffect(() => {
@@ -56,15 +75,15 @@ function RootLayoutWithoutContext() {
   }
 
   return (
-      <ThemeProvider value={DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-          <Stack.Screen name="admin" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        <Toast />
-      </ThemeProvider>
+    <ThemeProvider value={DefaultTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+        <Stack.Screen name="admin" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+      <Toast />
+    </ThemeProvider>
   );
 }
 

@@ -130,13 +130,11 @@ export default function AdminLogin() {
       <View style={styles.contentContainer}>
         {/* Back button for mobile */}
         {Platform.OS !== 'web' && (
-          <TouchableOpacity 
-            style={[styles.backButton, isRTL && styles.backButtonRTL]} 
+          <TouchableOpacity
+            style={[styles.backButton, isRTL && styles.backButtonRTL]}
             onPress={handleBack}
           >
-            <Text 
-              style={[styles.backButtonText, textStyle.style]}
-            >
+            <Text style={[styles.backButtonText, textStyle.style]}>
               {isRTL ? 'عودة →' : '← Back'}
             </Text>
           </TouchableOpacity>
@@ -144,14 +142,10 @@ export default function AdminLogin() {
 
         {/* Logo or Icon - Optional */}
         <View style={styles.logoContainer}>
-          <Text 
-            style={[styles.logoText, textStyle.style]}
-          >
+          <Text style={[styles.logoText, textStyle.style]}>
             {t('common:appName')}
           </Text>
-          <Text 
-            style={[styles.adminText, textStyle.style]}
-          >
+          <Text style={[styles.adminText, textStyle.style]}>
             {t('profile:adminPanel')}
           </Text>
         </View>
@@ -162,33 +156,33 @@ export default function AdminLogin() {
             Platform.OS !== 'web' && styles.mobileLoginBox,
           ]}
         >
-          <Text 
+          <Text
             style={[
-              styles.title, 
+              styles.title,
               textStyle.style,
-              { textAlign: isRTL ? 'right' : 'left' }
+              { textAlign: isRTL ? 'right' : 'left' },
             ]}
           >
             {t('profile:adminAccess')}
           </Text>
 
           <View style={styles.inputContainer}>
-            <Text 
+            <Text
               style={[
-                styles.label, 
+                styles.label,
                 textStyle.style,
-                { textAlign: isRTL ? 'right' : 'left' }
+                { textAlign: isRTL ? 'right' : 'left' },
               ]}
             >
               {t('auth:email')}
             </Text>
             <TextInput
               style={[
-                styles.input, 
-                { 
+                styles.input,
+                {
                   textAlign: isRTL ? 'right' : 'left',
-                  fontFamily: textStyle.style.fontFamily
-                }
+                  fontFamily: textStyle.style.fontFamily,
+                },
               ]}
               value={email}
               onChangeText={setEmail}
@@ -200,22 +194,22 @@ export default function AdminLogin() {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text 
+            <Text
               style={[
-                styles.label, 
+                styles.label,
                 textStyle.style,
-                { textAlign: isRTL ? 'right' : 'left' }
+                { textAlign: isRTL ? 'right' : 'left' },
               ]}
             >
               {t('auth:password')}
             </Text>
             <TextInput
               style={[
-                styles.input, 
-                { 
+                styles.input,
+                {
                   textAlign: isRTL ? 'right' : 'left',
-                  fontFamily: textStyle.style.fontFamily
-                }
+                  fontFamily: textStyle.style.fontFamily,
+                },
               ]}
               value={password}
               onChangeText={setPassword}
@@ -233,9 +227,7 @@ export default function AdminLogin() {
             {isLoading ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
-              <Text 
-                style={[styles.loginButtonText, textStyle.style]}
-              >
+              <Text style={[styles.loginButtonText, textStyle.style]}>
                 {t('auth:login')}
               </Text>
             )}

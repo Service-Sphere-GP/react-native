@@ -11,7 +11,7 @@ const OtpInput: React.FC<OtpInputProps> = ({ length = 6, onComplete }) => {
   const [otp, setOtp] = useState<string[]>(Array(length).fill(''));
   const inputRefs = useRef<TextInput[]>([]);
   const { isRTL } = useLanguage();
-  
+
   const handleChange = (text: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = text;

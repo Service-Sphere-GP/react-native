@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, I18nManager } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  I18nManager,
+} from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
@@ -13,7 +19,7 @@ const BottomNavigation: React.FC = () => {
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
   const { isRTL: contextRTL, language } = useLanguage();
-  
+
   // Use both context RTL and I18nManager for reliability
   const [effectiveRTL, setEffectiveRTL] = useState(() => {
     const managerRTL = I18nManager.isRTL;
@@ -26,7 +32,7 @@ const BottomNavigation: React.FC = () => {
     const managerRTL = I18nManager.isRTL;
     const langRTL = i18n.language === 'ar';
     const newRTL = managerRTL || langRTL || contextRTL;
-    
+
     if (newRTL !== effectiveRTL) {
       setEffectiveRTL(newRTL);
     }
@@ -75,17 +81,14 @@ const BottomNavigation: React.FC = () => {
   ];
 
   return (
-    <View 
+    <View
       key={`nav-${effectiveRTL ? 'rtl' : 'ltr'}`}
-      style={[
-        styles.container, 
-        effectiveRTL && styles.rtl
-      ]}
+      style={[styles.container, effectiveRTL && styles.rtl]}
     >
       {tabs.map((tab) => {
         const IconComponent = tab.icon;
         const color = getColor(tab.id);
-        
+
         return (
           <TouchableOpacity
             key={`${tab.id}-${effectiveRTL ? 'rtl' : 'ltr'}`}
@@ -94,9 +97,7 @@ const BottomNavigation: React.FC = () => {
             activeOpacity={0.7}
           >
             <IconComponent color={color} />
-            <Text style={[styles.label, { color }]}>
-              {tab.label}
-            </Text>
+            <Text style={[styles.label, { color }]}>{tab.label}</Text>
           </TouchableOpacity>
         );
       })}

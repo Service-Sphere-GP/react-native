@@ -11,16 +11,16 @@ const LanguageSelector: React.FC = () => {
 
   return (
     <View style={[styles.container, isRTL && styles.containerRTL]}>
-      <Text 
+      <Text
         style={[
-          styles.title, 
+          styles.title,
           isRTL && styles.titleRTL,
-          { fontFamily, fontWeight: '500' }
+          { fontFamily, fontWeight: '500' },
         ]}
       >
         {t('common:language')}
       </Text>
-      
+
       <View style={styles.buttonsContainer}>
         {Object.entries(languages).map(([code, langInfo]) => (
           <TouchableOpacity
@@ -28,19 +28,19 @@ const LanguageSelector: React.FC = () => {
             style={[
               styles.button,
               language === code && styles.activeButton,
-              isRTL && styles.buttonRTL
+              isRTL && styles.buttonRTL,
             ]}
             onPress={() => setLanguage(code)}
           >
-            <Text 
+            <Text
               style={[
                 styles.buttonText,
                 language === code && styles.activeButtonText,
                 isRTL && styles.buttonTextRTL,
-                { 
+                {
                   fontFamily,
-                  fontWeight: language === code ? '500' : '400'
-                }
+                  fontWeight: language === code ? '500' : '400',
+                },
               ]}
             >
               {langInfo.nativeName}

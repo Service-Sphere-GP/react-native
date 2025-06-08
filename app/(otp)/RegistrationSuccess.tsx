@@ -79,9 +79,12 @@ const RegistrationSuccess = () => {
           className={`mt-6 text-[#363E4C] px-8  ${isRTL ? 'text-right' : 'text-left'}`}
           style={{ fontSize: width * 0.04, ...textStyle.style }}
         >
-          {t('auth:congratsRegistration')}{'\n'}
-          {t('auth:allSetToExplore')}{'\n'}
-          {t('auth:clickBelowForHomepage')}{'\n'}
+          {t('auth:congratsRegistration')}
+          {'\n'}
+          {t('auth:allSetToExplore')}
+          {'\n'}
+          {t('auth:clickBelowForHomepage')}
+          {'\n'}
         </Text>
 
         <View className="w-full px-6 mt-12">

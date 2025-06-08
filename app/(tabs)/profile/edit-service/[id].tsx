@@ -231,7 +231,7 @@ const EditService = () => {
           },
         );
         console.log('Service updated successfully');
-        router.push('/profile/me');
+        router.push('/profile/my-services');
       } catch (networkError: any) {
         // Handle network errors specifically
         if (
@@ -239,7 +239,9 @@ const EditService = () => {
           networkError.message === 'Network Error'
         ) {
           // Service might have been updated successfully despite the network error
-          console.log('Network error occurred, but service may have been updated');
+          console.log(
+            'Network error occurred, but service may have been updated',
+          );
           // Navigate to profile since the service was likely updated
           router.push('/profile/me');
         } else {
@@ -272,7 +274,10 @@ const EditService = () => {
       ) : (
         <ScrollView
           className="bg-white px-4 pb-12 h-full"
-          contentContainerStyle={{ justifyContent: 'space-between', flexGrow: 1 }}
+          contentContainerStyle={{
+            justifyContent: 'space-between',
+            flexGrow: 1,
+          }}
         >
           <View className="gap-4">
             <Header title={t('services:editService')} showBackButton={true} />
@@ -318,9 +323,7 @@ const EditService = () => {
                 {images.map((image, index) => (
                   <View
                     key={index}
-                    className={`mr-3 ${
-                      isRTL ? 'ml-3 mr-0' : 'mr-3'
-                    } relative`}
+                    className={`mr-3 ${isRTL ? 'ml-3 mr-0' : 'mr-3'} relative`}
                   >
                     <Image
                       source={{ uri: image }}

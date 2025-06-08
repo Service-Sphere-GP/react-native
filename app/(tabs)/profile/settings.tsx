@@ -350,7 +350,7 @@ const Settings = () => {
           </View>
 
           {/* Footer Section */}
-          <View style={styles.footerContainer} className='m-4'>
+          <View style={styles.footerContainer} className="m-4">
             <View style={styles.joinedContainer}>
               <Text style={styles.joinedText}>Joined </Text>
               <Text style={styles.joinedDate}>{createdAt}</Text>

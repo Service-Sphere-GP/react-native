@@ -261,14 +261,19 @@ const Dashboard = () => {
           </View>
         </View>
         <View className="relative mb-12">
-          <NotificationIcon color="#FFFFFF" />
-          <View
-            className={`absolute -top-2 -right-2 bg-red-500 w-5 h-5 rounded-full items-center justify-center`}
+          <TouchableOpacity
+            onPress={() => router.push('/profile/notification')}
           >
-            <Text className="text-white text-xs font-bold">
-              {unreadCount > 99 ? '99+' : unreadCount}
-            </Text>
-          </View>
+            <NotificationIcon color="#FFFFFF" />
+
+            <View
+              className={`absolute -top-2 -right-2 bg-red-500 w-5 h-5 rounded-full items-center justify-center`}
+            >
+              <Text className="text-white text-xs font-bold">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -431,6 +436,7 @@ const Dashboard = () => {
                   key={booking._id}
                   className={`flex-row bg-white rounded-lg shadow-sm p-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}
                   onPress={() => handleBookingPress(booking._id)}
+                  disabled={booking.status !== 'confirmed'}
                 >
                   <Image
                     source={{ uri: booking.service.images[0] }}

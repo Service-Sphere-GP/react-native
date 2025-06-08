@@ -5,6 +5,7 @@ This document provides a comprehensive guide on how to use, test, and extend the
 ## Overview
 
 The localization system in this app supports:
+
 - Multiple languages (currently English and Arabic)
 - Automatic detection of device language
 - Manual language selection that persists across app restarts
@@ -24,6 +25,7 @@ The localization system in this app supports:
 ### Testing RTL Support
 
 When you switch to Arabic:
+
 1. Text should be right-aligned
 2. UI elements should be mirrored (back buttons, notification badges, etc.)
 3. The bottom navigation order should be reversed
@@ -32,6 +34,7 @@ When you switch to Arabic:
 ### Testing on Different Devices
 
 To thoroughly test the localization:
+
 1. Change the device language to Arabic in device settings
 2. Launch the app and verify it loads with Arabic as the default
 3. Test on both iOS and Android devices to ensure consistent behavior
@@ -51,9 +54,10 @@ To add a new language (e.g., French):
    };
    ```
 3. Import the translation file in `src/i18n/i18n.ts`:
+
    ```typescript
    import fr from './locales/fr.json';
-   
+
    const resources = {
      en: en,
      ar: ar,
@@ -72,7 +76,7 @@ import { useTranslation } from 'react-i18next';
 
 const MyComponent = () => {
   const { t } = useTranslation(['common', 'profile']);
-  
+
   return (
     <View>
       <Text>{t('common:welcome')}</Text>
@@ -92,7 +96,7 @@ import { applyRTLConditional } from '@/src/i18n/rtlUtils';
 
 const MyComponent = () => {
   const { isRTL } = useLanguage();
-  
+
   return (
     <View style={applyRTLConditional(styles.container, styles.containerRTL)}>
       {/* Your component content */}
@@ -115,10 +119,12 @@ const styles = StyleSheet.create({
 ### Best Practices for RTL Layouts
 
 1. Use logical properties instead of left/right:
+
    - Use `paddingStart`/`paddingEnd` instead of `paddingLeft`/`paddingRight`
    - Use `marginStart`/`marginEnd` instead of `marginLeft`/`marginRight`
 
 2. For text alignment:
+
    - Use `textAlign: 'left'` for LTR layouts
    - Use `textAlign: 'right'` for RTL layouts
    - Or use our utility: `applyRTLConditional(styles.text, styles.textRTL)`
