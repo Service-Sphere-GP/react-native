@@ -44,23 +44,21 @@ const Verification = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const userData = await AsyncStorage.getItem('user');
+        console.log('🔍 Checking for pending user data...');
+        const userData = await AsyncStorage.getItem('pendingUser');
         if (userData) {
           const parsedUser = JSON.parse(userData);
-          setEmail(parsedUser.email);
+          console.log('👤 Found pending user:', parsedUser.email);
           setId(parsedUser._id);
-          console.log('📧 User loaded for verification:', {
-            email: parsedUser.email,
-            userId: parsedUser._id,
-          });
+          setEmail(parsedUser.email);
         } else {
-          console.log('❌ No user data found, redirecting to login');
+          console.log('❌ No pending user data found, redirecting to login');
           setTimeout(() => {
             router.push('/(otp)/customer/login');
           }, 100);
         }
       } catch (error) {
-        console.error('❌ Failed to fetch user data:', error);
+        console.error('❌ Failed to fetch pending user data:', error);
         setTimeout(() => {
           router.push('/(otp)/customer/login');
         }, 100);

@@ -32,8 +32,9 @@ const useRegister = () => {
         },
       );
 
+      // Only store user data needed for OTP verification, not full login
       await AsyncStorage.multiSet([
-        ['user', JSON.stringify(response.data.data)],
+        ['pendingUser', JSON.stringify(response.data.data)],
       ]);
 
       return true;
@@ -86,8 +87,9 @@ const useRegister = () => {
 
       console.log('Registration response:', response);
 
+      // Only store user data needed for OTP verification, not full login
       await AsyncStorage.multiSet([
-        ['user', JSON.stringify(response.data.data)],
+        ['pendingUser', JSON.stringify(response.data.data)],
       ]);
 
       return true;

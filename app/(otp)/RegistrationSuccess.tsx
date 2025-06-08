@@ -17,10 +17,12 @@ const RegistrationSuccess = () => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const userData = await AsyncStorage.getItem('user');
+        const userData = await AsyncStorage.getItem('pendingUser');
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setRole(parsedUser.role);
+          // Clear pending user data after successful verification
+          await AsyncStorage.removeItem('pendingUser');
         } else {
           setTimeout(() => {
             router.push('/(otp)/customer/login');
@@ -38,10 +40,11 @@ const RegistrationSuccess = () => {
   }, []);
 
   const handleGetStarted = () => {
-    if (role === 'PROVIDER') {
-      router.replace('/(tabs)/profile/me');
+    // Always redirect to login after successful registration
+    if (role === 'service_provider' || role === 'PROVIDER') {
+      router.replace('/(otp)/provider/login');
     } else {
-      router.replace('/(tabs)/services');
+      router.replace('/(otp)/customer/login');
     }
   };
 
