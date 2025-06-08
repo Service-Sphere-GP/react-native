@@ -103,9 +103,12 @@ const Login = () => {
         />
         <Text className={`text-black text-base mt-2 font-medium`}>
           {t('auth:forgotPassword')}{' '}
-          <Text className="text-[#147E93] underline">
+          <Link
+            href="/(otp)/forgot-password"
+            className="text-[#147E93] underline"
+          >
             {t('auth:resetPassword')}
-          </Text>
+          </Link>
         </Text>
 
         <CustomButton

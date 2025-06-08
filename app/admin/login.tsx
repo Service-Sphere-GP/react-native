@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/Colors';
 import ApiService from '../../constants/ApiService';
@@ -232,6 +232,16 @@ export default function AdminLogin() {
               </Text>
             )}
           </TouchableOpacity>
+
+          <Text className={`text-black text-base mt-2 font-medium`}>
+            {t('auth:forgotPassword')}{' '}
+            <Link
+              href="/(otp)/forgot-password"
+              className="text-[#147E93] underline"
+            >
+              {t('auth:resetPassword')}
+            </Link>
+          </Text>
         </View>
       </View>
     </ScrollView>

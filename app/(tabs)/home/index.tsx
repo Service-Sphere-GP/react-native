@@ -320,8 +320,14 @@ const Dashboard = () => {
               ItemSeparatorComponent={() => <View className="w-4" />}
               inverted={isRTL}
               ListEmptyComponent={() => (
-                <View className="items-center justify-center px-4">
-                  <Text className="text-[#676B73] text-sm">
+                <View
+                  style={{
+                    width: width - 32,
+                    alignItems: isRTL ? 'flex-end' : 'flex-start',
+                  }}
+                  className="justify-center px-4"
+                >
+                  <Text className={`text-[#676B73] text-sm`}>
                     {t('home:noCategories')}
                   </Text>
                 </View>
@@ -375,11 +381,17 @@ const Dashboard = () => {
               inverted={isRTL}
               ItemSeparatorComponent={() => <View className="w-3" />}
               ListEmptyComponent={() => (
-                <View className="items-center justify-center px-4 py-6">
-                  <Text className="text-[#676B73] text-sm">
-                    {t('home:noRecommendations')}
-                  </Text>
-                </View>
+                <View
+                style={{
+                  width: width - 32,
+                  alignItems: isRTL ? 'flex-end' : 'flex-start',
+                }}
+                className="justify-center px-4"
+              >
+                <Text className={`text-[#676B73] text-sm`}>
+                {t('home:noRecommendations')}
+                </Text>
+              </View>
               )}
               renderItem={({ item }) => (
                 <TouchableOpacity

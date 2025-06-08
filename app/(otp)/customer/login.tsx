@@ -23,7 +23,7 @@ const Login = () => {
     password: '',
   });
 
-  const { login, loading } = useLogin();
+  const { login, loading, error } = useLogin();
 
   const validateForm = (user: { email: string; password: string }) => {
     const errors = {
@@ -103,11 +103,18 @@ const Login = () => {
         />
         <Text className={`text-black text-base mt-2 font-medium`}>
           {t('auth:forgotPassword')}{' '}
-          <Text className="text-[#147E93] underline">
+          <Link
+            href="/(otp)/forgot-password"
+            className="text-[#147E93] underline"
+          >
             {t('auth:resetPassword')}
-          </Text>
+          </Link>
         </Text>
-
+        {error && (
+          <Text className="text-red-500 text-lg font-bold text-center mt-2">
+            { error }
+          </Text>
+        )}
         <CustomButton
           title={t('auth:login')}
           containerStyles="mt-5 bg-[#FDBD10] p-4 rounded-lg w-full shadow-md"

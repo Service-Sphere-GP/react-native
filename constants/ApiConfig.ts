@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 
-// Base API URL that changes based on platform
 // const API_BASE_URL =
 //   Platform.OS === 'web'
 //     ? 'http://localhost:3000/api/v1'
@@ -14,6 +13,8 @@ const API_ENDPOINTS = {
   REGISTER: '/auth/register',
   REFRESH_TOKEN: '/auth/refresh',
   LOGOUT: '/auth/logout',
+  FORGOT_PASSWORD: '/auth/forgot-password',
+  RESET_PASSWORD: '/auth/reset-password/:token',
   GET_USER: '/users/:id',
   DELETE_CUSTOMER: '/users/customers/:id',
   DELETE_PROVIDER: '/users/service-providers/:id',
