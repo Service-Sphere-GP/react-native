@@ -155,7 +155,8 @@
     "addImage": "Add image",
     "myServices": "My Services",
     "addNewService": "Add new service",
-    "noServicesFound": "No services found"
+    "noServicesFound": "No services found",
+    "tryDifferentSearch": "Try a different search term"
   },
   "bookings": {
     "title": "Bookings",

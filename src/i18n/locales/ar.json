@@ -155,7 +155,8 @@
     "addImage": "إضافة صورة",
     "myServices": "خدماتي",
     "addNewService": "إضافة خدمة جديدة",
-    "noServicesFound": "لم يتم العثور على خدمات"
+    "noServicesFound": "لم يتم العثور على خدمات",
+    "tryDifferentSearch": "جرب مصطلح بحث مختلف"
   },
   "bookings": {
     "title": "الحجوزات",

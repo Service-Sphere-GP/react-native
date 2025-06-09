@@ -47,6 +47,8 @@ const AllServices = () => {
   const imageSize = screenWidth < 375 ? 45 : screenWidth < 768 ? 60 : 75;
 
   const [services, setServices] = useState<Service[]>([]); // Initialize services as an empty array
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]); // Filtered services for search
+  const [searchQuery, setSearchQuery] = useState(''); // Search query state
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const AllServices = () => {
         setLoading(true);
         const response: any = await ApiService.get(API_ENDPOINTS.GET_SERVICES);
         setServices(response.data.data);
+        setFilteredServices(response.data.data); // Initialize filtered services
       } catch (error) {
         console.error('Failed to fetch services', error);
         if ((error as any)?.response?.status === 401) {
@@ -68,6 +71,41 @@ const AllServices = () => {
 
     fetchServices();
   }, [router]);
+
+  // Search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+
+    if (query.trim() === '') {
+      // If search query is empty, show all services
+      setFilteredServices(services);
+    } else {
+      // Filter services based on search query
+      const filtered = services.filter((service) => {
+        const searchLower = query.toLowerCase();
+        return (
+          service.service_name.toLowerCase().includes(searchLower) ||
+          service.service_provider.full_name
+            .toLowerCase()
+            .includes(searchLower) ||
+          service.service_provider.business_name
+            .toLowerCase()
+            .includes(searchLower) ||
+          service.description.toLowerCase().includes(searchLower)
+        );
+      });
+      setFilteredServices(filtered);
+    }
+  };
+
+  // Update filtered services when services change
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredServices(services);
+    } else {
+      handleSearch(searchQuery);
+    }
+  }, [services]);
 
   return (
     <>
@@ -95,6 +133,8 @@ const AllServices = () => {
                   clearButtonMode="always"
                   className="flex-1 text-base text-[#666B73]"
                   placeholderTextColor="#666B73"
+                  value={searchQuery}
+                  onChangeText={handleSearch}
                   style={{
                     paddingHorizontal: 5,
                     paddingVertical: 5,
@@ -110,72 +150,88 @@ const AllServices = () => {
 
           {/* Services List */}
           <View className="bg-[#FFFFFF] rounded-2xl mx-2 xs:mx-4 xs:px-4 mb-5 px-2 flex-1">
-            <FlatList
-              data={services}
-              keyExtractor={(services) => services._id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => router.push(`/services/${item._id}`)}
-                  className={`flex-row py-3 w-full items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+            {filteredServices.length === 0 && searchQuery.trim() !== '' ? (
+              <View className="flex-1 items-center justify-center py-10">
+                <Ionicons name="search-outline" size={50} color="#666B73" />
+                <Text
+                  className={`text-[#666B73] text-base mt-2 text-center ${textStyle.className}`}
                 >
-                  <Image
-                    source={{ uri: item.images[0] }}
-                    className={`rounded-full ${isRTL ? 'ml-3' : 'mr-3'}`}
-                    style={{
-                      width: imageSize,
-                      height: imageSize,
-                    }}
-                    resizeMode="cover"
-                  />
-                  <View className="flex-1">
-                    <Text
-                      className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
-                    >
-                      {item.service_name}
-                    </Text>
-                    <View
-                      className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
+                  {t('services:noServicesFound')}
+                </Text>
+                <Text
+                  className={`text-[#666B73] text-sm mt-1 text-center ${textStyle.className}`}
+                >
+                  {t('services:tryDifferentSearch')}
+                </Text>
+              </View>
+            ) : (
+              <FlatList
+                data={filteredServices}
+                keyExtractor={(services) => services._id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => router.push(`/services/${item._id}`)}
+                    className={`flex-row py-3 w-full items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
+                    <Image
+                      source={{ uri: item.images[0] }}
+                      className={`rounded-full ${isRTL ? 'ml-3' : 'mr-3'}`}
+                      style={{
+                        width: imageSize,
+                        height: imageSize,
+                      }}
+                      resizeMode="cover"
+                    />
+                    <View className="flex-1">
                       <Text
-                        className={`text-gray-600 text-xs xs:text-sm flex-1 ${isRTL ? 'pl-2' : 'pr-2'} ${textStyle.className}`}
+                        className={`text-[#030B19] font-bold text-sm xs:text-base ${textStyle.className}`}
                       >
-                        {item.service_provider.full_name}
+                        {item.service_name}
                       </Text>
-                      <Ionicons
-                        name={isRTL ? 'chevron-back' : 'chevron-forward'}
-                        size={20}
-                        color="#030B19"
-                      />
-                    </View>
-
-                    <View
-                      className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
                       <View
-                        className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                        className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
                         <Text
-                          className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
+                          className={`text-gray-600 text-xs xs:text-sm flex-1 ${isRTL ? 'pl-2' : 'pr-2'} ${textStyle.className}`}
                         >
-                          {item.rating_average.toFixed(2)}
+                          {item.service_provider.full_name}
                         </Text>
-                        <Rating
-                          readonly
-                          startingValue={item.rating_average}
-                          imageSize={10}
+                        <Ionicons
+                          name={isRTL ? 'chevron-back' : 'chevron-forward'}
+                          size={20}
+                          color="#030B19"
                         />
                       </View>
-                      <Text
-                        className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
+
+                      <View
+                        className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        {item.base_price} {t('services:currency')}
-                      </Text>
+                        <View
+                          className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
+                        >
+                          <Text
+                            className={`text-sm text-[#030B19] ${isRTL ? 'ml-1' : 'mr-1'} ${textStyle.className}`}
+                          >
+                            {item.rating_average.toFixed(2)}
+                          </Text>
+                          <Rating
+                            readonly
+                            startingValue={item.rating_average}
+                            imageSize={10}
+                          />
+                        </View>
+                        <Text
+                          className={`text-[#030B19] font-semibold text-xs xs:text-sm ${textStyle.className}`}
+                        >
+                          {item.base_price} {t('services:currency')}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
-              )}
-              showsVerticalScrollIndicator={false}
-            />
+                  </TouchableOpacity>
+                )}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
           </View>
         </SafeAreaView>
       )}
