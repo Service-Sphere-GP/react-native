@@ -85,6 +85,7 @@ const Login = () => {
           label={t('auth:email')}
           placeholder={t('auth:enterEmail')}
           isPassword={false}
+          isEmail={true}
           value={email}
           onChangeText={setEmail}
           error={errorMessages.email ? true : false}

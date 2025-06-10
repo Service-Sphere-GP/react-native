@@ -14,6 +14,7 @@ const Input = ({
   label,
   placeholder,
   isPassword,
+  isEmail,
   value,
   onChangeText,
   error,
@@ -23,6 +24,7 @@ const Input = ({
   label: string;
   placeholder: string;
   isPassword: boolean;
+  isEmail?: boolean;
   value: string;
   onChangeText: (text: string) => void;
   error: boolean;
@@ -59,6 +61,9 @@ const Input = ({
           className={`p-4 border-2 ${error && !isFocusedRef.current ? 'border-[#FF5757]' : 'border-[#EDEDED]'} rounded-lg focus:outline-[#147E93] placeholder:text-[#363E4C]`}
           placeholder={placeholder}
           secureTextEntry={isPassword && !passwordVisible}
+          keyboardType={isEmail ? 'email-address' : 'default'}
+          autoCapitalize={isEmail ? 'none' : 'sentences'}
+          autoCorrect={isEmail ? false : true}
           onChangeText={onChangeText}
           value={value}
           onFocus={handleFocus}
