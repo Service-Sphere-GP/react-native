@@ -539,7 +539,7 @@ const Dashboard = () => {
         // Service Provider View - original content
         <>
           {/* Feedback Insights */}
-          <View className="bg-white rounded-2xl mx-4 p-4 -mt-20 shadow-sm">
+          <View className="bg-white rounded-2xl mx-4 p-4 -mt-16 shadow-sm">
             <Text className={`text-base font-medium text-[#030B19]`}>
               {t('home:feedbackInsights')}
             </Text>
