@@ -237,6 +237,10 @@ const NewService = () => {
       );
 
       console.log('✅ Service created successfully', response.status);
+      console.log('Service response data:', response.data);
+
+      const serviceId =
+        (response.data as any)?.data?._id || (response.data as any)?._id;
 
       ToastService.success(
         t('services:success'),
@@ -244,9 +248,15 @@ const NewService = () => {
           'Service created successfully!',
       );
 
-      // Wait a moment for user to see the success message
+      // Wait a moment for user to see the success message, then redirect to the new service
       setTimeout(() => {
-        router.push('/profile/me');
+        if (serviceId) {
+          console.log('Redirecting to service:', serviceId);
+          router.push(`/(tabs)/services/${serviceId}`);
+        } else {
+          console.warn('No service ID found, redirecting to profile');
+          router.push('/profile/me');
+        }
       }, 1500);
     } catch (err: any) {
       console.error('Error creating service:', err.message);
