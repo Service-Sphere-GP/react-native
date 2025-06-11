@@ -564,6 +564,22 @@ const Dashboard = () => {
                   }}
                 />
 
+                {/* See More/See Less Toggle Button */}
+                {advice &&
+                  advice.split('\n').filter((line) => line.trim() !== '')
+                    .length > 2 && (
+                    <TouchableOpacity
+                      className="mt-2"
+                      onPress={() => setShowFullAdvice(!showFullAdvice)}
+                    >
+                      <Text className="text-[#147E93] text-sm font-medium">
+                        {showFullAdvice
+                          ? t('home:showLess')
+                          : t('home:seeMore')}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+
                 {/* Load New Advice Button */}
                 <TouchableOpacity
                   className="bg-gradient-to-r from-[#2C8394] to-[#147E93] px-6 py-3 rounded-xl mt-4 shadow-lg"
