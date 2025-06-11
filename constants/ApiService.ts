@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Create an axios instance with the base URL
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 seconds timeout
+  timeout: 30000, // Increase to 30 seconds for file uploads
   headers: {
     'Content-Type': 'application/json',
   },
@@ -42,9 +42,16 @@ apiClient.interceptors.request.use(
     } catch (error) {
       console.error('Error getting token from AsyncStorage:', error);
     }
+
+    // For FormData uploads, don't interfere with Content-Type if it's already set
+    if (config.data instanceof FormData && !config.headers['Content-Type']) {
+      delete config.headers['Content-Type'];
+    }
+
     return config;
   },
   (error) => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   },
 );
@@ -104,13 +111,11 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         }
       } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError);
         processQueue(refreshError, null);
 
         // Clear tokens and redirect to login
         await AsyncStorage.multiRemove(['authToken', 'refreshToken', 'user']);
-
-        // You might want to emit an event here to redirect to login
-        console.log('Token refresh failed, user needs to login again');
 
         return Promise.reject(refreshError);
       } finally {
@@ -139,6 +144,26 @@ const ApiService = {
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<T>> => {
     return apiClient.post<T>(url, data, config);
+  },
+
+  // POST request specifically for file uploads
+  postFormData: <T>(
+    url: string,
+    formData: FormData,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<T>> => {
+    const uploadConfig: AxiosRequestConfig = {
+      ...config,
+      headers: {
+        ...config?.headers,
+        // Don't set Content-Type for FormData - let React Native handle it
+        Accept: 'application/json',
+      },
+      timeout: 120000, // 2 minutes for large file uploads
+      transformRequest: (data) => data, // Don't transform FormData
+    };
+
+    return apiClient.post<T>(url, formData, uploadConfig);
   },
 
   // PUT request

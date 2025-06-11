@@ -50,10 +50,10 @@ const FeedbackModal = ({ isVisible, onClose, booking }: FeedbackModalProps) => {
 
   const handleSubmitFeedback = async () => {
     if (rating === 0) {
-      ToastService.warning(
-        t('bookings:ratingRequired'),
-        t('bookings:pleaseSelectRating'),
-      );
+    ToastService.error(
+      t('common:error'),
+      t('bookings:ratingRequired'),
+    );
       return;
     }
 

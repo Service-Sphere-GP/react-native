@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import ToastService from '@/constants/ToastService';
 import Header from '@/components/Header';
 import * as ImagePicker from 'expo-image-picker';
 import { StyleSheet } from 'react-native';
@@ -37,6 +38,7 @@ const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({});
   const [isFormModified, setIsFormModified] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -121,7 +123,9 @@ const Settings = () => {
   };
 
   const handleSaveChanges = async () => {
-    if (!user || !isFormModified) return;
+    if (!user || !isFormModified || saving) return;
+
+    setSaving(true);
 
     try {
       const formDataObj = new FormData();
@@ -160,7 +164,8 @@ const Settings = () => {
 
       const response: any = await ApiService.patch(endpoint, formDataObj, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          // Don't set Content-Type manually for FormData - let axios handle it
+          Accept: 'application/json',
         },
         transformRequest: (data) => data,
       });
@@ -186,11 +191,41 @@ const Settings = () => {
         setUser(updatedUser);
         setImage(updatedUser.profile_image);
         setIsFormModified(false);
-        alert('Profile updated successfully!');
+
+        ToastService.success('Success', 'Profile updated successfully!');
       }
     } catch (error: any) {
       console.error('Update failed:', error.response?.data || error.message);
-      alert(`Update failed: ${error.response?.data?.message || error.message}`);
+
+      if (error.response?.status === 400) {
+        ToastService.error(
+          'Validation Error',
+          error.response?.data?.message ||
+            'Please check your input and try again',
+        );
+      } else if (error.response?.status === 401) {
+        ToastService.error('Authentication Error', 'Please log in again');
+        router.push('/(otp)/customer/login');
+      } else if (error.response?.status >= 500) {
+        ToastService.error(
+          'Server Error',
+          'Server error. Please try again later',
+        );
+      } else if (
+        error.code === 'ERR_NETWORK' ||
+        error.message === 'Network Error'
+      ) {
+       console.error('Network error:', error);
+      } else {
+        ToastService.error(
+          'Update Failed',
+          error.response?.data?.message ||
+            error.message ||
+            'Failed to update profile',
+        );
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -341,10 +376,22 @@ const Settings = () => {
 
             {isFormModified && (
               <TouchableOpacity
-                style={styles.saveButton}
+                style={[styles.saveButton, saving && styles.disabledButton]}
                 onPress={handleSaveChanges}
+                disabled={saving}
               >
-                <Text style={styles.saveButtonText}>Save Changes</Text>
+                {saving ? (
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator
+                      size="small"
+                      color="#fff"
+                      style={{ marginRight: 8 }}
+                    />
+                    <Text style={styles.saveButtonText}>Saving...</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.saveButtonText}>Save Changes</Text>
+                )}
               </TouchableOpacity>
             )}
           </View>
@@ -446,6 +493,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  disabledButton: {
+    opacity: 0.6,
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   saveButtonText: {
     color: '#FFFFFF',
     fontFamily: 'Roboto-Medium',
@@ -483,11 +538,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: 'Roboto-Medium',
     fontSize: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   loadingText: {
     marginTop: 10,

@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import ToastService from '@/constants/ToastService';
 import Header from '@/components/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +37,7 @@ const NewService = () => {
   const { isRTL } = useLanguage();
   const textStyle = getTextStyle(isRTL);
   const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [service, setService] = useState<ServiceData>({
     service_name: '',
@@ -114,8 +116,9 @@ const NewService = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      quality: 1,
+      quality: 0.7, // Reduce quality to 70% for smaller file sizes
       aspect: [4, 3],
+      allowsEditing: false,
     });
 
     if (!result.canceled) {
@@ -139,8 +142,57 @@ const NewService = () => {
   };
 
   const addNewServiceHandler = async () => {
+    if (creating) return; // Prevent double submission
+
+    console.log('🚀 Starting service creation process...');
+
+    // Basic validation
+    if (!service.service_name.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:serviceNameRequired') || 'Service name is required',
+      );
+      return;
+    }
+
+    if (!service.description.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:descriptionRequired') || 'Description is required',
+      );
+      return;
+    }
+
+    if (!service.base_price.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:priceRequired') || 'Price is required',
+      );
+      return;
+    }
+
+    if (service.categories.length === 0) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:categoryRequired') || 'Please select a category',
+      );
+      return;
+    }
+
+    if (images.length === 0) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:imagesRequired') || 'Please add at least one image',
+      );
+      return;
+    }
+
+    console.log('✅ All validations passed');
+
+    setCreating(true);
+
     try {
-      console.log('Images array before sending:', images);
+      console.log('Creating FormData...');
 
       // Create a new FormData instance
       const formData = new FormData();
@@ -156,71 +208,111 @@ const NewService = () => {
         JSON.stringify(service.service_attributes),
       );
 
-      // Convert images to blobs and append to FormData
+      console.log('Adding images to FormData...');
 
-      await Promise.all(
-        images.map(async (uri, index) => {
-          try {
-            // Fetch the image and convert to blob
-            const response = await fetch(uri);
-            const blob = await response.blob();
+      // Process images - use proper React Native FormData format
+      for (let i = 0; i < images.length; i++) {
+        const uri = images[i];
 
-            // Append blob to FormData with appropriate filename and type
-            formData.append('images', blob, `image_${index}.jpg`);
-          } catch (error) {
-            console.error(`Failed to process image ${index}:`, error);
-          }
-        }),
+        // For React Native, we need to append the file with proper format
+        formData.append('images', {
+          uri: uri,
+          type: 'image/jpeg',
+          name: `image_${i}.jpg`,
+        } as any);
+      }
+
+      console.log('Sending request...');
+
+      // Send FormData to server using basic post method
+      const response = await ApiService.post(
+        API_ENDPOINTS.CREATE_SERVICE,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 60000,
+        },
       );
 
-      console.log('FormData prepared:', formData);
+      console.log('✅ Service created successfully', response.status);
 
-      // Send FormData to server with improved configuration
-      try {
-        const response = await ApiService.post(
-          API_ENDPOINTS.CREATE_SERVICE,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Accept: 'application/json',
-            },
-            timeout: 30000, // Increase timeout for large file uploads
-            transformRequest: (data) => data, // Don't transform FormData
-          },
-        );
-        console.log('Service created successfully:', response);
+      ToastService.success(
+        t('services:success'),
+        t('services:serviceCreatedSuccessfully') ||
+          'Service created successfully!',
+      );
+
+      // Wait a moment for user to see the success message
+      setTimeout(() => {
         router.push('/profile/me');
-      } catch (networkError: any) {
-        // Handle network errors specifically
-        if (
-          networkError.code === 'ERR_NETWORK' ||
-          networkError.message === 'Network Error'
-        ) {
-          // Service might have been created successfully despite the network error
-          console.log(
-            'Network error occurred, but service may have been created',
-          );
-          // Navigate to profile since the service was likely created
-          router.push('/profile/me');
-        } else {
-          // Re-throw other errors
-          throw networkError;
-        }
-      }
+      }, 1500);
     } catch (err: any) {
-      console.error('Error creating service:', {
-        message: err.message,
+      console.error('Error creating service:', err.message);
+      console.error('Full error object:', {
         code: err.code,
+        message: err.message,
         status: err.response?.status,
         data: err.response?.data,
+        config: err.config
+          ? {
+              url: err.config.url,
+              method: err.config.method,
+              headers: err.config.headers,
+            }
+          : null,
       });
 
-      // Show user-friendly error message
-      alert(
-        t('services:createServiceError') ||
+      // Handle different types of errors
+      if (err.response?.status === 400) {
+        ToastService.error(
+          t('services:validationError'),
+          err.response?.data?.message ||
+            'Please check your input and try again',
+        );
+      } else if (err.response?.status === 401) {
+        ToastService.error(t('services:authError'), 'Please log in again');
+        router.push('/(otp)/customer/login');
+      } else if (err.response?.status === 413) {
+        ToastService.error(
+          'File Size Error',
+          'Images are too large. Please reduce image size and try again.',
+        );
+      } else if (err.response?.status >= 500) {
+        ToastService.error(
+          t('services:serverError'),
+          'Server error. Please try again later',
+        );
+      } else if (
+        err.code === 'ERR_NETWORK' ||
+        err.message === 'Network Error'
+      ) {
+        console.warn('🌐 Network error detected:', {
+          code: err.code,
+          message: err.message,
+        });
+
+        ToastService.error(
+          'Network Error',
+          'Please check your internet connection and try again.',
+        );
+      } else if (
+        err.code === 'ECONNABORTED' ||
+        err.message.includes('timeout')
+      ) {
+        ToastService.error(
+          'Timeout Error',
+          'Request took too long. Please try again.',
+        );
+      } else {
+        ToastService.error(
+          t('services:createServiceError') || 'Error',
           'Failed to create service. Please try again.',
-      );
+        );
+      }
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -356,12 +448,24 @@ const NewService = () => {
             </View>
           </View>
           <TouchableOpacity
-            className="flex-row items-center w-fit mt-20"
+            className={`flex-row items-center justify-center w-fit mt-20 ${
+              creating ? 'opacity-50' : ''
+            }`}
             onPress={addNewServiceHandler}
+            disabled={creating}
           >
-            <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
-              {t('services:addNewService')}
-            </Text>
+            {creating ? (
+              <View className="flex-row items-center bg-[#FDBD10] rounded-md px-5 py-3">
+                <ActivityIndicator size="small" color="#000" className="mr-2" />
+                <Text className="font-semibold text-base">
+                  {t('services:creatingService') || 'Creating Service...'}
+                </Text>
+              </View>
+            ) : (
+              <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
+                {t('services:addNewService')}
+              </Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
       )}

@@ -13,6 +13,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import ToastService from '@/constants/ToastService';
 import Header from '@/components/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { CheckBox } from '@rneui/themed';
@@ -40,6 +41,7 @@ const EditService = () => {
   const textStyle = getTextStyle(isRTL);
   const [loading, setLoading] = useState(true);
   const [loadingService, setLoadingService] = useState(true);
+  const [updating, setUpdating] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [service, setService] = useState<ServiceData>({
     service_name: '',
@@ -185,6 +187,35 @@ const EditService = () => {
   };
 
   const updateServiceHandler = async () => {
+    if (updating) return; // Prevent double submission
+
+    // Basic validation
+    if (!service.service_name.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:serviceNameRequired') || 'Service name is required',
+      );
+      return;
+    }
+
+    if (!service.description.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:descriptionRequired') || 'Description is required',
+      );
+      return;
+    }
+
+    if (!service.base_price.trim()) {
+      ToastService.error(
+        t('services:validation'),
+        t('services:priceRequired') || 'Price is required',
+      );
+      return;
+    }
+
+    setUpdating(true);
+
     try {
       // Create a new FormData instance
       const formData = new FormData();
@@ -217,38 +248,31 @@ const EditService = () => {
       );
 
       // Send FormData to server with improved configuration
-      try {
-        await ApiService.patch(
-          API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Accept: 'application/json',
-            },
-            timeout: 30000, // Increase timeout for large file uploads
-            transformRequest: (data) => data, // Don't transform FormData
+      await ApiService.patch(
+        API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
+        formData,
+        {
+          headers: {
+            // Don't set Content-Type manually for FormData - let axios handle it
+            Accept: 'application/json',
           },
-        );
-        console.log('Service updated successfully');
+          timeout: 30000, // Increase timeout for large file uploads
+          transformRequest: (data) => data, // Don't transform FormData
+        },
+      );
+
+      console.log('Service updated successfully');
+
+      ToastService.success(
+        t('services:success'),
+        t('services:serviceUpdatedSuccessfully') ||
+          'Service updated successfully!',
+      );
+
+      // Wait a moment for user to see the success message
+      setTimeout(() => {
         router.push('/profile/my-services');
-      } catch (networkError: any) {
-        // Handle network errors specifically
-        if (
-          networkError.code === 'ERR_NETWORK' ||
-          networkError.message === 'Network Error'
-        ) {
-          // Service might have been updated successfully despite the network error
-          console.log(
-            'Network error occurred, but service may have been updated',
-          );
-          // Navigate to profile since the service was likely updated
-          router.push('/profile/me');
-        } else {
-          // Re-throw other errors
-          throw networkError;
-        }
-      }
+      }, 1500);
     } catch (err: any) {
       console.error('Error updating service:', {
         message: err.message,
@@ -257,11 +281,38 @@ const EditService = () => {
         data: err.response?.data,
       });
 
-      // Show user-friendly error message
-      alert(
-        t('services:updateServiceError') ||
+      // Handle different types of errors
+      if (err.response?.status === 400) {
+        ToastService.error(
+          t('services:validationError'),
+          err.response?.data?.message ||
+            'Please check your input and try again',
+        );
+      } else if (err.response?.status === 401) {
+        ToastService.error(t('services:authError'), 'Please log in again');
+        router.push('/(otp)/customer/login');
+      } else if (err.response?.status >= 500) {
+        ToastService.error(
+          t('services:serverError'),
+          'Server error. Please try again later',
+        );
+      } else if (
+        err.code === 'ERR_NETWORK' ||
+        err.message === 'Network Error'
+      ) {
+        console.warn('Network error occurred:', err);
+        // For network errors, redirect after showing the warning
+        setTimeout(() => {
+          router.push('/profile/me');
+        }, 3000);
+      } else {
+        ToastService.error(
+          t('services:updateServiceError') || 'Error',
           'Failed to update service. Please try again.',
-      );
+        );
+      }
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -424,14 +475,28 @@ const EditService = () => {
             </View>
           </View>
           <TouchableOpacity
-            className="flex-row items-center w-fit"
+            className={`flex-row items-center justify-center w-fit ${
+              updating ? 'opacity-50' : ''
+            }`}
             onPress={updateServiceHandler}
+            disabled={updating}
           >
-            <Text
-              className={`text-center font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
-            >
-              {t('services:updateService')}
-            </Text>
+            {updating ? (
+              <View className="flex-row items-center bg-[#FDBD10] rounded-md px-5 py-3">
+                <ActivityIndicator size="small" color="#000" className="mr-2" />
+                <Text
+                  className={`text-center font-semibold text-base ${textStyle.className}`}
+                >
+                  {t('services:updatingService') || 'Updating Service...'}
+                </Text>
+              </View>
+            ) : (
+              <Text
+                className={`text-center font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3 ${textStyle.className}`}
+              >
+                {t('services:updateService')}
+              </Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
       )}
