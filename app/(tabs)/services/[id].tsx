@@ -337,7 +337,7 @@ const ServiceDetailsPage = () => {
               </TouchableOpacity>
             </View>
           )}
-          {user?.role === 'provider' &&
+          {user?.role === 'service_provider' &&
             service?.service_provider._id === user?._id && (
               <View className="flex-row justify-center xs:justify-between items-end sticky bottom-0 w-full">
                 <TouchableOpacity
