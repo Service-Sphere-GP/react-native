@@ -163,19 +163,11 @@ const AllServices = () => {
       ) : (
         <SafeAreaView className="flex-1 bg-[#F4F4F4]">
           {/* Header */}
-          <Header
-            title={
-              selectedCategory
-                ? categories.find((cat) => cat._id === selectedCategory)
-                    ?.name || t('services:allServices')
-                : t('services:allServices')
-            }
-            showBackButton={false}
-          />
+          <Header title={t('services:allServices')} showBackButton={false} />
 
           {/* Search & Filter */}
           <View className="px-4 py-2 flex-row items-center justify-between mb-2">
-            <View className="flex-row items-center bg-white rounded-lg px-2 py-2 flex-1 h-10">
+            <View className="flex-row items-center bg-white rounded-lg px-2 py-1 flex-1 h-12">
               <Ionicons
                 name="search"
                 size={20}
