@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ApiService from '@/constants/ApiService';
-import { API_ENDPOINTS } from '@/constants/ApiConfig';
+import { API_ENDPOINTS, API_BASE_URL } from '@/constants/ApiConfig';
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginError = string | null;
@@ -15,11 +16,10 @@ const useLogin = () => {
 
     try {
       // Using the endpoint path from ApiConfig with ApiService
-      const response: any = await ApiService.post(API_ENDPOINTS.LOGIN, {
+      const response = await axios.post(API_BASE_URL + API_ENDPOINTS.LOGIN, {
         email,
         password,
       });
-
 
       // Backend now returns both accessToken and refreshToken
       const { user, accessToken, refreshToken } = response.data.data;
@@ -31,9 +31,8 @@ const useLogin = () => {
       ]);
 
       return true;
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.message || 'An error occurred');
+    } catch (err: any) {
+      setError(err.response?.data?.data?.message || 'An error occurred');
       return false;
     } finally {
       setLoading(false);
