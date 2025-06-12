@@ -579,23 +579,63 @@ const Dashboard = () => {
 
             {advice ? (
               <>
-                {/* Using RenderHtml instead of Markdown */}
-                <RenderHtml
-                  contentWidth={width - 40} // Account for padding
-                  source={{
-                    html: showFullAdvice
-                      ? markdownToHtml(advice)
-                      : getTruncatedAdvice(),
-                  }}
-                  tagsStyles={{
-                    body: { fontSize: 14, color: '#363E4C', marginVertical: 4 },
-                    h1: { fontSize: 18, color: '#030B19', marginVertical: 4 },
-                    h2: { fontSize: 16, color: '#363E4C', marginVertical: 3 },
-                    a: { color: '#147E93' },
-                    ul: { marginVertical: 4 },
-                    li: { marginBottom: 2 },
-                  }}
-                />
+                {/* Using RenderHtml with ScrollView for full advice */}
+                {showFullAdvice ? (
+                  <ScrollView
+                    style={{
+                      maxHeight: 200, // Fixed height for scrollable area
+                      marginVertical: 8,
+                    }}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled={true}
+                  >
+                    <RenderHtml
+                      contentWidth={width - 40} // Account for padding
+                      source={{
+                        html: markdownToHtml(advice),
+                      }}
+                      tagsStyles={{
+                        body: {
+                          fontSize: 14,
+                          color: '#363E4C',
+                          marginVertical: 4,
+                        },
+                        h1: {
+                          fontSize: 18,
+                          color: '#030B19',
+                          marginVertical: 4,
+                        },
+                        h2: {
+                          fontSize: 16,
+                          color: '#363E4C',
+                          marginVertical: 3,
+                        },
+                        a: { color: '#147E93' },
+                        ul: { marginVertical: 4 },
+                        li: { marginBottom: 2 },
+                      }}
+                    />
+                  </ScrollView>
+                ) : (
+                  <RenderHtml
+                    contentWidth={width - 40} // Account for padding
+                    source={{
+                      html: getTruncatedAdvice(),
+                    }}
+                    tagsStyles={{
+                      body: {
+                        fontSize: 14,
+                        color: '#363E4C',
+                        marginVertical: 4,
+                      },
+                      h1: { fontSize: 18, color: '#030B19', marginVertical: 4 },
+                      h2: { fontSize: 16, color: '#363E4C', marginVertical: 3 },
+                      a: { color: '#147E93' },
+                      ul: { marginVertical: 4 },
+                      li: { marginBottom: 2 },
+                    }}
+                  />
+                )}
 
                 {/* See More/See Less Toggle Button */}
                 {advice &&
