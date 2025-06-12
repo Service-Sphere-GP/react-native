@@ -259,7 +259,8 @@ const Dashboard = () => {
     <ScrollView className="flex-1">
       {/* Header */}
       <View
-        className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} items-center justify-between bg-[#2C8394] px-4 py-3 h-44`}
+        className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} items-center justify-between bg-[#2C8394] px-4 h-44`}
+        style={{ paddingTop: 20 }} // Adjust for status bar height
       >
         <View
           className={`flex-row items-center mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}
@@ -337,7 +338,7 @@ const Dashboard = () => {
           >
             {t('home:categories')}
           </Text>
-          <View className="h-28">
+          <View className="h-20">
             <FlatList
               data={categories}
               horizontal
@@ -361,26 +362,23 @@ const Dashboard = () => {
               )}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  className="items-center"
+                  className="bg-gradient-to-br from-[#2C8394] to-[#147E93] rounded-xl px-4 py-3 min-w-[120px] items-center justify-center shadow-lg"
+                  style={{
+                    shadowColor: '#2C8394',
+                    shadowOffset: {
+                      width: 0,
+                      height: 3,
+                    },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 6,
+                    elevation: 6,
+                    backgroundColor: '#2C8394',
+                  }}
                   onPress={() => handleCategoryPress(item._id)}
                 >
-                  <View className="w-16 h-16 rounded-full bg-[#F0F0F0] items-center justify-center">
-                    {item.icon ? (
-                      <Image
-                        source={{ uri: item.icon }}
-                        className="w-8 h-8"
-                        resizeMode="contain"
-                      />
-                    ) : (
-                      <Image
-                        source={require('@/assets/images/icon.png')}
-                        style={{ width: 64, height: 64 }}
-                        resizeMode="contain"
-                      />
-                    )}
-                  </View>
                   <Text
-                    className={`text-xs text-gray-900 mt-1.5 text-center ${isRTL ? 'text-right' : 'text-left'}`}
+                    className={`text-white font-semibold text-sm text-center ${isRTL ? 'text-right' : 'text-left'}`}
+                    numberOfLines={2}
                   >
                     {item.name}
                   </Text>
