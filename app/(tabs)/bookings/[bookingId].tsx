@@ -72,6 +72,7 @@ const ChatRoomScreen = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [receiverDetails, setReceiverDetails] =
     useState<ReceiverDetails | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -115,6 +116,8 @@ const ChatRoomScreen = () => {
       if (!userJson) return null;
 
       const userData = JSON.parse(userJson);
+
+      setUserRole(userData.role);
 
       // Determine who the receiver is based on current user role
       let receiverData;
@@ -307,6 +310,7 @@ const ChatRoomScreen = () => {
         receiverName={receiverDetails?.full_name || 'Chat'}
         receiverImage={receiverDetails?.profile_image}
         onOpenFeedbackModal={handleOpenFeedbackModal}
+        role={userRole}
       />
 
       {/* Messages */}

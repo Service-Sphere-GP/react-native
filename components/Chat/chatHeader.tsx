@@ -10,12 +10,14 @@ interface ChatHeaderProps {
   receiverName?: string;
   receiverImage?: string;
   onOpenFeedbackModal?: () => void; // Added prop for feedback modal
+  role?: string | null;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
   receiverName = 'Chat',
   receiverImage,
   onOpenFeedbackModal,
+  role,
 }) => {
   const router = useRouter();
   const { t } = useTranslation(['chat']);
@@ -54,11 +56,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       </View>
 
       {/* Icons */}
-      <View className="flex-row items-center space-x-4">
-        <TouchableOpacity onPress={onOpenFeedbackModal}>
-          <Ionicons name="checkmark-circle" size={24} color="#147E93" />
-        </TouchableOpacity>
-      </View>
+      {role === 'customer' && (
+        <View className="flex-row items-center space-x-4">
+          <TouchableOpacity onPress={onOpenFeedbackModal}>
+            <Ionicons name="checkmark-circle" size={24} color="#147E93" />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
