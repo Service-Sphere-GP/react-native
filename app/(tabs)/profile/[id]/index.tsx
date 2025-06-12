@@ -80,7 +80,7 @@ export default function Profile() {
               />
             )}
             <ProfileDetail
-              title={t('profile:myReviews')}
+              title={t('services:reviews')}
               description={t('profile:whatPeopleSaying', {
                 name: user?.first_name,
               })}

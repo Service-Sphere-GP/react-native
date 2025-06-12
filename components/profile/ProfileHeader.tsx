@@ -53,13 +53,18 @@ const ProfileHeader = ({
           <View
             className={`flex-row items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <Text className={`text-[#D9DEE4]`}>{rating?.toFixed(2)}</Text>
-            <Rating
-              readonly
-              startingValue={rating}
-              imageSize={15}
-              tintColor="#147E93"
-            />
+            {rating ? (
+              <>
+                <Text className={`text-[#D9DEE4]`}>{rating?.toFixed(2)}</Text>
+                <Rating
+                  readonly
+                  startingValue={rating || 0}
+                  imageSize={15}
+                  tintColor="#147E93"
+                />
+              </>
+            ) :
+              <Text>{ rating }</Text>}
           </View>
         </View>
       </View>

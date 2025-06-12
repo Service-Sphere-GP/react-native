@@ -96,7 +96,7 @@ const ProfileComponent = () => {
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader
               fullName={user.full_name}
-              rating={user.rating_average}
+              rating={user.role === 'service_provider' ? user.rating_average : undefined}
               imageUrl={user.profile_image}
             />
             <View className="bg-white rounded-3xl w-full">
