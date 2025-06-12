@@ -178,154 +178,164 @@ const ServiceDetailsPage = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <ScrollView className="bg-[#F4F4F4]">
-          <View className="bg-white px-2 py-2">
-            <Header title={service?.service_name} showBackButton={true} />
+        <View className="flex-1">
+          <ScrollView className="bg-[#F4F4F4] ">
+            <View className="bg-white px-2 py-2">
+              <Header title={service?.service_name} showBackButton={true} />
 
-            <View
-              className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}
-            >
-              <Text className={`font-medium text-lg`}>
-                {t('services:serviceProvider')}
-              </Text>
+              <View
+                className={`flex-row justify-between my-4 items-center ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                <Text className={`font-medium text-lg`}>
+                  {t('services:serviceProvider')}
+                </Text>
+                <Text
+                  className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base`}
+                >
+                  {service?.status === 'active'
+                    ? t('services:active')
+                    : t('services:inactive')}
+                </Text>
+              </View>
+              <ProfileHeader
+                fullName={service?.service_provider.full_name}
+                rating={service?.service_provider.rating_average}
+                role={service?.service_provider.business_name}
+                onPress={navigateHandler}
+                imageUrl={service?.service_provider?.profile_image}
+              />
+
+              <View className="mt-6">
+                <Text className={`font-medium text-lg ${textStyle.className}`}>
+                  {t('services:images')}
+                </Text>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  className="mt-3"
+                >
+                  {service?.images.map((image, index) => (
+                    <View key={index} className={`${isRTL ? 'ml-3' : 'mr-3'}`}>
+                      <Image
+                        source={{ uri: image }}
+                        style={{ width: 130, height: 108, borderRadius: 10 }}
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+
               <Text
-                className={`${service?.status === 'active' ? 'bg-[#34C759]/20 text-[#34C759]' : 'bg-[#FF3B30]/20 text-[#FF3B30]'} font-medium py-1 px-3 rounded-xl text-base`}
+                className={`text-xs text-[#666B73] mt-5 ${textStyle.className}`}
               >
-                {service?.status === 'active'
-                  ? t('services:active')
-                  : t('services:inactive')}
+                {service?.description}
+              </Text>
+
+              <Text className="font-medium text-lg mt-5">
+                {!isRTL
+                  ? t('services:currency') +
+                    ' ' +
+                    service?.base_price.toFixed(2)
+                  : service?.base_price.toFixed(2) +
+                    ' ' +
+                    t('services:currency')}
               </Text>
             </View>
-            <ProfileHeader
-              fullName={service?.service_provider.full_name}
-              rating={service?.service_provider.rating_average}
-              role={service?.service_provider.business_name}
-              onPress={navigateHandler}
-              imageUrl={service?.service_provider?.profile_image}
-            />
-
-            <View className="mt-6">
-              <Text className={`font-medium text-lg ${textStyle.className}`}>
-                {t('services:images')}
+            <View className="bg-white px-6 py-2">
+              <Text className="text-2xl font-semibold border-b border-gray-200 py-2 mb-4">
+                {t('services:ratingsAndReviews')}
               </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                className="mt-3"
+              <View
+                className={`gap-3 border-b border-gray-200 mb-4 pb-4 ${isRTL ? 'items-end' : 'items-start'}`}
               >
-                {service?.images.map((image, index) => (
-                  <View key={index} className={`${isRTL ? 'ml-3' : 'mr-3'}`}>
-                    <Image
-                      source={{ uri: image }}
-                      style={{ width: 130, height: 108, borderRadius: 10 }}
-                    />
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
+                <Text className="text-xl font-medium">
+                  {t('services:overallRating')}
+                </Text>
+                <Text className="text-2xl font-bold">
+                  {service?.rating_average.toFixed(2)}
+                </Text>
+                <Rating value={service?.rating_average} />
+                {user.role === 'customer' && (
+                  <View className="border-t border-gray-200 py-4">
+                    <Text className="text-2xl font-semibold text-[#147E93] mb-3">
+                      ✨ {t('services:howToWriteReview')}
+                    </Text>
 
-            <Text
-              className={`text-xs text-[#666B73] mt-5 ${textStyle.className}`}
-            >
-              {service?.description}
-            </Text>
-
-            <Text className="font-medium text-lg mt-5">
-              {!isRTL
-                ? t('services:currency') + ' ' + service?.base_price.toFixed(2)
-                : service?.base_price.toFixed(2) + ' ' + t('services:currency')}
-            </Text>
-          </View>
-          <View className="bg-white px-6 py-2">
-            <Text className="text-2xl font-semibold border-b border-gray-200 py-2 mb-4">
-              {t('services:ratingsAndReviews')}
-            </Text>
-            <View
-              className={`gap-3 border-b border-gray-200 mb-4 pb-4 ${isRTL ? 'items-end' : 'items-start'}`}
-            >
-              <Text className="text-xl font-medium">
-                {t('services:overallRating')}
-              </Text>
-              <Text className="text-2xl font-bold">
-                {service?.rating_average.toFixed(2)}
-              </Text>
-              <Rating value={service?.rating_average} />
-              {user.role === 'customer' && (
-                <View className="border-t border-gray-200 py-4">
-                  <Text className="text-2xl font-semibold text-[#147E93] mb-3">
-                    ✨ {t('services:howToWriteReview')}
-                  </Text>
-
-                  <View className="space-y-3">
-                    <View
-                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <Ionicons
-                        name="megaphone-outline"
-                        size={20}
-                        color="#147E93"
-                      />
-                      <Text
-                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                    <View className="space-y-3">
+                      <View
+                        className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        {t('services:reviewTip1')}
-                      </Text>
-                    </View>
+                        <Ionicons
+                          name="megaphone-outline"
+                          size={20}
+                          color="#147E93"
+                        />
+                        <Text
+                          className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                        >
+                          {t('services:reviewTip1')}
+                        </Text>
+                      </View>
 
-                    <View
-                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <Ionicons
-                        name="chatbox-ellipses-outline"
-                        size={20}
-                        color="#147E93"
-                      />
-                      <Text
-                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      <View
+                        className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        {t('services:reviewTip2')}
-                      </Text>
-                    </View>
+                        <Ionicons
+                          name="chatbox-ellipses-outline"
+                          size={20}
+                          color="#147E93"
+                        />
+                        <Text
+                          className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                        >
+                          {t('services:reviewTip2')}
+                        </Text>
+                      </View>
 
-                    <View
-                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <Ionicons
-                        name="trophy-outline"
-                        size={20}
-                        color="#147E93"
-                      />
-                      <Text
-                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      <View
+                        className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        {t('services:reviewTip3')}
-                      </Text>
-                    </View>
+                        <Ionicons
+                          name="trophy-outline"
+                          size={20}
+                          color="#147E93"
+                        />
+                        <Text
+                          className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                        >
+                          {t('services:reviewTip3')}
+                        </Text>
+                      </View>
 
-                    <View
-                      className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <Ionicons name="bulb-outline" size={20} color="#147E93" />
-                      <Text
-                        className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                      <View
+                        className={`flex-row items-start ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        {t('services:reviewTip4')}
-                      </Text>
+                        <Ionicons
+                          name="bulb-outline"
+                          size={20}
+                          color="#147E93"
+                        />
+                        <Text
+                          className={`${isRTL ? 'mr-2' : 'ml-2'} text-sm text-[#363E4C]`}
+                        >
+                          {t('services:reviewTip4')}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              )}
-            </View>
+                )}
+              </View>
 
-            <FlatList
-              data={feedbacks}
-              keyExtractor={(item) => item._id}
-              renderItem={renderReviewItem}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
+              <FlatList
+                data={feedbacks}
+                keyExtractor={(item) => item._id}
+                renderItem={renderReviewItem}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          </ScrollView>
           {user?.role === 'customer' && (
-            <View className="flex-row justify-center xs:justify-between items-end sticky bottom-0 w-full">
+            <View className="flex-row justify-center xs:justify-between items-end w-full">
               <TouchableOpacity
                 className={`${service?.status === 'active' ? 'bg-[#FDBD10]' : 'bg-[#D9DEE4]'} py-3 px-4 rounded-t-md w-full`}
                 disabled={service?.status !== 'active'}
@@ -339,7 +349,7 @@ const ServiceDetailsPage = () => {
           )}
           {user?.role === 'service_provider' &&
             service?.service_provider._id === user?._id && (
-              <View className="flex-row justify-center xs:justify-between items-end sticky bottom-0 w-full">
+              <View className="flex-row justify-center xs:justify-between items-end  w-full">
                 <TouchableOpacity
                   className="bg-[#FDBD10] py-3 px-4 rounded-t-md w-full"
                   onPress={() =>
@@ -352,7 +362,7 @@ const ServiceDetailsPage = () => {
                 </TouchableOpacity>
               </View>
             )}
-        </ScrollView>
+        </View>
       )}
     </>
   );
