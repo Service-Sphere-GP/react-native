@@ -62,6 +62,11 @@ const Dashboard = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [recentBookings, setRecentBookings] = useState<any[]>([]);
 
+  // Add state for sentiment analysis
+  const [positiveFeedbacks, setPositiveFeedbacks] = useState(0);
+  const [negativeFeedbacks, setNegativeFeedbacks] = useState(0);
+  const [loadingSentiment, setLoadingSentiment] = useState(false);
+
   // Get user data and bookings
   useEffect(() => {
     const fetchUserAndBookings = async () => {
@@ -82,6 +87,9 @@ const Dashboard = () => {
               setAdvice(storedAdvice);
             }
             setLoadingAdvice(false);
+
+            // Fetch sentiment analysis
+            fetchSentimentAnalysis();
           }
 
           // Get all bookings based on user role
@@ -185,6 +193,33 @@ const Dashboard = () => {
   // Navigate to chat with booking
   const handleChatPress = (bookingId: string) => {
     router.push(`/bookings/${bookingId}`);
+  };
+
+  // Fetch sentiment analysis for service providers
+  const fetchSentimentAnalysis = async () => {
+    try {
+      setLoadingSentiment(true);
+      const response: any = await ApiService.get(
+        API_ENDPOINTS.GET_MY_FEEDBACKS,
+      );
+
+      if (response.data && response.data.data) {
+        const feedbacks = response.data.data;
+        const positive = feedbacks.filter(
+          (feedback: any) => feedback.sentiment === 'positive',
+        ).length;
+        const negative = feedbacks.filter(
+          (feedback: any) => feedback.sentiment === 'negative',
+        ).length;
+
+        setPositiveFeedbacks(positive);
+        setNegativeFeedbacks(negative);
+      }
+    } catch (error) {
+      console.error('Error fetching sentiment analysis:', error);
+    } finally {
+      setLoadingSentiment(false);
+    }
   };
 
   // Convert markdown to HTML
@@ -829,6 +864,63 @@ const Dashboard = () => {
                 <Text className={`text-sm text-[#676B73] text-center mt-1 `}>
                   {t('home:completionRate')}
                 </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Sentiment Analysis Section */}
+          <Text className={`text-lg font-medium text-[#030B19] mx-4 mt-4 `}>
+            {t('home:sentimentAnalysis')}
+          </Text>
+
+          <View
+            className={`${isRTL ? 'flex-row-reverse' : 'flex-row'} justify-between mt-2 mx-4 mb-6`}
+          >
+            <View className={`flex-1 ${isRTL ? 'ml-2' : 'mr-2'}`}>
+              <View className="bg-white rounded-lg items-center justify-center shadow-sm p-4">
+                {loadingSentiment ? (
+                  <ActivityIndicator size="small" color="#34C759" />
+                ) : (
+                  <>
+                    <View className="bg-green-100 rounded-full w-12 h-12 items-center justify-center mb-2">
+                      <Text style={{ fontSize: 20 }}>😊</Text>
+                    </View>
+                    <Text
+                      className={`text-xl font-semibold text-[#030B19] mt-2 `}
+                    >
+                      {positiveFeedbacks}
+                    </Text>
+                    <Text
+                      className={`text-sm text-[#676B73] text-center mt-1 `}
+                    >
+                      {t('home:positiveFeedbacks')}
+                    </Text>
+                  </>
+                )}
+              </View>
+            </View>
+
+            <View className={`flex-1 ${isRTL ? 'mr-2' : 'ml-2'}`}>
+              <View className="bg-white rounded-lg items-center justify-center shadow-sm p-4">
+                {loadingSentiment ? (
+                  <ActivityIndicator size="small" color="#FF3B30" />
+                ) : (
+                  <>
+                    <View className="bg-red-100 rounded-full w-12 h-12 items-center justify-center mb-2">
+                      <Text style={{ fontSize: 20 }}>😞</Text>
+                    </View>
+                    <Text
+                      className={`text-xl font-semibold text-[#030B19] mt-2 `}
+                    >
+                      {negativeFeedbacks}
+                    </Text>
+                    <Text
+                      className={`text-sm text-[#676B73] text-center mt-1 `}
+                    >
+                      {t('home:negativeFeedbacks')}
+                    </Text>
+                  </>
+                )}
               </View>
             </View>
           </View>

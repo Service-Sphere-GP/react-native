@@ -98,6 +98,9 @@
     "quickChats": "محادثات سريعة",
     "completedSessions": "الجلسات المكتملة",
     "openedSessions": "الجلسات المفتوحة",
+    "sentimentAnalysis": "تحليل المشاعر",
+    "positiveFeedbacks": "التقييمات الإيجابية",
+    "negativeFeedbacks": "التقييمات السلبية",
     "seeMore": "عرض المزيد",
     "showLess": "عرض أقل",
     "noConfirmedBookings": "لا توجد حجوزات مؤكدة",
@@ -189,7 +192,11 @@
     "serviceUpdatedSuccessfully": "تم تحديث الخدمة بنجاح!",
     "updatingService": "جاري تحديث الخدمة...",
     "updateServiceError": "خطأ في تحديث الخدمة",
-    "chooseImagesToOverwrite": "اختر صور إذا كنت تريد استبدال الصور الحالية. اترك فارغًا للاحتفاظ بالصور الموجودة."
+    "chooseImagesToOverwrite": "اختر صور إذا كنت تريد استبدال الصور الحالية. اترك فارغًا للاحتفاظ بالصور الموجودة.",
+    "sentimentOverview": "نظرة عامة على المشاعر",
+    "positive": "إيجابي",
+    "negative": "سلبي",
+    "neutral": "محايد"
   },
   "bookings": {
     "title": "الحجوزات",

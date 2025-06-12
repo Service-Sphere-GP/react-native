@@ -98,6 +98,9 @@
     "quickChats": "Quick Chats",
     "completedSessions": "Completed Sessions",
     "openedSessions": "Opened Sessions",
+    "sentimentAnalysis": "Sentiment Analysis",
+    "positiveFeedbacks": "Positive Feedbacks",
+    "negativeFeedbacks": "Negative Feedbacks",
     "seeMore": "See More",
     "showLess": "Show Less",
     "noConfirmedBookings": "No confirmed bookings",
@@ -189,7 +192,11 @@
     "serviceUpdatedSuccessfully": "Service updated successfully!",
     "updatingService": "Updating Service...",
     "updateServiceError": "Update Service Error",
-    "chooseImagesToOverwrite": "Choose images if you want to overwrite the current ones. Leave empty to keep existing images."
+    "chooseImagesToOverwrite": "Choose images if you want to overwrite the current ones. Leave empty to keep existing images.",
+    "sentimentOverview": "Sentiment Overview",
+    "positive": "Positive",
+    "negative": "Negative",
+    "neutral": "Neutral"
   },
   "bookings": {
     "title": "Bookings",

@@ -52,6 +52,8 @@ interface Feedback {
   service: {
     service_name: string;
   };
+  sentiment?: 'positive' | 'negative' | 'neutral';
+  sentimentScore?: number;
 }
 
 const ServiceDetailsPage = () => {
@@ -111,45 +113,97 @@ const ServiceDetailsPage = () => {
     fetchFeedbacks();
   }, [id, router]);
 
-  const renderReviewItem = ({ item }: { item: Feedback }) => (
-    <View
-      className={`pb-4 pt-3 border-b gap-2 border-gray-200 ${isRTL ? 'items-end' : 'items-start'}`}
-    >
-      <View className={`flex-row ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <Image
-          source={{ uri: item.user.profile_image }}
-          className={`w-12 h-12 rounded-full mt-1 ${isRTL ? 'ml-4' : 'mr-4'}`}
-          resizeMode="cover"
-        />
+  const renderReviewItem = ({ item }: { item: Feedback }) => {
+    const getSentimentIcon = (sentiment?: string) => {
+      switch (sentiment) {
+        case 'positive':
+          return '😊';
+        case 'negative':
+          return '😞';
+        case 'neutral':
+          return '😐';
+        default:
+          return '';
+      }
+    };
 
-        {/* Review Details */}
-        <View className="flex-1">
-          <Text
-            className={`text-lg font-medium text-[#030B19] ${textStyle.className}`}
-          >
-            {item.user.first_name} {item.user.last_name}
-          </Text>
+    const getSentimentColor = (sentiment?: string) => {
+      switch (sentiment) {
+        case 'positive':
+          return '#34C759';
+        case 'negative':
+          return '#FF3B30';
+        case 'neutral':
+          return '#FF9500';
+        default:
+          return '#8E8E93';
+      }
+    };
 
-          <Text className={`text-sm text-[#676B73] ${textStyle.className}`}>
-            {new Date(item.createdAt).toLocaleDateString(
-              isRTL ? 'ar-EG' : 'en-US',
-              {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              },
-            )}
-          </Text>
+    return (
+      <View
+        className={`pb-4 pt-3 border-b gap-2 border-gray-200 ${isRTL ? 'items-end' : 'items-start'}`}
+      >
+        <View className={`flex-row ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <Image
+            source={{ uri: item.user.profile_image }}
+            className={`w-12 h-12 rounded-full mt-1 ${isRTL ? 'ml-4' : 'mr-4'}`}
+            resizeMode="cover"
+          />
+
+          {/* Review Details */}
+          <View className="flex-1">
+            <View
+              className={`flex-row items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+            >
+              <Text
+                className={`text-lg font-medium text-[#030B19] ${textStyle.className}`}
+              >
+                {item.user.first_name} {item.user.last_name}
+              </Text>
+
+              {/* Sentiment Badge */}
+              {item.sentiment && (
+                <View
+                  className="flex-row items-center px-2 py-1 rounded-full"
+                  style={{
+                    backgroundColor: getSentimentColor(item.sentiment) + '20',
+                  }}
+                >
+                  <Text style={{ fontSize: 12 }}>
+                    {getSentimentIcon(item.sentiment)}
+                  </Text>
+                  <Text
+                    className="text-xs font-medium ml-1 capitalize"
+                    style={{ color: getSentimentColor(item.sentiment) }}
+                  >
+                    {item.sentiment}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <Text className={`text-sm text-[#676B73] ${textStyle.className}`}>
+              {new Date(item.createdAt).toLocaleDateString(
+                isRTL ? 'ar-EG' : 'en-US',
+                {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                },
+              )}
+            </Text>
+          </View>
         </View>
+
+        <Rating value={item.rating} />
+
+        <Text className={`text-sm text-[#363E4C] mt-2 ${textStyle.className}`}>
+          {item.message}
+        </Text>
       </View>
-
-      <Rating value={item.rating} />
-
-      <Text className={`text-sm text-[#363E4C] mt-2 ${textStyle.className}`}>
-        {item.message}
-      </Text>
-    </View>
-  );
+    );
+  };
 
   const navigateHandler = () => {
     router.push(`/profile/${service?.service_provider._id}`);
@@ -169,6 +223,26 @@ const ServiceDetailsPage = () => {
     } catch (error) {
       console.error('Failed to book service', error);
     }
+  };
+
+  // Calculate sentiment statistics
+  const getSentimentStats = () => {
+    if (!feedbacks || feedbacks.length === 0) {
+      return { positive: 0, negative: 0, neutral: 0, total: 0 };
+    }
+
+    const stats = feedbacks.reduce(
+      (acc, feedback) => {
+        if (feedback.sentiment === 'positive') acc.positive++;
+        else if (feedback.sentiment === 'negative') acc.negative++;
+        else if (feedback.sentiment === 'neutral') acc.neutral++;
+        acc.total++;
+        return acc;
+      },
+      { positive: 0, negative: 0, neutral: 0, total: 0 },
+    );
+
+    return stats;
   };
 
   return (
@@ -325,6 +399,75 @@ const ServiceDetailsPage = () => {
                   </View>
                 )}
               </View>
+
+              {/* Sentiment Analysis Overview */}
+              {feedbacks && feedbacks.length > 0 && (
+                <View className="border-b border-gray-200 mb-4 pb-4">
+                  <Text className="text-xl font-medium mb-3">
+                    {t('services:sentimentOverview')}
+                  </Text>
+
+                  {(() => {
+                    const stats = getSentimentStats();
+                    return (
+                      <View
+                        className={`flex-row justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+                      >
+                        {/* Positive */}
+                        <View className="flex-1 bg-green-50 rounded-lg p-3 mx-1 items-center">
+                          <Text style={{ fontSize: 24 }}>😊</Text>
+                          <Text className="text-lg font-bold text-green-600 mt-1">
+                            {stats.positive}
+                          </Text>
+                          <Text className="text-xs text-green-600 text-center">
+                            {t('services:positive')}
+                          </Text>
+                          <Text className="text-xs text-gray-500 mt-1">
+                            {stats.total > 0
+                              ? Math.round((stats.positive / stats.total) * 100)
+                              : 0}
+                            %
+                          </Text>
+                        </View>
+
+                        {/* Neutral */}
+                        <View className="flex-1 bg-orange-50 rounded-lg p-3 mx-1 items-center">
+                          <Text style={{ fontSize: 24 }}>😐</Text>
+                          <Text className="text-lg font-bold text-orange-600 mt-1">
+                            {stats.neutral}
+                          </Text>
+                          <Text className="text-xs text-orange-600 text-center">
+                            {t('services:neutral')}
+                          </Text>
+                          <Text className="text-xs text-gray-500 mt-1">
+                            {stats.total > 0
+                              ? Math.round((stats.neutral / stats.total) * 100)
+                              : 0}
+                            %
+                          </Text>
+                        </View>
+
+                        {/* Negative */}
+                        <View className="flex-1 bg-red-50 rounded-lg p-3 mx-1 items-center">
+                          <Text style={{ fontSize: 24 }}>😞</Text>
+                          <Text className="text-lg font-bold text-red-600 mt-1">
+                            {stats.negative}
+                          </Text>
+                          <Text className="text-xs text-red-600 text-center">
+                            {t('services:negative')}
+                          </Text>
+                          <Text className="text-xs text-gray-500 mt-1">
+                            {stats.total > 0
+                              ? Math.round((stats.negative / stats.total) * 100)
+                              : 0}
+                            %
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })()}
+                </View>
+              )}
 
               <FlatList
                 data={feedbacks}
