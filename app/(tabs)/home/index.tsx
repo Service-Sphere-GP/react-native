@@ -229,7 +229,7 @@ const Dashboard = () => {
 
   // Function to navigate to category listings
   const handleCategoryPress = (categoryId: string) => {
-    router.push(`/services?category=${categoryId}`);
+    router.push(`/(tabs)/services?category=${categoryId}`);
   };
 
   // Function to navigate to booking details
