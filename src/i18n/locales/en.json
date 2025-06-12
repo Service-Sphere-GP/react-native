@@ -165,7 +165,20 @@
     "refreshStatus": "Refresh Status",
     "refreshing": "Refreshing...",
     "dataRefreshed": "Verification status updated successfully!",
-    "refreshFailed": "Failed to refresh data. Please try again."
+    "refreshFailed": "Failed to refresh data. Please try again.",
+    "validation": "Validation",
+    "serviceNameRequired": "Service name is required",
+    "descriptionRequired": "Description is required",
+    "priceRequired": "Price is required",
+    "categoryRequired": "Please select a category",
+    "imagesRequired": "Please add at least one image",
+    "success": "Success",
+    "serviceCreatedSuccessfully": "Service created successfully!",
+    "validationError": "Validation Error",
+    "authError": "Authentication Error",
+    "serverError": "Server Error",
+    "createServiceError": "Create Service Error",
+    "creatingService": "Creating Service..."
   },
   "bookings": {
     "title": "Bookings",

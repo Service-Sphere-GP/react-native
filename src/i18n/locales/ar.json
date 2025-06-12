@@ -165,7 +165,20 @@
     "refreshStatus": "تحديث الحالة",
     "refreshing": "جاري التحديث...",
     "dataRefreshed": "تم تحديث حالة التحقق بنجاح!",
-    "refreshFailed": "فشل في تحديث البيانات. يرجى المحاولة مرة أخرى."
+    "refreshFailed": "فشل في تحديث البيانات. يرجى المحاولة مرة أخرى.",
+    "validation": "التحقق",
+    "serviceNameRequired": "اسم الخدمة مطلوب",
+    "descriptionRequired": "الوصف مطلوب",
+    "priceRequired": "السعر مطلوب",
+    "categoryRequired": "يرجى اختيار فئة",
+    "imagesRequired": "يرجى إضافة صورة واحدة على الأقل",
+    "success": "نجح",
+    "serviceCreatedSuccessfully": "تم إنشاء الخدمة بنجاح!",
+    "validationError": "خطأ في التحقق",
+    "authError": "خطأ في المصادقة",
+    "serverError": "خطأ في الخادم",
+    "createServiceError": "خطأ في إنشاء الخدمة",
+    "creatingService": "جاري إنشاء الخدمة..."
   },
   "bookings": {
     "title": "الحجوزات",
