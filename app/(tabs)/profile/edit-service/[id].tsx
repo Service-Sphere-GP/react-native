@@ -108,12 +108,13 @@ const EditService = () => {
             description: serviceData.description,
             base_price: serviceData.base_price.toString(),
             categories: serviceData.categories.map((cat: any) => cat._id),
-            images: serviceData.images,
+            images: [], // Don't load existing images for editing
             status: serviceData.status,
             service_attributes: serviceData.service_attributes,
           });
 
-          setImages(serviceData.images);
+          // Don't set existing images - user will select new ones to overwrite
+          setImages([]);
 
           // Set category value from existing service
           if (serviceData.categories && serviceData.categories.length > 0) {
@@ -231,33 +232,27 @@ const EditService = () => {
         JSON.stringify(service.service_attributes),
       );
 
-      // Add new image files
-      await Promise.all(
-        images.map(async (uri, index) => {
-          try {
-            // Fetch the image and convert to blob
-            const response = await fetch(uri);
-            const blob = await response.blob();
+      // Process images - use proper React Native FormData format (same as new-service)
+      for (let i = 0; i < images.length; i++) {
+        const uri = images[i];
 
-            // Append the blob to FormData images
-            formData.append('images', blob, `image_${index}.jpg`);
-          } catch (error) {
-            console.error(`Failed to process image ${index}:`, error);
-          }
-        }),
-      );
+        // For React Native, we need to append the file with proper format
+        formData.append('images', {
+          uri: uri,
+          type: 'image/jpeg',
+          name: `image_${i}.jpg`,
+        } as any);
+      }
 
-      // Send FormData to server with improved configuration
-      await ApiService.patch(
+      // Send FormData to server using basic patch method
+      const response = await ApiService.patch(
         API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
         formData,
         {
           headers: {
-            // Don't set Content-Type manually for FormData - let axios handle it
-            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
           },
-          timeout: 30000, // Increase timeout for large file uploads
-          transformRequest: (data) => data, // Don't transform FormData
+          timeout: 60000,
         },
       );
 
@@ -274,12 +269,7 @@ const EditService = () => {
         router.push('/profile/my-services');
       }, 1500);
     } catch (err: any) {
-      console.error('Error updating service:', {
-        message: err.message,
-        code: err.code,
-        status: err.response?.status,
-        data: err.response?.data,
-      });
+      console.log('Error updating service:', JSON.stringify(err));
 
       // Handle different types of errors
       if (err.response?.status === 400) {
@@ -366,6 +356,15 @@ const EditService = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
+
+              {/* Instructions for image replacement */}
+              <Text
+                className={`text-sm text-gray-600 mt-2 mb-3 ${textStyle.className}`}
+              >
+                {t('services:chooseImagesToOverwrite') ||
+                  'Choose images if you want to overwrite the current ones. Leave empty to keep existing images.'}
+              </Text>
+
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}

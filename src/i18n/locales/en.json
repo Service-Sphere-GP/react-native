@@ -178,7 +178,11 @@
     "authError": "Authentication Error",
     "serverError": "Server Error",
     "createServiceError": "Create Service Error",
-    "creatingService": "Creating Service..."
+    "creatingService": "Creating Service...",
+    "serviceUpdatedSuccessfully": "Service updated successfully!",
+    "updatingService": "Updating Service...",
+    "updateServiceError": "Update Service Error",
+    "chooseImagesToOverwrite": "Choose images if you want to overwrite the current ones. Leave empty to keep existing images."
   },
   "bookings": {
     "title": "Bookings",

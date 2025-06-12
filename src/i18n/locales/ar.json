@@ -178,7 +178,11 @@
     "authError": "خطأ في المصادقة",
     "serverError": "خطأ في الخادم",
     "createServiceError": "خطأ في إنشاء الخدمة",
-    "creatingService": "جاري إنشاء الخدمة..."
+    "creatingService": "جاري إنشاء الخدمة...",
+    "serviceUpdatedSuccessfully": "تم تحديث الخدمة بنجاح!",
+    "updatingService": "جاري تحديث الخدمة...",
+    "updateServiceError": "خطأ في تحديث الخدمة",
+    "chooseImagesToOverwrite": "اختر صور إذا كنت تريد استبدال الصور الحالية. اترك فارغًا للاحتفاظ بالصور الموجودة."
   },
   "bookings": {
     "title": "الحجوزات",
