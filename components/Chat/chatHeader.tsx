@@ -26,7 +26,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
 
   return (
     <View
-      className={`items-center justify-between px-4 py-2 bg-white shadow-sm mt-8 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
+      className={`items-center justify-between px-4 py-2 bg-white shadow-sm mt-14 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
     >
       <View
         className={`flex-row items-center ${isRTL ? 'flex-row-reverse' : ''}`}

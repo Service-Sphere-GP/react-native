@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ApiService from '@/constants/ApiService';
 import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 import { useLanguage } from '@/src/i18n/LanguageContext';
 import ToastService from '@/constants/ToastService';
 
@@ -38,6 +39,7 @@ const FeedbackModal = ({ isVisible, onClose, booking }: FeedbackModalProps) => {
   const [feedback, setFeedback] = useState('');
   const [rating, setRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   // Reset state when modal opens with a new booking
   useEffect(() => {
@@ -91,6 +93,9 @@ const FeedbackModal = ({ isVisible, onClose, booking }: FeedbackModalProps) => {
             t('bookings:feedbackSubmitted'),
             t('bookings:thanksForFeedback'),
           );
+
+          // redirect to home 
+          router.push('/home');
         } else {
           ToastService.error(
             t('common:error'),
@@ -173,7 +178,8 @@ const FeedbackModal = ({ isVisible, onClose, booking }: FeedbackModalProps) => {
             }}
           />
 
-          <View className="flex-row justify-between w-full mt-6 space-x-4">
+          <View className="flex-row w-full mt-6 space-x-4 gap-4"
+          >
             <TouchableOpacity
               className="px-4 py-2 rounded-lg bg-gray-200 flex-1 items-center"
               onPress={onClose}
