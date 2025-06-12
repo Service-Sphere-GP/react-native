@@ -54,7 +54,7 @@ const notification = () => {
     <View className="flex-1 bg-[#F9F9F9]">
       {/* Header */}
       <View
-        className={`flex-row items-center justify-center px-4 py-4 relative ${isRTL ? 'flex-row-reverse' : ''}`}
+        className={`flex-row items-center justify-center px-4 py-4 relative mt-14 ${isRTL ? 'flex-row-reverse' : ''}`}
       >
         <Text className="text-lg text-[#030B19] font-medium">
           {t('profile:notifications')}
@@ -138,7 +138,7 @@ const notification = () => {
 
       {/* Footer Buttons */}
       <View
-        className={`flex-row px-4 py-4 justify-between ${isRTL ? 'flex-row-reverse' : ''}`}
+        className={`flex-row py-4 px-4 justify-center ${isRTL ? 'flex-row-reverse' : ''}`}
       >
         <TouchableOpacity
           className={`bg-[#F9F9F9] px-6 py-3 rounded-lg shadow-md w-1/2 ${isRTL ? 'ml-2' : 'mr-2'}`}

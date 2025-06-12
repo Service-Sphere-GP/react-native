@@ -64,7 +64,7 @@ const ProfileHeader = ({
                 />
               </>
             ) :
-              <Text>{ rating }</Text>}
+              null}
           </View>
         </View>
       </View>
