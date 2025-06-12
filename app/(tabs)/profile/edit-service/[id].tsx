@@ -244,8 +244,8 @@ const EditService = () => {
         } as any);
       }
 
-      // Send FormData to server using basic patch method
-      const response = await ApiService.patch(
+      // Send FormData to server - let React Native handle Content-Type automatically
+      await ApiService.patch(
         API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
         formData,
         {
@@ -253,9 +253,21 @@ const EditService = () => {
             'Content-Type': 'multipart/form-data',
           },
           timeout: 60000,
+          transformRequest: (data) => data, // Don't transform FormData
         },
       );
 
+      await ApiService.patch(
+        API_ENDPOINTS.UPDATE_SERVICE.replace(':id', id as string),
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          timeout: 60000,
+          transformRequest: (data) => data, // Don't transform FormData
+        },
+      );
       console.log('Service updated successfully');
 
       ToastService.success(
