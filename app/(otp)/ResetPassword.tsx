@@ -85,10 +85,6 @@ export default function ResetPassword() {
 
     if (success) {
       setIsSuccess(true);
-      ToastService.success(
-        t('auth:passwordResetSuccess'),
-        'You can now login with your new password',
-      );
     } else {
       ToastService.error(
         t('auth:passwordResetFailed'),
