@@ -16,6 +16,8 @@ import { API_ENDPOINTS } from '@/constants/ApiConfig';
 import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ToastService from '@/constants/ToastService';
 
 interface Service {
   service_name: string;
@@ -37,6 +39,10 @@ const MyServices = () => {
   const { width: screenWidth } = useWindowDimensions();
   const [services, setServices] = useState<Service[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [refreshingUser, setRefreshingUser] = useState(false);
+  const [userVerificationStatus, setUserVerificationStatus] = useState<
+    string | null
+  >(null);
 
   const imageSize = screenWidth < 375 ? 45 : screenWidth < 768 ? 60 : 75;
 
@@ -44,6 +50,14 @@ const MyServices = () => {
     const checkUser = async () => {
       try {
         setLoading(true);
+
+        // Get user data from AsyncStorage to check verification status
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setUserVerificationStatus(parsedUser.verification_status || null);
+        }
+
         const response: any = await ApiService.get(
           API_ENDPOINTS.GET_MY_SERVICES,
         );
@@ -61,6 +75,53 @@ const MyServices = () => {
 
     checkUser();
   }, [router]);
+
+  const refreshUserData = async () => {
+    try {
+      setRefreshingUser(true);
+
+      // Get current user ID from AsyncStorage
+      const userData = await AsyncStorage.getItem('user');
+      if (!userData) {
+        ToastService.error('Error', 'User data not found');
+        return;
+      }
+
+      const parsedUser = JSON.parse(userData);
+      const userId = parsedUser._id;
+
+      // Fetch fresh user data from server
+      const response: any = await ApiService.get(
+        API_ENDPOINTS.GET_USER.replace(':id', userId),
+      );
+
+      if (response.data && response.data.data) {
+        const freshUserData = response.data.data;
+
+        // Update AsyncStorage with fresh data
+        await AsyncStorage.setItem('user', JSON.stringify(freshUserData));
+
+        // Update local state
+        setUserVerificationStatus(freshUserData.verification_status || null);
+
+        // Show success message
+        ToastService.success(
+          t('common:success') || 'Success',
+          t('services:dataRefreshed') ||
+            'Verification status updated successfully!',
+        );
+      }
+    } catch (error) {
+      console.error('Failed to refresh user data:', error);
+      ToastService.error(
+        t('common:error') || 'Error',
+        t('services:refreshFailed') ||
+          'Failed to refresh data. Please try again.',
+      );
+    } finally {
+      setRefreshingUser(false);
+    }
+  };
 
   return (
     <>
@@ -148,16 +209,68 @@ const MyServices = () => {
           )}
 
           {/* Footer Button */}
-          <View className="mt-4 px-4 mb-3">
-            <TouchableOpacity
-              className={` items-center ${isRTL ? 'justify-start flex-row-reverse' : 'justify-end flex-row'}`}
-              onPress={() => router.push('/profile/new-service')}
-            >
-              <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
-                {t('services:addNewService')}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {userVerificationStatus === 'approved' && (
+            <View className="mt-4 px-4 mb-3">
+              <TouchableOpacity
+                className={` items-center ${isRTL ? 'justify-start flex-row-reverse' : 'justify-end flex-row'}`}
+                onPress={() => router.push('/profile/new-service')}
+              >
+                <Text className="font-semibold text-base bg-[#FDBD10] rounded-md px-5 py-3">
+                  {t('services:addNewService')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Show verification status message if not approved */}
+          {userVerificationStatus && userVerificationStatus !== 'approved' && (
+            <View className="mt-4 px-4 mb-3">
+              <View className="bg-orange-100 border border-orange-300 rounded-md p-4">
+                <Text className="text-orange-800 text-center font-medium mb-3">
+                  {userVerificationStatus === 'pending'
+                    ? t('services:verificationPending') ||
+                      'Your account verification is pending. You cannot add new services until your account is approved.'
+                    : userVerificationStatus === 'rejected'
+                      ? t('services:verificationRejected') ||
+                        'Your account verification was rejected. Please contact support to resolve this issue.'
+                      : t('services:verificationRequired') ||
+                        'Account verification required to add new services.'}
+                </Text>
+
+                {/* Refresh Button */}
+                <TouchableOpacity
+                  className={`bg-orange-600 rounded-md py-2 px-4 flex-row items-center justify-center ${refreshingUser ? 'opacity-50' : ''}`}
+                  onPress={refreshUserData}
+                  disabled={refreshingUser}
+                >
+                  {refreshingUser ? (
+                    <>
+                      <ActivityIndicator
+                        size="small"
+                        color="#FFFFFF"
+                        className="mr-2"
+                      />
+                      <Text className="text-white font-medium">
+                        {t('services:refreshing') || 'Refreshing...'}
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Ionicons
+                        name="refresh"
+                        size={16}
+                        color="#FFFFFF"
+                        style={{ marginRight: 8 }}
+                      />
+                      <Text className="text-white font-medium">
+                        {t('services:refreshStatus') || 'Refresh Status'}
+                      </Text>
+                    </>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
       )}
     </>

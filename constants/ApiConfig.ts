@@ -1,11 +1,11 @@
 import { Platform } from 'react-native';
 
-// const API_BASE_URL =
-//   Platform.OS === 'web'
-//     ? 'http://localhost:3000/api/v1'
-//     : 'http://10.0.2.2:3000/api/v1';
+const API_BASE_URL =
+  Platform.OS === 'web'
+    ? 'http://localhost:3000/api/v1'
+    : 'http://10.0.2.2:3000/api/v1';
 
-const API_BASE_URL = 'https://service-sphere-9ad98507b341.herokuapp.com/api/v1';
+// const API_BASE_URL = 'https://service-sphere-9ad98507b341.herokuapp.com/api/v1';
 
 // API endpoint paths (without the base URL)
 const API_ENDPOINTS = {

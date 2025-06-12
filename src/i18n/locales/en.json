@@ -22,7 +22,9 @@
     "slogan": "Connecting you to the people you need",
     "welcomeMessage": "Welcome! Are you looking for a service or offering one? Let us know below. Choose how you'd like to get started.",
     "customerButton": "Customer",
-    "providerButton": "Service Provider"
+    "providerButton": "Service Provider",
+    "success": "Success",
+    "error": "Error"
   },
   "auth": {
     "login": "Login",
@@ -156,7 +158,14 @@
     "myServices": "My Services",
     "addNewService": "Add new service",
     "noServicesFound": "No services found",
-    "tryDifferentSearch": "Try a different search term"
+    "tryDifferentSearch": "Try a different search term",
+    "verificationPending": "Your account verification is pending. You cannot add new services until your account is approved.",
+    "verificationRejected": "Your account verification was rejected. Please contact support to resolve this issue.",
+    "verificationRequired": "Account verification required to add new services.",
+    "refreshStatus": "Refresh Status",
+    "refreshing": "Refreshing...",
+    "dataRefreshed": "Verification status updated successfully!",
+    "refreshFailed": "Failed to refresh data. Please try again."
   },
   "bookings": {
     "title": "Bookings",

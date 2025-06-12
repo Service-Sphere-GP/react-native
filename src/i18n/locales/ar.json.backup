@@ -1,6 +1,10 @@
 {
   "common": {
-    "appName": "سيرفس سفير",
+    "a    "welcomeMessage": "مرحباً! هل تبحث عن خدمة أم تقدم واحدة؟ أخبرنا أدناه. اختر كيف تريد أن تبدأ.",
+    "customerButton": "عميل",
+    "providerButton": "مقدم خدمة",
+    "success": "نجح",
+    "error": "خطأ"ame": "سيرفس سفير",
     "welcome": "مرحباً!",
     "loading": "جاري التحميل...",
     "language": "اللغة",

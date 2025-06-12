@@ -164,6 +164,7 @@ const Register = () => {
             label={t('auth:email')}
             placeholder={t('auth:enterEmail')}
             isPassword={false}
+            isEmail={true}
             value={provider.email}
             onChangeText={(text) => setProvider({ ...provider, email: text })}
             error={errorMessages.email ? true : false}
