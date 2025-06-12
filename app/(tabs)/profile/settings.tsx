@@ -147,14 +147,23 @@ const Settings = () => {
           formDataObj.append('business_address', formData.business_address);
       }
 
-      // Handle image upload similar to service creation
+      // Handle image upload for React Native
       if (
         formData.profile_image &&
         formData.profile_image !== user.profile_image
       ) {
-        const response = await fetch(formData.profile_image);
-        const blob = await response.blob();
-        formDataObj.append('profile_image', blob, `profile_${Date.now()}.jpg`);
+        // For React Native, we need to handle the image differently
+        const imageUri = formData.profile_image;
+        const filename = `profile_${Date.now()}.jpg`;
+
+        // Create the file object for React Native
+        const imageFile = {
+          uri: imageUri,
+          type: 'image/jpeg',
+          name: filename,
+        } as any;
+
+        formDataObj.append('profile_image', imageFile);
       }
 
       const endpoint =
@@ -164,10 +173,10 @@ const Settings = () => {
 
       const response: any = await ApiService.patch(endpoint, formDataObj, {
         headers: {
-          // Don't set Content-Type manually for FormData - let axios handle it
-          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
-        transformRequest: (data) => data,
+        timeout: 60000,
+        transformRequest: (data) => data, // Don't transform FormData
       });
 
       if (response.data) {
@@ -215,7 +224,7 @@ const Settings = () => {
         error.code === 'ERR_NETWORK' ||
         error.message === 'Network Error'
       ) {
-       console.error('Network error:', error);
+        console.error('Network error:', JSON.stringify(error));
       } else {
         ToastService.error(
           'Update Failed',
