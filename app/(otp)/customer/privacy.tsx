@@ -72,7 +72,7 @@ const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = ({
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-gray-100 mt-10">
       <View className="flex-1 mx-4 mt-6 mb-4">
         <View className="bg-white rounded-3xl shadow-lg flex-1 overflow-hidden">
           <View className="flex-row items-center px-6 py-4 border-b border-gray-50">
@@ -177,23 +177,6 @@ const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = ({
 
             </View>
           </ScrollView>
-
-          <View className="absolute bottom-0 left-0 right-0 bg-white px-4 py-4 border-t border-gray-100">
-            <TouchableOpacity
-              onPress={handleAgreePress}
-              className={`py-4 rounded-xl transition-all duration-200 ${
-                isAgreed
-                  ? 'bg-[#147E93] active:bg-[#0F7A8C]'
-                  : 'bg-yellow-400 active:bg-yellow-500'
-              }`}
-              activeOpacity={0.9}
-            >
-              <Text className="text-center font-Roboto-Bold text-base sm:text-lg text-black">
-                {isAgreed ? "Agreed! Redirecting..." : "I've agree with this"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
         </View>
       </View>
     </SafeAreaView>
