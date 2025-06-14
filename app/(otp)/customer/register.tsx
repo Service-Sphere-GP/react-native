@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'; 
 import { CheckBox } from '@rneui/themed';
 import CustomButton from '@/components/CustomButton';
 import Header from '@/components/login/Header';
@@ -176,9 +176,11 @@ const Register = () => {
           />
           <Text className="text-black text-base font-medium">
             {t('auth:agreeToThe')}{' '}
-            <Text className="text-[#147E93] underline">
-              {t('auth:privacyPolicy')}
-            </Text>
+            <TouchableOpacity onPress={() => router.push('/(otp)/customer/privacy')}>
+              <Text className="text-[#147E93] underline">
+                {t('auth:privacyPolicy')}
+              </Text>
+            </TouchableOpacity>
           </Text>
         </View>
 
