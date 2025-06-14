@@ -141,7 +141,7 @@ const aboutApp = () => {
                 </Text>
               </TouchableOpacity>
 
-              <View className="flex-row justify-between items-center">
+              {/* <View className="flex-row justify-between items-center">
                 <View className="flex-1 items-center">
                   <Text className="text-2xl sm:text-3xl font-Roboto-Bold text-[#147E93] mb-1">
                     50K+
@@ -179,7 +179,7 @@ const aboutApp = () => {
                     Rating
                   </Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
