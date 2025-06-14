@@ -61,11 +61,11 @@ const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = ({
             color={iconColor} 
           />
         </View>
-        <Text className="text-base sm:text-lg font-Roboto-Bold text-gray-900 flex-1 text-center">
+        <Text className="text-base sm:text-lg font-Roboto-Bold text-gray-900 flex-1">
           {title}
         </Text>
       </View>
-      <Text className="text-sm sm:text-base text-gray-800 leading-6 text-center font-Roboto">
+      <Text className="text-sm sm:text-base text-gray-800 font-Roboto">
         {content}
       </Text>
     </View>
@@ -178,10 +178,10 @@ const PrivacyPolicyScreen: React.FC<PrivacyPolicyScreenProps> = ({
             </View>
           </ScrollView>
 
-          <View className="absolute bottom-0 left-0 right-0 bg-white px-6 py-6 border-t border-gray-100">
+          <View className="absolute bottom-0 left-0 right-0 bg-white px-4 py-4 border-t border-gray-100">
             <TouchableOpacity
               onPress={handleAgreePress}
-              className={`py-4 sm:py-5 rounded-xl transition-all duration-200 ${
+              className={`py-4 rounded-xl transition-all duration-200 ${
                 isAgreed
                   ? 'bg-[#147E93] active:bg-[#0F7A8C]'
                   : 'bg-yellow-400 active:bg-yellow-500'

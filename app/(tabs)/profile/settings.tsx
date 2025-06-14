@@ -330,10 +330,7 @@ const Settings = () => {
                 onPress={pickImage}
                 style={styles.editImageButton}
               >
-                <Image
-                  source={require('@/assets/images/edit.png')}
-                  style={styles.editIcon}
-                />
+                <Image source={require('@/assets/images/edit.png')} />
               </TouchableOpacity>
             </View>
           </View>
@@ -423,7 +420,6 @@ const Settings = () => {
       ) : (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#147E93" />
-          <Text style={styles.loadingText}>Loading...</Text>
         </View>
       )}
     </View>
@@ -466,11 +462,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#147E93',
   },
-  editIcon: {
-    width: 16,
-    height: 16,
-    tintColor: '#147E93',
-  },
   formContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -479,8 +470,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   label: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 16,
+    fontFamily: 'Roboto',
+    fontSize: 20,
+    fontWeight: '500',
     marginBottom: 8,
     color: '#333333',
   },
@@ -491,8 +483,8 @@ const styles = StyleSheet.create({
     height: 48,
     paddingHorizontal: 12,
     marginBottom: 16,
-    fontFamily: 'Roboto-Regular',
-    fontSize: 14,
+    fontFamily: 'Roboto',
+    fontSize: 16,
     color: '#333333',
   },
   saveButton: {
@@ -509,10 +501,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    height: '90%',
   },
   saveButtonText: {
     color: '#FFFFFF',
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto',
     fontSize: 16,
   },
   footerContainer: {
@@ -526,13 +519,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   joinedText: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 14,
+    fontFamily: 'Roboto',
+    fontSize: 16,
     color: '#666666',
   },
   joinedDate: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 14,
+    fontFamily: 'Roboto',
+    fontSize: 16,
     color: '#333333',
     marginLeft: 4,
   },
@@ -545,12 +538,12 @@ const styles = StyleSheet.create({
   },
   deleteAccountButtonText: {
     color: '#FFFFFF',
-    fontFamily: 'Roboto-Medium',
     fontSize: 16,
+    fontFamily: 'Roboto',
   },
   loadingText: {
     marginTop: 10,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto',
     fontSize: 14,
     color: '#666666',
   },

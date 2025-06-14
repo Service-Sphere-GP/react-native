@@ -85,7 +85,8 @@
     "congratsRegistration": "تهانينا! تم إكمال تسجيلك بنجاح.",
     "allSetToExplore": "أنت جاهز الآن لاستكشاف خدماتنا.",
     "clickBelowForHomepage": "انقر على الزر أدناه للانتقال إلى الصفحة الرئيسية.",
-    "getStarted": "البدء الآن"
+    "getStarted": "البدء الآن",
+    "verification": "التحقق"
   },
   "home": {
     "title": "الرئيسية",
@@ -164,7 +165,7 @@
     "noServicesFound": "لم يتم العثور على خدمات",
     "tryDifferentSearch": "جرب مصطلح بحث مختلف",
     "serviceFound": "خدمة موجودة",
-    "servicesFound": "خدمة موجودة", 
+    "servicesFound": "خدمة موجودة",
     "inCategory": "في فئة",
     "noCategoryServices": "لم يتم العثور على خدمات في هذه الفئة",
     "tryDifferentCategory": "جرب اختيار فئة أخرى",
