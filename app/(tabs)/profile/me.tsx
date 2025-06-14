@@ -71,6 +71,10 @@ const ProfileComponent = () => {
   const navigateToMyReviews = () => {
     router.push('/profile/my-reviews');
   };
+    const navigateToAboutApp = () => {
+    router.push('/profile/aboutApp');
+  };
+
   // Add navigation to language settings
   const navigateToLanguageSettings = () => {
     router.push('/profile/language');
@@ -148,6 +152,7 @@ const ProfileComponent = () => {
                 title={t('profile:aboutApp')}
                 description={null}
                 image={require('@/assets/images/info.png')}
+                onPress={navigateToAboutApp}
               />
 
               {/* Admin Panel Access Button */}
