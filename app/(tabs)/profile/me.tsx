@@ -21,7 +21,6 @@ const ProfileComponent = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const [showAdminOption, setShowAdminOption] = useState(false);
   // Add translation hook
   const { t } = useTranslation(['profile', 'common']);
   const { isRTL } = useLanguage();
@@ -33,15 +32,6 @@ const ProfileComponent = () => {
         if (userData) {
           const parsedUser = JSON.parse(userData);
           setUser(parsedUser);
-
-          // Check if user is admin or has admin privileges
-          if (parsedUser.role === 'admin') {
-            setShowAdminOption(true);
-          } else {
-            // For development purposes, allow accessing admin panel from non-admin accounts
-            // In production, you might want to remove this or add more secure conditions
-            setShowAdminOption(true);
-          }
         } else {
           setTimeout(() => {
             router.push('/(otp)/customer/login');
@@ -58,9 +48,6 @@ const ProfileComponent = () => {
     checkUser();
   }, [router]);
 
-  const handleAdminAccess = () => {
-    router.push('/admin/login');
-  };
   const navigateToPerosnalData = () => {
     router.push('/profile/settings');
   };
@@ -71,7 +58,7 @@ const ProfileComponent = () => {
   const navigateToMyReviews = () => {
     router.push('/profile/my-reviews');
   };
-    const navigateToAboutApp = () => {
+  const navigateToAboutApp = () => {
     router.push('/profile/aboutApp');
   };
 
@@ -100,7 +87,11 @@ const ProfileComponent = () => {
           <View className="justify-center items-center p-2 gap-4">
             <ProfileHeader
               fullName={user.full_name}
-              rating={user.role === 'service_provider' ? user.rating_average : undefined}
+              rating={
+                user.role === 'service_provider'
+                  ? user.rating_average
+                  : undefined
+              }
               imageUrl={user.profile_image}
             />
             <View className="bg-white rounded-3xl w-full">
@@ -154,37 +145,6 @@ const ProfileComponent = () => {
                 image={require('@/assets/images/info.png')}
                 onPress={navigateToAboutApp}
               />
-
-              {/* Admin Panel Access Button */}
-              {showAdminOption && (
-                <TouchableOpacity onPress={handleAdminAccess}>
-                  <View
-                    className={`flex-row justify-between p-4 items-center border-t border-[#f5f5f5] ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <View
-                      className={`flex-row gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <View className="w-10 h-10 rounded-full bg-[#FFF9C4] items-center justify-center">
-                        <Text className="text-[#F57F17] text-lg font-bold">
-                          A
-                        </Text>
-                      </View>
-                      <View className="justify-center">
-                        <Text
-                          className={`text-base text-[#147E93] font-medium ${isRTL ? 'text-right' : 'text-left'}`}
-                        >
-                          {t('profile:adminPanel')}
-                        </Text>
-                        <Text
-                          className={`text-[#676B73] text-sm ${isRTL ? 'text-right' : 'text-left'}`}
-                        >
-                          {t('profile:adminAccess')}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         </View>
