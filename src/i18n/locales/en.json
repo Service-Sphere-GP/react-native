@@ -85,7 +85,8 @@
     "congratsRegistration": "Congratulations! Your registration has been successfully completed.",
     "allSetToExplore": "You're all set to explore our services.",
     "clickBelowForHomepage": "Click the button below to go to the homepage.",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "verification": "Verification"
   },
   "home": {
     "title": "Home",
