@@ -36,7 +36,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   // Initialize with device locale but only the language part (e.g., 'en' from 'en-US')
-  const deviceLocale = Localization.locale.split('-')[0];
+  const deviceLocale = Localization.locale?.split('-')[0] || 'en';
   const [language, setLanguageState] = useState(deviceLocale);
   const [isRTL, setIsRTL] = useState(() => {
     // Initialize RTL state based on I18nManager's current state

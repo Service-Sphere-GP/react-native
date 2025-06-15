@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/src/i18n/LanguageContext';
 import { getTextStyle } from '@/src/utils/fontUtils';
 
-const notification = () => {
+const Notification = () => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation(['profile', 'common']);
   const { isRTL } = useLanguage();
@@ -161,4 +161,4 @@ const notification = () => {
   );
 };
 
-export default notification;
+export default Notification;

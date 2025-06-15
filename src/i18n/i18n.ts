@@ -27,7 +27,7 @@ i18next.use(initReactI18next).init({
   // Resources with translations
   resources,
   // Initial language fallback
-  lng: Localization.locale.split('-')[0],
+  lng: Localization.locale?.split('-')[0] || 'en',
   // Fallback language if translation is missing
   fallbackLng: 'en',
   // Namespaces
