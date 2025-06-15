@@ -7,10 +7,14 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../assets/styles/global.css';
 import Toast from 'react-native-toast-message';
+import { LogBox } from 'react-native';
 // Import our language provider
 import { LanguageProvider, useLanguage } from '../src/i18n/LanguageContext';
 // Import i18n instance to initialize it
 import '../src/i18n/i18n';
+
+// Disable LogBox to prevent error/warning overlays in development
+LogBox.ignoreAllLogs(true);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
