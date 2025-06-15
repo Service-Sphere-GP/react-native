@@ -176,12 +176,12 @@ const Register = () => {
           />
           <Text className="text-black text-base font-medium">
             {t('auth:agreeToThe')}{' '}
+          </Text>
             <TouchableOpacity onPress={() => router.push('/(otp)/customer/privacy')}>
               <Text className="text-[#147E93] underline">
                 {t('auth:privacyPolicy')}
               </Text>
             </TouchableOpacity>
-          </Text>
         </View>
 
         {error && (

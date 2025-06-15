@@ -246,9 +246,9 @@ const Register = () => {
           />
           <Text className="text-black text-base font-medium">
             {t('auth:agreeToThe')}{' '}
-            <Text className="text-[#147E93] underline">
-              {t('auth:privacyPolicy')}
-            </Text>
+          </Text>
+          <Text className="text-[#147E93] underline">
+            {t('auth:privacyPolicy')}
           </Text>
         </View>
         {error && (
